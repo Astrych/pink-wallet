@@ -9,12 +9,6 @@
         "strict": true,
         "noImplicitAny": false,
         "strictNullChecks": false,
-        "typeRoots": [
-            "typings"
-        ],
-        "types": [
-            "gulp-install"
-        ],
         "experimentalDecorators": true
     }
 }

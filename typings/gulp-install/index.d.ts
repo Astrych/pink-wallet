@@ -6,6 +6,6 @@
 
 declare module "gulp-install" {
 
-    var gulpInstall: any;
+    var gulpInstall: (opts: object | Function, done?: Function) => NodeJS.ReadWriteStream;
     export = gulpInstall;
 }
