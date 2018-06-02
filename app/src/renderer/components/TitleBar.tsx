@@ -20,7 +20,6 @@ const WindowButton = styled.button`
     background-color: transparent;
     border: none;
     outline: none;
-    margin-right: 10px;
     margin-top: auto;
     margin-bottom: auto;
     padding: 0;
@@ -83,6 +82,11 @@ const TitleCol = styled(Col)`
 
 const ButtonsCol = styled(Col)`
     text-align: right;
+    
+
+    > *:not(:last-child) {
+        margin-right: 10px;
+    }
 `;
 
 const PinkIcon = styled.img`

@@ -25,7 +25,8 @@
     "linux-builder": "gulp builder --env=production --platform=linux",
     "windows-builder": "gulp builder --env=production --platform=windows",
     "mac-builder": "gulp builder --env=production --platform=mac",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tasks": "gulp --tasks"
   },
   "dependencies": {
     "antd": "3.5.4",

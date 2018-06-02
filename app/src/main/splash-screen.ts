@@ -8,7 +8,7 @@ export function createSplashScreen() {
         width: 810,
         height: 610,
         resizable: false,
-        transparent: true, // Not working under Mint 18.3
+        transparent: true,
         frame: false,
         show: false,
         skipTaskbar: true,

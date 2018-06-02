@@ -1,4 +1,5 @@
 
+import { join } from "path";
 import { spawn, ChildProcess } from "child_process";
 import kill from "tree-kill";
 import del from "del";
@@ -68,8 +69,7 @@ export function serveRendererView(done: Function) {
             webpackHotMiddleware(devBundler)
         ],
         files: [
-            `${config.dirs.app.src}/splash.html`,
-            `${config.dirs.app.src}/main.html`
+            join(config.dirs.app.src, "template.html")
         ],
         logLevel: "silent"
     };
@@ -107,8 +107,8 @@ export function monitorWindowFiles(done: Function) {
         done();
     });
 
-    // Watches window ts files and stop app if necessary (change occures).
-    watch(`${config.dirs.app.src}/main/**/*.ts`, series("stop app"));
+    // Notice: backslash absolute paths are not working outside cwd param.
+    watch("main/**/*.ts", { cwd: config.dirs.app.src }, series("stop app"));
 
     done();
 }

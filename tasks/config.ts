@@ -1,5 +1,5 @@
 
-import { normalize, join } from "path";
+import { normalize, join, sep } from "path";
 import args from "commander";
 
 
@@ -10,7 +10,6 @@ args
 
 
 function globalizePath(filespath: string) {
-
     return normalize(join(__dirname, "..", filespath));
 }
 
@@ -18,7 +17,6 @@ function globalizePath(filespath: string) {
 function globalizePaths(conf: object) {
 
     for (const i in conf) {
-
         if (typeof conf[i] === "object") globalizePaths(conf[i]);
         else if (typeof conf[i] === "string") conf[i] = globalizePath(conf[i]);
     }

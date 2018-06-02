@@ -8,26 +8,26 @@ import install from "gulp-install";
 import { config, isDev as dev } from "./config";
 
 
-function copyGraphicalAssets() {
+function copyAssets() {
 
-    return src(`${config.dirs.app.assets}/**/*.*`)
+    return src("**/*.*", { cwd: config.dirs.app.assets })
               .pipe(changed(config.dirs.build))
               .pipe(dest(config.dirs.build));
 }
 
 function installLibs() {
 
-    return src(`${config.dirs.app.main}/{*.json,.npmrc,LICENSE}`)
+    return src("{*.json,.npmrc,LICENSE}", { cwd: config.dirs.app.main })
               .pipe(changed(config.dirs.build))
               .pipe(dest(config.dirs.build))
               .pipe(install({ production: !dev }));
 }
 
 
-const taskName1 = "prepare assets -> copy graphics";
-const taskName2 = "prepare assets -> copy package.json file";
+const taskName1 = "prepare assets -> copy files";
+const taskName2 = "prepare assets -> install vendor libs if required";
 
-task(taskName1, copyGraphicalAssets);
+task(taskName1, copyAssets);
 task(taskName2, installLibs);
 
 export default {
