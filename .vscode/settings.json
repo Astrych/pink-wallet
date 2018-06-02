@@ -1,0 +1,25 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/build/": true,
+        "**/dist": true,
+    },
+    "files.exclude": {
+        "**/node_modules/": true,
+        "**/build/": true,
+        "**/dist/": true,
+        "**/.DS_Store": true
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "indentRainbow.ignoreErrorLanguages" : [
+        "markdown",
+        "plaintext",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+    ]
+}

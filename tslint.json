@@ -1,0 +1,13 @@
+{
+    "rules": {
+        "prefer-const": true,
+        "class-name": true,
+        "label-position": true,
+        "no-arg": true,
+        "indent": [true, "spaces", 4],
+        "linebreak-style": [true, "LF"],
+        "eofline": true,
+        "jsdoc-format": true,
+        "comment-format": [true, "check-space"]
+    }
+}
