@@ -1,5 +1,5 @@
 
-import { normalize, join, sep } from "path";
+import { normalize, join } from "path";
 import args from "commander";
 
 

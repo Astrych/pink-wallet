@@ -82,8 +82,6 @@ const TitleCol = styled(Col)`
 
 const ButtonsCol = styled(Col)`
     text-align: right;
-    
-
     > *:not(:last-child) {
         margin-right: 10px;
     }

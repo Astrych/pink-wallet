@@ -59,7 +59,7 @@ function makeSingleInstance() {
 function createMainWindow() {
 
   /**
-   * Error with Frameless window and minWidth / minHeight on Linux. 
+   * Error with Frameless window and minWidth / minHeight on Linux.
    * minHeight > 526: window is not responding on drag to upper edge and win + up/down.
    * minWidth > 960: window is not responding on drag to lefto or right edge and win + left/right.
    * https://github.com/electron/electron/issues/13118
