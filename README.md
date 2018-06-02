@@ -1,8 +1,10 @@
 # Pinkcoin Wallet GUI
 
+Just bare bone project, not working yet. Work in progress.
+
 ## Requirements
 
-1. Node.js 10.1.0 or higher.
+Developed with Node.js 10.1.0. Probably works fine with older versions of Node.js but no one tested it.
 
 ## Instalation and running in dev mode
 
