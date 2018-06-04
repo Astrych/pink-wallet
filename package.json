@@ -76,6 +76,7 @@
     "less-loader": "4.1.0",
     "react-hot-loader": "4.2.0",
     "serve-static": "1.13.2",
+    "spectron": "3.8.0",
     "style-loader": "0.21.0",
     "tree-kill": "1.2.0",
     "ts-import-plugin": "1.5.0",

@@ -55,7 +55,7 @@ function makeSingleInstance() {
 // This is the new way of making single instance app.
 // Old way will be deprecated in Electron 4.0.
 // Waiting for newer version of Electorn (right now typings are broken).
-/**
+/*
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) app.quit();
 
