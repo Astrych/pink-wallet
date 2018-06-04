@@ -29,9 +29,11 @@ if (process.env.NODE_ENV !== "production") {
     });
 }
 
-// Required on Linux platorm.
-// Without it transparent window is black/white.
-app.disableHardwareAcceleration();
+// Required on Linux platorm (bug workaround).
+// Without it transparent window is black or white.
+if (process.platform === "linux") {
+    app.disableHardwareAcceleration();
+}
 
 let mainWindow: BrowserWindow | null;
 let splashScreen: BrowserWindow | null;
