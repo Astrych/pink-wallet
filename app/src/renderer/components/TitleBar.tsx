@@ -14,7 +14,7 @@ import { X as WindowClose } from "styled-icons/octicons";
 import { Layout, Row, Col } from "antd";
 
 
-const WindowButton = styled.button`
+const Button = styled.button`
     user-select: none;
     -webkit-app-region: no-drag;
     background-color: transparent;
@@ -34,7 +34,7 @@ const WindowButton = styled.button`
     }
 `;
 
-function renderButton(
+function WindowButton(
 
     name: string,
     Icon: StyledIcon,
@@ -45,13 +45,13 @@ function renderButton(
     const title = name[0].toUpperCase() + name.substring(1);
 
     return (
-        <WindowButton aria-label={name} title={title} tabIndex={-1} onClick={onClick}>
+        <Button aria-label={name} title={title} tabIndex={-1} onClick={onClick}>
             <Icon
                 size={25}
                 color="inherit"
                 style={{ verticalAlign: "baseline", ...styles }}
             />
-        </WindowButton>
+        </Button>
     );
 }
 
@@ -113,6 +113,16 @@ class TitleBar extends React.Component<{}, State> {
         this.window.on("restore", () => this.onWindowStateChanged("normal"));
         this.window.on("hide", () => this.onWindowStateChanged("hidden"));
         this.window.on("show", () => this.onWindowStateChanged("normal"));
+
+        // Hack: temporary fix for issue with maximization
+        // https://github.com/electron/electron/issues/12971
+        this.window.on("unmaximize", () => {
+            const bounds = this.window.getBounds();
+            bounds.width += 1;
+            this.window.setBounds(bounds);
+            bounds.width -= 1;
+            this.window.setBounds(bounds);
+        });
     }
 
     public shouldComponentUpdate(nextProps: {}, nextState: State) {
@@ -162,12 +172,12 @@ class TitleBar extends React.Component<{}, State> {
 
         const { windowState } = this.state;
 
-        const min = renderButton("minimize", WindowMinimize, this.onMinimize);
-        const restore = renderButton("restore", WindowRestore, this.onRestore, {
+        const min = WindowButton("minimize", WindowMinimize, this.onMinimize);
+        const restore = WindowButton("restore", WindowRestore, this.onRestore, {
             transform: "rotate(90deg) scaleY(-1)"
         });
-        const maximize = renderButton("maximize", WindowMaximize, this.onMaximize)
-        const close = renderButton("close", WindowClose, this.onClose);
+        const maximize = WindowButton("maximize", WindowMaximize, this.onMaximize)
+        const close = WindowButton("close", WindowClose, this.onClose);
 
         return (
             <AppBar>
