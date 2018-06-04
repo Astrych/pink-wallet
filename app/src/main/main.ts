@@ -13,15 +13,6 @@ import {
 import { createSplashScreen } from "./splash-screen";
 
 
-// TODO: Check if needed on Linux (not VirtualMachine). 
-// app.commandLine.appendSwitch("enable-transparent-visuals");
-// app.commandLine.appendSwitch("disable-gpu");
-// app.disableHardwareAcceleration();
-
-const shouldQuit = makeSingleInstance();
-if (shouldQuit) app.quit();
-
-
 // Will be removed by Webpack in production.
 if (process.env.NODE_ENV !== "production") {
 
@@ -30,7 +21,6 @@ if (process.env.NODE_ENV !== "production") {
 
     import("electron-debug")
     .then(debug => {
-
         // Inits debug mode and devtron dev tools.
         debug.default({ showDevTools: false });
     })
@@ -39,10 +29,16 @@ if (process.env.NODE_ENV !== "production") {
     });
 }
 
+// Required on Linux platorm.
+// Without it transparent window is black/white.
+app.disableHardwareAcceleration();
 
 let mainWindow: BrowserWindow | null;
 let splashScreen: BrowserWindow | null;
 let tray: Tray | null;
+
+const shouldQuit = makeSingleInstance();
+if (shouldQuit) app.quit();
 
 function makeSingleInstance() {
 
@@ -55,6 +51,24 @@ function makeSingleInstance() {
         }
     });
 }
+
+// This is the new way of making single instance app.
+// Old way will be deprecated in Electron 4.0.
+// Waiting for newer version of Electorn (right now typings are broken).
+/**
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) app.quit();
+
+app.on("second-instance", (commandLine, workingDirectory) => {
+
+    if (process.mas) return false;
+
+    if (mainWindow) {
+        if (mainWindow.isMinimized()) mainWindow.restore();
+        mainWindow.focus();
+    }
+});
+*/
 
 function createMainWindow() {
 
@@ -121,7 +135,6 @@ function createTray() {
         { type: "separator" },
         {
             label: "Quit",
-            accelerator: "CmdOrCtrl+Q", // Not working under Mint 18.3
             click() {
                 tray.destroy();
                 app.quit();
