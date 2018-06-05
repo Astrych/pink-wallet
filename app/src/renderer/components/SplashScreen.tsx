@@ -32,11 +32,7 @@ const SplashImg = styled.img`
     object-fit: scale-down;
     margin: auto;
     -webkit-user-drag: none;
-    filter:
-        sepia()
-        saturate(100)
-        hue-rotate(230deg)
-        drop-shadow(16px 16px 16px #000);
+    filter: drop-shadow(16px 16px 16px #000);
 `;
 
 const LoadProgress = styled(Progress)`
@@ -72,7 +68,7 @@ class SplashScreen extends React.Component {
 
         return <>
             <SplashImg
-                src="./img/Buffalo.png"
+                src="./img/Buffalo-pink.png"
                 alt="Buffalo logo"
                 onLoad={this.onImgLoad}
             />
