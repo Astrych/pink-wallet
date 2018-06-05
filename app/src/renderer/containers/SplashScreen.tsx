@@ -2,45 +2,11 @@
 import { ipcRenderer } from "electron";
 import React from "react";
 import { hot } from "react-hot-loader";
-import styled, { injectGlobal } from "styled-components";
 import { Progress } from "antd";
 
+import SplashImg from "../components/SplashImg";
+import LoadProgress from "../components/LoadProgress";
 
-injectGlobal`
-
-    html, body {
-        user-select: none;
-        height: 100%;
-        box-sizing: border-box;
-    }
-    body {
-        margin: 0;
-        background: transparent;
-    }
-    img {
-        border-style: none;
-    }
-    div#app {
-        height: 100%;
-        display: flex;
-    }
-`;
-
-const SplashImg = styled.img`
-
-    height: 100%;
-    object-fit: scale-down;
-    margin: auto;
-    -webkit-user-drag: none;
-    filter: drop-shadow(16px 16px 16px #000);
-`;
-
-const LoadProgress = styled(Progress)`
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-`;
 
 class SplashScreen extends React.Component {
 

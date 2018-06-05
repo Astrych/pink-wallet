@@ -1,96 +1,26 @@
 
 import { remote, ipcRenderer } from "electron";
 import React from "react";
-import styled, { injectGlobal } from "styled-components";
 import {
     
     WindowMinimize,
     Square as WindowMaximize,
-    Clone as WindowRestore,
-    StyledIcon
+    Clone as WindowRestore
 
 } from "styled-icons/fa-regular";
 import { X as WindowClose } from "styled-icons/octicons";
-import { Layout, Row, Col } from "antd";
 
+import {
 
-const Button = styled.button`
-    user-select: none;
-    -webkit-app-region: no-drag;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    margin-top: auto;
-    margin-bottom: auto;
-    padding: 0;
-    height: 25px;
-    color: white;
+    AppBar,
+    BarRow,
+    LogoCol,
+    TitleCol,
+    ButtonsCol,
+    PinkIcon
 
-    &:hover {
-        color: grey;
-    }
-    &:active {
-        color: pink;
-    }
-`;
-
-function WindowButton(
-
-    name: string,
-    Icon: StyledIcon,
-    onClick: React.EventHandler<React.MouseEvent<any>>,
-    styles: object={}
-
-) {
-    const title = name[0].toUpperCase() + name.substring(1);
-
-    return (
-        <Button aria-label={name} title={title} tabIndex={-1} onClick={onClick}>
-            <Icon
-                size={25}
-                color="inherit"
-                style={{ verticalAlign: "baseline", ...styles }}
-            />
-        </Button>
-    );
-}
-
-const AppBar = styled(Layout.Header)`
-    background-color: black;
-    max-height: 35px;
-    padding: 0;
-`;
-
-const BarRow = styled(Row)`
-    background-color: black;
-    margin: 5px;
-    height: 25px;
-    -webkit-app-region: drag;
-    user-select: none;
-    padding-left: 10px;
-    padding-right: 10px;
-    line-height: 23px;
-`;
-
-const LogoCol = styled(Col)`
-    text-align: left;
-`;
-
-const TitleCol = styled(Col)`
-    text-align: center;
-`;
-
-const ButtonsCol = styled(Col)`
-    text-align: right;
-    > *:not(:last-child) {
-        margin-right: 10px;
-    }
-`;
-
-const PinkIcon = styled.img`
-    height: 25px;
-    vertical-align: baseline;
-`;
+} from "../components/AppToolbar";
+import WindowButton from "../components/WindowButton";
 
 
 interface State {
