@@ -10,6 +10,7 @@ import {
 
 } from "electron";
 
+import { centerWindow } from "./utils";
 import { createSplashScreen } from "./splash-screen";
 
 
@@ -175,7 +176,6 @@ function createTray() {
     });
 }
 
-
 app.on("ready", () => {
 
     setTimeout(() => { // Transparency workaround
@@ -218,6 +218,11 @@ ipcMain.on("data-loaded", () => {
 
     splashScreen.destroy();
     splashScreen = null;
+
+    // Workaround for issue:
+    // https://github.com/electron/electron/issues/3490
+    if (process.platform === "linux") centerWindow(mainWindow);
+
     mainWindow.show();
 
     // Will be removed by Webpack in production.

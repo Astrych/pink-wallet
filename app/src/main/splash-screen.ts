@@ -1,5 +1,7 @@
 
-import { BrowserWindow } from "electron";
+import { BrowserWindow, screen } from "electron";
+
+import { centerWindow } from "./utils";
 
 
 export function createSplashScreen() {
@@ -7,6 +9,7 @@ export function createSplashScreen() {
     const splashScreen = new BrowserWindow({
         width: 810,
         height: 610,
+        center: true,
         resizable: false,
         transparent: true,
         frame: false,
@@ -24,6 +27,9 @@ export function createSplashScreen() {
     }
 
     splashScreen.once("ready-to-show", () => {
+        // Workaround for issue:
+        // https://github.com/electron/electron/issues/3490
+        if (process.platform === "linux") centerWindow(splashScreen);
 
         splashScreen.show();
     });
