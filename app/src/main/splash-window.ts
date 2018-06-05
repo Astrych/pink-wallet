@@ -4,9 +4,11 @@ import { BrowserWindow, screen } from "electron";
 import { centerWindow } from "./utils";
 
 
-export function createSplashScreen() {
+export let splashWindow: BrowserWindow | null;
 
-    const splashScreen = new BrowserWindow({
+export function createSplashWindow() {
+
+    splashWindow = new BrowserWindow({
         width: 810,
         height: 610,
         center: true,
@@ -20,19 +22,20 @@ export function createSplashScreen() {
 
     // Will be removed by Webpack in production.
     if (process.env.NODE_ENV !== "production") {
-        splashScreen.loadURL(process.env.SPLASH_VIEW);
+        splashWindow.loadURL(process.env.SPLASH_VIEW);
 
     } else {
-        splashScreen.loadFile(process.env.SPLASH_VIEW);
+        splashWindow.loadFile(process.env.SPLASH_VIEW);
     }
 
-    splashScreen.once("ready-to-show", () => {
+    splashWindow.on("closed", () => splashWindow = null);
+
+    splashWindow.once("ready-to-show", () => {
         // Workaround for issue:
         // https://github.com/electron/electron/issues/3490
-        if (process.platform === "linux") centerWindow(splashScreen);
-
-        splashScreen.show();
+        if (process.platform === "linux") {
+            centerWindow(splashWindow);
+        }
+        splashWindow.show();
     });
-
-    return splashScreen;
 }

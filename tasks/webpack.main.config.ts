@@ -13,7 +13,7 @@ export const mainConfig: webpack.Configuration = {
     context: config.dirs.app.src,
     entry: {
 
-        main: "./main/main.ts"
+        main: "./main/index.ts"
     },
     output: {
 
