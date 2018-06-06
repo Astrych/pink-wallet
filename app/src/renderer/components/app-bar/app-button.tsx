@@ -45,7 +45,7 @@ function AppButton(props: AppButtonProps) {
             <Icon
                 size={25}
                 color="inherit"
-                style={{ verticalAlign: "baseline", ...styles }}
+                css={{verticalAlign: "baseline", ...styles}}
             />
         </Button>
     );

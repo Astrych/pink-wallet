@@ -1,14 +1,14 @@
 
 import { remote } from "electron";
 import React from "react";
-import {
+// import {
     
-    WindowMinimize,
-    Square as WindowMaximize,
-    Clone as WindowRestore
+//     WindowMinimize,
+//     Square as WindowMaximize,
+//     Clone as WindowRestore
 
-} from "styled-icons/fa-regular";
-import { X as WindowClose } from "styled-icons/octicons";
+// } from "styled-icons/fa-regular";
+// import { Close as WindowClose } from "styled-icons/material/Close";
 
 import {
 
@@ -22,6 +22,7 @@ import {
 
 } from "./app-tools";
 import AppButton from "./app-button";
+import { WindowMinimize, WindowMaximize, WindowRestore, WindowClose } from "./app-icons";
 
 
 interface State {
