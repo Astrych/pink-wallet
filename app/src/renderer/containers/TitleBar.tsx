@@ -17,7 +17,8 @@ import {
     LogoCol,
     TitleCol,
     ButtonsCol,
-    PinkIcon
+    PinkIcon,
+    Title
 
 } from "../components/AppToolbar";
 import WindowButton from "../components/WindowButton";
@@ -102,13 +103,6 @@ class TitleBar extends React.Component<{}, State> {
 
         const { windowState } = this.state;
 
-        const min = WindowButton("minimize", WindowMinimize, this.onMinimize);
-        const restore = WindowButton("restore", WindowRestore, this.onRestore, {
-            transform: "rotate(90deg) scaleY(-1)"
-        });
-        const maximize = WindowButton("maximize", WindowMaximize, this.onMaximize)
-        const close = WindowButton("close", WindowClose, this.onClose);
-
         return (
             <AppBar>
                 <BarRow type="flex" justify="center">
@@ -116,14 +110,37 @@ class TitleBar extends React.Component<{}, State> {
                         <PinkIcon src="./img/icon-256x256.png" />
                     </LogoCol>
                     <TitleCol span={8}>
-                        <span style={{ color: "white", fontSize: 19, fontWeight: 500 }}>
+                        <Title>
                             {this.appTitle}
-                        </span>
+                        </Title>
                     </TitleCol>
                     <ButtonsCol span={8}>
-                        {min}
-                        {windowState === "maximized" ? restore : maximize}
-                        {close}
+                        <WindowButton
+                            name="restore"
+                            icon={WindowMinimize}
+                            onClick={this.onMinimize}
+                        />;
+                        {
+                            windowState === "maximized" ?
+                            <WindowButton
+                                name="restore"
+                                icon={WindowRestore}
+                                onClick={this.onRestore}
+                                styles={{
+                                    transform: "rotate(90deg) scaleY(-1)"
+                                }}
+                            /> :
+                            <WindowButton
+                                name="maximize"
+                                icon={WindowMaximize}
+                                onClick={this.onMaximize}
+                            />
+                        }
+                        <WindowButton
+                            name="close"
+                            icon={WindowClose}
+                            onClick={this.onClose}
+                        />;
                     </ButtonsCol>
                 </BarRow>
             </AppBar>

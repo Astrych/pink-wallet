@@ -1,12 +1,5 @@
 
-import {
-
-    app,
-    Tray,
-    Menu,
-    globalShortcut
-
-} from "electron";
+import { app, Tray, Menu } from "electron";
 
 import { splashWindow } from "./splash-window";
 import { mainWindow } from "./main-window";
@@ -30,9 +23,9 @@ export function createTray() {
 
     tray = new Tray(`${__dirname}/img/icon-256x256.png`);
 
-    const contextMenu = Menu.buildFromTemplate(menuTemplate);
-
     tray.setToolTip(process.env.APP_TITLE);
+
+    const contextMenu = Menu.buildFromTemplate(menuTemplate);
     tray.setContextMenu(contextMenu);
 
     tray.on("double-click", event => {

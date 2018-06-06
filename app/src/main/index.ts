@@ -1,12 +1,5 @@
 
-import {
-
-    app,
-    BrowserWindow,
-    Tray,
-    ipcMain
-
-} from "electron";
+import { app, ipcMain } from "electron";
 
 import { splashWindow, createSplashWindow } from "./splash-window";
 import { mainWindow, createMainWindow } from "./main-window";

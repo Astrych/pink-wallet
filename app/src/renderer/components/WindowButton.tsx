@@ -24,18 +24,24 @@ const Button = styled.button`
     }
 `;
 
-function WindowButton(
-
+interface WindowButtonProps {
     name: string,
-    Icon: StyledIcon,
+    icon: StyledIcon,
     onClick: React.EventHandler<React.MouseEvent<any>>,
-    styles: object={}
+    styles?: object
+}
 
-) {
+function WindowButton(props: WindowButtonProps) {
+
+    const { name, icon: Icon, onClick, styles } = props;
     const title = name[0].toUpperCase() + name.substring(1);
 
     return (
-        <Button aria-label={name} title={title} tabIndex={-1} onClick={onClick}>
+        <Button
+            aria-label={name}
+            title={title}
+            tabIndex={-1} 
+            onClick={onClick}>
             <Icon
                 size={25}
                 color="inherit"

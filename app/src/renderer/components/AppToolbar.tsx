@@ -16,8 +16,6 @@ export const BarRow = styled(Row)`
     height: 25px;
     -webkit-app-region: drag;
     user-select: none;
-    padding-left: 10px;
-    padding-right: 10px;
     line-height: 23px;
 `;
 
@@ -39,4 +37,11 @@ export const ButtonsCol = styled(Col)`
 export const PinkIcon = styled.img`
     height: 25px;
     vertical-align: baseline;
+`;
+
+
+export const Title = styled.span`
+    color: white;
+    font-size: 19px;
+    font-weight: 500;
 `;
