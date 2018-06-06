@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { injectGlobal } from "styled-components";
 
-import PinkApp from "./containers/PinkApp";
+import SplashScreen from "./components/splash-screen";
 
 
 // Inherits env vars from main process
@@ -12,25 +12,27 @@ import PinkApp from "./containers/PinkApp";
 process.env = remote.process.env;
 
 injectGlobal`
+
     html, body {
+        user-select: none;
         height: 100%;
         box-sizing: border-box;
     }
     body {
         margin: 0;
-        background-color: #eb78ab;
-        overflow: hidden;
+        background: transparent;
     }
     img {
         border-style: none;
     }
     div#app {
         height: 100%;
+        display: flex;
     }
 `;
 
 ReactDOM.render(
 
-    <PinkApp />,
+    <SplashScreen />,
     document.getElementById("app")
 );

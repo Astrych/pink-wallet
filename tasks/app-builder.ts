@@ -4,8 +4,8 @@ import { task, parallel } from "gulp";
 import webpack from "webpack";
 
 // Builder configs.
-import { mainConfig } from "./webpack.main.config";
-import { rendererConfig } from "./webpack.renderer.config";
+import { mainConfig } from "./webpack-config.main";
+import { rendererConfig } from "./webpack-config.renderer";
 
 
 function runWebpack(config) {

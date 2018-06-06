@@ -7,10 +7,10 @@
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/Astrych/pink-wallet"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/Astrych/pink-wallet/issues"
   },
   "keywords": [
     "PINK",

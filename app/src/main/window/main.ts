@@ -1,8 +1,6 @@
 
 import { BrowserWindow, screen } from "electron";
 
-import { centerWindow } from "./utils";
-
 
 export let mainWindow: BrowserWindow | null;
 
@@ -43,8 +41,8 @@ export function createMainWindow() {
             // Downloads and/or installs devtools extensions.
             extensions.map(name => {
                 module.default(module[name], !!process.env.UPGRADE_EXTENSIONS)
-                .then(name => console.log(`Added Extension:  ${name}`))
-                .catch(err => console.error("An error occurred: ", err));
+                .then(name => console.log(`Added Extension: ${name}`))
+                .catch(err => console.error("An error occurred:", err));
             });
         })
         .catch(err => {

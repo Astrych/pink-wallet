@@ -5,9 +5,8 @@ import { StyledIcon } from "styled-icons";
 
 
 const Button = styled.button`
-    user-select: none;
     -webkit-app-region: no-drag;
-    background-color: transparent;
+    user-select: none;
     border: none;
     outline: none;
     margin-top: auto;
@@ -15,6 +14,7 @@ const Button = styled.button`
     padding: 0;
     height: 25px;
     color: white;
+    background-color: transparent;
 
     &:hover {
         color: grey;
@@ -24,14 +24,14 @@ const Button = styled.button`
     }
 `;
 
-interface WindowButtonProps {
+interface AppButtonProps {
     name: string,
     icon: StyledIcon,
     onClick: React.EventHandler<React.MouseEvent<any>>,
     styles?: object
 }
 
-function WindowButton(props: WindowButtonProps) {
+function AppButton(props: AppButtonProps) {
 
     const { name, icon: Icon, onClick, styles } = props;
     const title = name[0].toUpperCase() + name.substring(1);
@@ -51,4 +51,4 @@ function WindowButton(props: WindowButtonProps) {
     );
 }
 
-export default WindowButton;
+export default AppButton;

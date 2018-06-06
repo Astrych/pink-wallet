@@ -16,19 +16,19 @@ export const rendererConfig: webpack.Configuration = {
 
         "splash-bundle": [
 
-            "./renderer/splash.tsx",
+            "./renderer/splash-index.tsx",
             "webpack-hot-middleware/client"
         ],
         "main-bundle": [
 
-            "./renderer/main.tsx",
+            "./renderer/main-index.tsx",
             "webpack-hot-middleware/client"
         ]
 
     } : {
 
-        "splash-bundle": "./renderer/splash.tsx",
-        "main-bundle": `./renderer/main.tsx`
+        "splash-bundle": "./renderer/splash-index.tsx",
+        "main-bundle": `./renderer/main-index.tsx`
 
     },
     output: {
@@ -81,7 +81,10 @@ export const rendererConfig: webpack.Configuration = {
                 test: /\.less$/i,
                 use: [
                     {
-                        loader: "style-loader"
+                        loader: "style-loader",
+                        options: {
+                            insertAt: "top"
+                        }
                     },
                     {
                         loader: "css-loader",

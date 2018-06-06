@@ -1,10 +1,9 @@
 
-import React from "react";
 import styled from "styled-components";
 import { Layout, Row, Col } from "antd";
 
 
-export const AppBar = styled(Layout.Header)`
+export const AppHeader = styled(Layout.Header)`
     background-color: black;
     max-height: 35px;
     padding: 0;
@@ -38,7 +37,6 @@ export const PinkIcon = styled.img`
     height: 25px;
     vertical-align: baseline;
 `;
-
 
 export const Title = styled.span`
     color: white;

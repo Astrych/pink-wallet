@@ -3,14 +3,14 @@ import React from "react";
 import { hot } from "react-hot-loader";
 import { Layout } from "antd";
 
-import TitleBar from "./TitleBar";
+import AppBar from "./app-bar";
 
 
 const PinkApp = () => {
 
     return (
         <Layout>
-            <TitleBar />
+            <AppBar />
         </Layout>
     );
 }

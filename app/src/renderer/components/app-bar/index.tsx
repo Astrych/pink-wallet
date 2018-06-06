@@ -1,5 +1,5 @@
 
-import { remote, ipcRenderer } from "electron";
+import { remote } from "electron";
 import React from "react";
 import {
     
@@ -12,7 +12,7 @@ import { X as WindowClose } from "styled-icons/octicons";
 
 import {
 
-    AppBar,
+    AppHeader,
     BarRow,
     LogoCol,
     TitleCol,
@@ -20,15 +20,15 @@ import {
     PinkIcon,
     Title
 
-} from "../components/AppToolbar";
-import WindowButton from "../components/WindowButton";
+} from "./app-tools";
+import AppButton from "./app-button";
 
 
 interface State {
     windowState: string
 }
 
-class TitleBar extends React.Component<{}, State> {
+class AppBar extends React.Component<{}, State> {
 
     window = remote.getCurrentWindow();
     appTitle = this.getTitle();
@@ -47,7 +47,9 @@ class TitleBar extends React.Component<{}, State> {
 
         // Hack: temporary fix for issue with maximization
         // https://github.com/electron/electron/issues/12971
-        this.window.on("unmaximize", () => {
+        this.window.on("unmaximize", (e, c) => {
+            console.log(e);
+            console.log(c);
             const bounds = this.window.getBounds();
             bounds.width += 1;
             this.window.setBounds(bounds);
@@ -104,7 +106,7 @@ class TitleBar extends React.Component<{}, State> {
         const { windowState } = this.state;
 
         return (
-            <AppBar>
+            <AppHeader>
                 <BarRow type="flex" justify="center">
                     <LogoCol span={8}>
                         <PinkIcon src="./img/icon-256x256.png" />
@@ -115,14 +117,14 @@ class TitleBar extends React.Component<{}, State> {
                         </Title>
                     </TitleCol>
                     <ButtonsCol span={8}>
-                        <WindowButton
+                        <AppButton
                             name="restore"
                             icon={WindowMinimize}
                             onClick={this.onMinimize}
                         />;
                         {
                             windowState === "maximized" ?
-                            <WindowButton
+                            <AppButton
                                 name="restore"
                                 icon={WindowRestore}
                                 onClick={this.onRestore}
@@ -130,22 +132,22 @@ class TitleBar extends React.Component<{}, State> {
                                     transform: "rotate(90deg) scaleY(-1)"
                                 }}
                             /> :
-                            <WindowButton
+                            <AppButton
                                 name="maximize"
                                 icon={WindowMaximize}
                                 onClick={this.onMaximize}
                             />
                         }
-                        <WindowButton
+                        <AppButton
                             name="close"
                             icon={WindowClose}
                             onClick={this.onClose}
                         />;
                     </ButtonsCol>
                 </BarRow>
-            </AppBar>
+            </AppHeader>
         );
     }
 }
 
-export default TitleBar;
+export default AppBar;

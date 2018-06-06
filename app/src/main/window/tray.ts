@@ -1,8 +1,8 @@
 
 import { app, Tray, Menu } from "electron";
 
-import { splashWindow } from "./splash-window";
-import { mainWindow } from "./main-window";
+import { splashWindow } from "./splash";
+import { mainWindow } from "./main";
 
 
 const menuTemplate: Electron.MenuItemConstructorOptions[] = [

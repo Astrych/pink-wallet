@@ -1,7 +1,7 @@
 
 import { BrowserWindow, screen } from "electron";
 
-import { centerWindow } from "./utils";
+import { centerWindow } from "../utils";
 
 
 export let splashWindow: BrowserWindow | null;

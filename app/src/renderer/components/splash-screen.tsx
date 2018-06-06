@@ -2,10 +2,9 @@
 import { ipcRenderer } from "electron";
 import React from "react";
 import { hot } from "react-hot-loader";
-import { Progress } from "antd";
 
-import SplashImg from "../components/SplashImg";
-import LoadProgress from "../components/LoadProgress";
+import SplashImg from "./splash-img";
+import LoadProgress from "./load-progress";
 
 
 class SplashScreen extends React.Component {

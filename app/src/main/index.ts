@@ -1,10 +1,9 @@
 
 import { app, ipcMain } from "electron";
 
-import { splashWindow, createSplashWindow } from "./splash-window";
-import { mainWindow, createMainWindow } from "./main-window";
-import { tray, createTray } from "./tray";
-import { centerWindow } from "./utils";
+import { splashWindow, createSplashWindow } from "./window/splash";
+import { mainWindow, createMainWindow } from "./window/main";
+import { tray, createTray } from "./window/tray";
 
 
 // Will be removed by Webpack in production.

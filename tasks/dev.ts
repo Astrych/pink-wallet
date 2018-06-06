@@ -10,7 +10,7 @@ import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 
-import { rendererConfig } from "./webpack.renderer.config";
+import { rendererConfig } from "./webpack-config.renderer";
 import { config } from "./config";
 
 
