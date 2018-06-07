@@ -1,7 +1,8 @@
 
 import React from "react";
 import styled from "styled-components";
-import { StyledIcon } from "styled-icons";
+
+import { WindowIcon } from "./icons"; 
 
 
 const Button = styled.button`
@@ -25,15 +26,14 @@ const Button = styled.button`
 `;
 
 interface AppButtonProps {
-    name: string,
-    icon: StyledIcon,
-    onClick: React.EventHandler<React.MouseEvent<any>>,
-    styles?: object
+    name: string;
+    icon: WindowIcon;
+    onClick: React.EventHandler<React.MouseEvent<any>>;
 }
 
 function AppButton(props: AppButtonProps) {
 
-    const { name, icon: Icon, onClick, styles } = props;
+    const { name, icon: Icon, onClick } = props;
     const title = name[0].toUpperCase() + name.substring(1);
 
     return (
@@ -45,7 +45,7 @@ function AppButton(props: AppButtonProps) {
             <Icon
                 size={25}
                 color="inherit"
-                css={{verticalAlign: "baseline", ...styles}}
+                css={{verticalAlign: "baseline"}}
             />
         </Button>
     );

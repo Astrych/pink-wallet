@@ -1,14 +1,6 @@
 
 import { remote } from "electron";
 import React from "react";
-// import {
-    
-//     WindowMinimize,
-//     Square as WindowMaximize,
-//     Clone as WindowRestore
-
-// } from "styled-icons/fa-regular";
-// import { Close as WindowClose } from "styled-icons/material/Close";
 
 import {
 
@@ -16,20 +8,28 @@ import {
     BarRow,
     LogoCol,
     TitleCol,
-    ButtonsCol,
+    ButtonsCol
+
+} from "./layout";
+import {
+
     PinkIcon,
-    Title
+    WindowMinimize,
+    WindowMaximize,
+    WindowRestore,
+    WindowClose
 
-} from "./app-tools";
-import AppButton from "./app-button";
-import { WindowMinimize, WindowMaximize, WindowRestore, WindowClose } from "./app-icons";
+} from "./icons";
+import AppButton from "./button";
+import Title from "./title";
+import { platform } from "../../../../../tasks/config";
 
 
-interface State {
+interface AppBarState {
     windowState: string
 }
 
-class AppBar extends React.Component<{}, State> {
+class AppBar extends React.Component<{}, AppBarState> {
 
     window = remote.getCurrentWindow();
     appTitle = this.getTitle();
@@ -46,20 +46,20 @@ class AppBar extends React.Component<{}, State> {
         this.window.on("hide", () => this.onWindowStateChanged("hidden"));
         this.window.on("show", () => this.onWindowStateChanged("normal"));
 
-        // Hack: temporary fix for issue with maximization
+        // Workaround: partial fix for issue with maximization and restoring
         // https://github.com/electron/electron/issues/12971
-        this.window.on("unmaximize", (e, c) => {
-            console.log(e);
-            console.log(c);
-            const bounds = this.window.getBounds();
-            bounds.width += 1;
-            this.window.setBounds(bounds);
-            bounds.width -= 1;
-            this.window.setBounds(bounds);
-        });
+        if (process.platform === "win32") {
+            this.window.on("unmaximize", () => {
+                const bounds = this.window.getBounds();
+                bounds.width += 1;
+                this.window.setBounds(bounds);
+                bounds.width -= 1;
+                this.window.setBounds(bounds);
+            });
+        }
     }
 
-    public shouldComponentUpdate(nextProps: {}, nextState: State) {
+    public shouldComponentUpdate(nextProps: {}, nextState: AppBarState) {
         return nextState.windowState !== this.state.windowState;
     }
 
@@ -110,7 +110,7 @@ class AppBar extends React.Component<{}, State> {
             <AppHeader>
                 <BarRow type="flex" justify="center">
                     <LogoCol span={8}>
-                        <PinkIcon src="./img/icon-256x256.png" />
+                        <PinkIcon />
                     </LogoCol>
                     <TitleCol span={8}>
                         <Title>
@@ -119,19 +119,16 @@ class AppBar extends React.Component<{}, State> {
                     </TitleCol>
                     <ButtonsCol span={8}>
                         <AppButton
-                            name="restore"
+                            name="minimize"
                             icon={WindowMinimize}
                             onClick={this.onMinimize}
-                        />;
+                        />
                         {
                             windowState === "maximized" ?
                             <AppButton
                                 name="restore"
                                 icon={WindowRestore}
                                 onClick={this.onRestore}
-                                styles={{
-                                    transform: "rotate(90deg) scaleY(-1)"
-                                }}
                             /> :
                             <AppButton
                                 name="maximize"

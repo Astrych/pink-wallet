@@ -3,8 +3,8 @@ import { ipcRenderer } from "electron";
 import React from "react";
 import { hot } from "react-hot-loader";
 
-import SplashImg from "./splash-img";
-import LoadProgress from "./load-progress";
+import AnimatedSplashImg from "./splash/image";
+import SplashProgress from "./splash/progress";
 
 
 class SplashScreen extends React.Component {
@@ -14,6 +14,12 @@ class SplashScreen extends React.Component {
     loadTimer;
 
     componentDidMount() {
+
+    }
+
+    onImgLoad = () => {
+        this.setState({ show: true });
+
         this.loadTimer = setInterval(() => {
             if (this.state.progress === 105) {
                 ipcRenderer.send("data-loaded");
@@ -24,20 +30,12 @@ class SplashScreen extends React.Component {
         }, 100);
     }
 
-    onImgLoad = () => {
-        this.setState({ show: true });
-    }
-
     render() {
         const { show, progress } = this.state;
 
         return <>
-            <SplashImg
-                src="./img/Buffalo-pink.png"
-                alt="Buffalo logo"
-                onLoad={this.onImgLoad}
-            />
-            {show && <LoadProgress type="circle" percent={progress} width={80} />}
+            <AnimatedSplashImg onLoad={this.onImgLoad} animate={show} />
+            {show && <SplashProgress progress={progress} />}
         </>;
     }
 }

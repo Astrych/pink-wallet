@@ -33,13 +33,3 @@ export const ButtonsCol = styled(Col)`
     }
 `;
 
-export const PinkIcon = styled.img`
-    height: 25px;
-    vertical-align: baseline;
-`;
-
-export const Title = styled.span`
-    color: white;
-    font-size: 19px;
-    font-weight: 500;
-`;

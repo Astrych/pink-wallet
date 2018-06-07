@@ -16,19 +16,19 @@ export const rendererConfig: webpack.Configuration = {
 
         "splash-bundle": [
 
-            "./renderer/splash-index.tsx",
+            "./renderer/splash.tsx",
             "webpack-hot-middleware/client"
         ],
         "main-bundle": [
 
-            "./renderer/main-index.tsx",
+            "./renderer/main.tsx",
             "webpack-hot-middleware/client"
         ]
 
     } : {
 
-        "splash-bundle": "./renderer/splash-index.tsx",
-        "main-bundle": `./renderer/main-index.tsx`
+        "splash-bundle": "./renderer/splash.tsx",
+        "main-bundle": `./renderer/main.tsx`
 
     },
     output: {
