@@ -28,6 +28,7 @@ injectGlobal`
     div#app {
         height: 100%;
         display: flex;
+        overflow: hidden;
     }
 `;
 

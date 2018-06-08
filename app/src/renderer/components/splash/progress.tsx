@@ -5,15 +5,31 @@ import { Progress } from "antd";
 
 
 const fadeIn = keyframes`
-    0%   { opacity: 0; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 0;
+        transform: scale(0.1, 0.1);
+    }
+
+    80% {
+        opacity: 0.0;
+        transform: scale(0.1, 0.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1, 1);
+    }
 `;
 
 const LoadProgress = styled(Progress)`
     position: absolute;
     top: 50%;
     left: 50%;
-    animation: ${fadeIn} 3s ease forwards;
+    animation: ${fadeIn} 1.0s ease-in;
+
+    .ant-progress-circle-trail {
+        stroke: rgba(255, 255, 255, 0.31);
+    }
 `;
 
 interface SplashProgressProps {

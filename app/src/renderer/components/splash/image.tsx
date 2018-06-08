@@ -1,6 +1,6 @@
 
 import React from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 
 
 interface SplashImgProps {
@@ -13,6 +13,10 @@ const fadeIn = keyframes`
     100% { opacity: 1; }
 `;
 
+const anim = css`
+    animation: ${fadeIn} 1.5s ease forwards;
+`;
+
 const Img = styled.img`
 
     height: 100%;
@@ -20,9 +24,7 @@ const Img = styled.img`
     margin: auto;
     -webkit-user-drag: none;
     filter: drop-shadow(16px 16px 16px #000);
-    ${(props: SplashImgProps) => props.animate ? 
-        `animation: ${fadeIn} 3s ease forwards;` : "visibility: hidden;"
-    }
+    ${(props: SplashImgProps) => props.animate ? anim : "visibility: hidden;"}
 `;
 
 function SplashImg(props: SplashImgProps) {
