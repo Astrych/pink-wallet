@@ -1,12 +1,11 @@
 /**
  * Authentication reducers.
- * @module auth/auth-reducer
- * @see module:auth/auth-actions
- * @see module:auth/auth-selectors
+ * @module auth/reducer
+ * @see module:auth/actions
+ * @see module:auth/selectors
  */
 
 
-// State at the begining of program.
 const initialState = {
 
 };
@@ -19,4 +18,4 @@ export function auth(state=initialState, action) {
 
     // Does nothing (ignores unnecessary or wrong actions).
     return state;
-} 
+}

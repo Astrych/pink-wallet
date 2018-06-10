@@ -3,7 +3,9 @@ import { remote } from "electron";
 import React from "react";
 import ReactDOM from "react-dom";
 import { injectGlobal } from "styled-components";
+import { Provider as StoreProvider } from "react-redux";
 
+import { store } from "./logic/store";
 import PinkApp from "./components/pink-app";
 
 
@@ -31,6 +33,8 @@ injectGlobal`
 
 ReactDOM.render(
 
-    <PinkApp />,
+    <StoreProvider store={store}>
+        <PinkApp />
+    </StoreProvider>,
     document.getElementById("app")
 );
