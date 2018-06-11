@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import { injectGlobal } from "styled-components";
 import { Provider as StoreProvider } from "react-redux";
 
-import { store } from "./logic/store";
+import configureStore from "./logic/store";
 import PinkApp from "./components/pink-app";
 
 
@@ -30,6 +30,8 @@ injectGlobal`
         height: 100%;
     }
 `;
+
+const store = configureStore();
 
 ReactDOM.render(
 

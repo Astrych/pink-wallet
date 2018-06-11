@@ -36,5 +36,4 @@ class PinkApp extends React.Component<PinkAppProps> {
     }
 }
 
-const PinkAppWithStore = connect(mapStateToProps)(PinkApp);
-export default hot(module)(PinkAppWithStore);
+export default hot(module)(connect(mapStateToProps)(PinkApp));
