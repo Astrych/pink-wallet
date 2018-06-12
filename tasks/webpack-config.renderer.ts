@@ -17,12 +17,12 @@ export const rendererConfig: webpack.Configuration = {
         "splash-bundle": [
 
             "./renderer/splash.tsx",
-            "webpack-hot-middleware/client"
+            "webpack-hot-middleware/client?reload=true"
         ],
         "main-bundle": [
 
             "./renderer/main.tsx",
-            "webpack-hot-middleware/client"
+            "webpack-hot-middleware/client?reload=true"
         ]
 
     } : {
@@ -54,7 +54,10 @@ export const rendererConfig: webpack.Configuration = {
                         options: {
 
                             babelrc: false,
-                            plugins: ["react-hot-loader/babel"],
+                            plugins: [
+                                "syntax-dynamic-import",
+                                "react-hot-loader/babel"
+                            ],
                         },
                     },
                     {

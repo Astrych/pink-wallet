@@ -77,6 +77,7 @@ https://github.com/iRath96/electron-react-typescript-boilerplate
 4. TIME (Chronobank) wallet
 5. IOTA wallet
 6. LSK wallet (lisk-hub)
+7. ADA (Cardano) Daedalus
 7. Others...
 
 ## Good non-cryptocurrency projects using Electron + Web tech:

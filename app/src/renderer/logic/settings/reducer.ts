@@ -10,9 +10,8 @@ const initialState = {
     theme: "Dark"
 };
 
-
 /**
- * Authentication's logic reducer (returns new state).
+ * Settings' logic reducer (returns new state).
  */
 export function settings(state=initialState, action) {
 

@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { Component } from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { ThemeProvider } from "styled-components";
@@ -16,14 +16,14 @@ const mapStateToProps = state => {
     };
 };
 
-interface PinkAppProps {
+interface Props {
     theme
 }
 
-class PinkApp extends React.Component<PinkAppProps> {
+class PinkApp extends Component<Props> {
 
     render() {
-        const theme = this.props.theme;
+        const { theme } = this.props;
         return (
             <ThemeProvider theme={{theme}}>
                 <BrowserRouter>

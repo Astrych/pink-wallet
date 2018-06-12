@@ -25,19 +25,18 @@ export default function configureStore() {
         composeEnhancers(applyMiddleware(thunk))
     );
 
-    // if (process.env.NODE_ENV !== "production") {
+    // Will be removed by Webpack in production.
+    if (process.env.NODE_ENV !== "production") {
 
-    //     if ((module as any).hot) {
-
-    //         (module as any).hot.accept("./root-reducer", () => {
-    //             import("./root-reducer")
-    //             .then(rootReducer => {
-    //                 console.log(rootReducer);
-    //                 // store.replaceReducer(rootReducer)
-    //             });
-    //         });
-    //     }
-    // }
+        if (module.hot) {
+            module.hot.accept("./root-reducer", () => {
+                import("./root-reducer")
+                .then(newRootReducer => {
+                    store.replaceReducer(newRootReducer.default);
+                });
+            });
+        }
+    }
 
     return store;
 }
