@@ -13,10 +13,6 @@ class SplashScreen extends React.Component {
 
     loadTimer;
 
-    componentDidMount() {
-
-    }
-
     onImgLoad = () => {
         this.setState({ show: true });
 
@@ -40,4 +36,6 @@ class SplashScreen extends React.Component {
     }
 }
 
-export default hot(module)(SplashScreen);
+export default hot(module)(
+    SplashScreen
+);

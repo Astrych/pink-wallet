@@ -5,17 +5,17 @@
  * @see module:auth/selectors
  */
 
-
 const initialState = {
 
 };
 
+function reducer(state=initialState, action) {
 
-/**
- * Authentication's logic reducer (returns new state).
- */
-export function auth(state=initialState, action) {
-
-    // Does nothing (ignores unnecessary or wrong actions).
     return state;
 }
+
+export default {
+
+    initialState,
+    reducer 
+};

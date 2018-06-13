@@ -7,14 +7,15 @@ import { BrowserRouter } from "react-router-dom";
 import { Layout } from "antd";
 
 import AppBar from "./app-bar";
+import { State } from "../logic/root-reducer";
 
 
-const mapStateToProps = state => {
+function mapStateToProps(state: State) {
 
     return {
         theme: state.settings.theme
     };
-};
+}
 
 interface Props {
     theme
@@ -36,4 +37,10 @@ class PinkApp extends Component<Props> {
     }
 }
 
-export default hot(module)(connect(mapStateToProps)(PinkApp));
+export default hot(module)(
+    connect(
+        mapStateToProps
+    )(
+        PinkApp
+    )
+);

@@ -10,11 +10,13 @@ const initialState = {
     theme: "Dark"
 };
 
-/**
- * Settings' logic reducer (returns new state).
- */
-export function settings(state=initialState, action) {
+function reducer(state=initialState, action) {
 
-    // Does nothing (ignores unnecessary or wrong actions).
     return state;
 }
+
+export default {
+
+    initialState,
+    reducer
+};
