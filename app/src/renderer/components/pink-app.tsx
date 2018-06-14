@@ -9,10 +9,6 @@ import { Layout } from "antd";
 import AppBar from "./app-bar";
 import { State } from "../logic/root-reducer";
 
-import { getD4LData } from "../logic/d4l-api";
-
-
-getD4LData().then((res) => console.log(res));
 
 function mapStateToProps(state: State) {
 

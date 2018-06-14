@@ -20,7 +20,7 @@ export function createMainWindow() {
         frame: false,
         backgroundColor: "#eb78ab",
         titleBarStyle: "hiddenInset",
-        icon: `${__dirname}/img/icon-256x256.png`
+        icon: `${__dirname}/img/icon-256x256.png`,
     });
 
     mainWindow.setMenu(null);
@@ -35,7 +35,7 @@ export function createMainWindow() {
 
             const extensions = [
                 "REACT_DEVELOPER_TOOLS",
-                "REDUX_DEVTOOLS"
+                "REDUX_DEVTOOLS",
             ];
 
             // Downloads and/or installs devtools extensions.

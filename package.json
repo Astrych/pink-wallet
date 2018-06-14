@@ -25,7 +25,8 @@
     "linux-builder": "gulp builder --env=production --platform=linux",
     "windows-builder": "gulp builder --env=production --platform=windows",
     "mac-builder": "gulp builder --env=production --platform=mac",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest --collectCoverageFrom=app/src/**.{ts,tsx} --coverage"
   },
   "dependencies": {
     "antd": "3.6.1",
@@ -106,7 +107,7 @@
   },
   "jest": {
     "roots": [
-      "<rootDir>/app/src/renderer"
+      "<rootDir>/app/src"
     ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
