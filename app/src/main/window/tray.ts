@@ -6,8 +6,19 @@ import { mainWindow } from "./main";
 
 
 const menuTemplate: Electron.MenuItemConstructorOptions[] = [
-    { label: process.env.APP_TITLE },
+    {
+        label: `Show ${process.env.APP_TITLE}`,
+        click() {
+            mainWindow.show();
+        }
+    },
     { type: "separator" },
+    {
+        label: `Hide ${process.env.APP_TITLE}`,
+        click() {
+            mainWindow.hide();
+        }
+    },
     {
         label: "Quit",
         click() {
