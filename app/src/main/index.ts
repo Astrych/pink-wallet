@@ -79,7 +79,7 @@ ipcMain.on("data-loaded", () => {
     mainWindow.show();
 
     // Will be removed by Webpack in production.
-    if (process.env.NODE_ENV !== "production") {
+    // if (process.env.NODE_ENV !== "production") {
         mainWindow.webContents.openDevTools({ mode : "detach" });
-    }
+    // }
 });
