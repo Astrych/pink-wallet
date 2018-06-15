@@ -9,11 +9,7 @@ const Button = styled.button`
     -webkit-app-region: no-drag;
     user-select: none;
     border: none;
-    outline: none;
-    margin-top: auto;
-    margin-bottom: auto;
     padding: 0;
-    height: 25px;
     color: ${(props) => props.theme.topButtons};
     background-color: transparent;
 

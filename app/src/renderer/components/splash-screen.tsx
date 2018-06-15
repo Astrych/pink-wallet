@@ -23,7 +23,7 @@ class SplashScreen extends React.Component {
             this.setState({
                 progress: this.state.progress + 1
             });
-        }, 100);
+        }, 50);
     }
 
     render() {

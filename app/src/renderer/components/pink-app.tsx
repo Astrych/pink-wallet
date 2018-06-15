@@ -26,9 +26,9 @@ interface PinkAppProps {
 class PinkApp extends Component<PinkAppProps> {
 
     render() {
-        const { currentTheme } = this.props;
+        const theme = themes[this.props.currentTheme];
         return (
-            <ThemeProvider theme={themes[currentTheme]}>
+            <ThemeProvider theme={theme ? theme : themes["default"]}>
                 <BrowserRouter>
                     <Layout>
                         <AppHeader />

@@ -13,9 +13,6 @@ import themes from "./themes";
 // (fix bad Linux behaviour in that regard).
 process.env = remote.process.env;
 
-const store = configureStore();
-const theme = store.getState().settings.currentTheme;
-
 injectGlobal`
     html, body {
         height: 100%;
@@ -23,7 +20,7 @@ injectGlobal`
     }
     body {
         margin: 0;
-        background-color: ${themes[theme].primary};
+        background-color: transparent;
         overflow: hidden;
     }
     img {
@@ -33,6 +30,8 @@ injectGlobal`
         height: 100%;
     }
 `;
+
+const store = configureStore();
 
 ReactDOM.render(
 

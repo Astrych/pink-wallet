@@ -19,5 +19,6 @@ const light = {
 
 export default {
     dark,
-    light
+    light,
+    default: dark
 };

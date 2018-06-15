@@ -1,6 +1,6 @@
 
 import styled from "styled-components";
-import { Layout, Row, Col } from "antd";
+import { Layout, Row } from "antd";
 
 
 export const Header = styled(Layout.Header)`
@@ -10,22 +10,12 @@ export const Header = styled(Layout.Header)`
 `;
 
 export const BarRow = styled(Row)`
-    background-color: ${(props) => props.theme.primary};
-    margin: 5px;
-    height: 25px;
     -webkit-app-region: drag;
     user-select: none;
-    line-height: 23px;
-`;
-
-export const LogoCol = styled(Col)`
-    text-align: left;
-`;
-
-export const ButtonsCol = styled(Col)`
-    text-align: right;
+    height: 25px;
+    margin: 5px;
+    line-height: 11px;
     > *:not(:last-child) {
         margin-right: 10px;
     }
 `;
-

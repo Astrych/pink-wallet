@@ -1,6 +1,5 @@
 
 import React from "react";
-import styled from "styled-components";
 import { Clone } from "styled-icons/fa-regular";
 import { Close } from "styled-icons/material/Close";
 import { StyledIcon } from "styled-icons";
@@ -9,16 +8,6 @@ import { StyledIcon } from "styled-icons";
 type StyledIcon2 = React.StatelessComponent<WindowIconProps>;
 
 export type WindowIcon = StyledIcon<any> | StyledIcon2;
-
-export const Img = styled.img`
-    height: 25px;
-    vertical-align: baseline;
-`;
-
-export function PinkIcon() {
-
-    return <Img src="./img/icon-256x256.png" />;
-}
 
 export interface WindowIconProps {
     size: number;

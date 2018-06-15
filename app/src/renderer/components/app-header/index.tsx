@@ -6,17 +6,14 @@ import {
 
     Header,
     BarRow,
-    LogoCol,
-    ButtonsCol
 
 } from "./layout";
 import {
 
-    PinkIcon,
     WindowMinimize,
     WindowMaximize,
     WindowRestore,
-    WindowClose
+    WindowClose,
 
 } from "./icons";
 import AppButton from "./button";
@@ -105,35 +102,37 @@ class AppHeader extends Component<{}, AppBarState> {
 
         return (
             <Header>
-                <BarRow type="flex" justify="center">
-                    <LogoCol span={12}>
-                        <PinkIcon />
-                    </LogoCol>
-                    <ButtonsCol span={12}>
-                        <AppButton
-                            name="minimize"
-                            icon={WindowMinimize}
-                            onClick={this.onMinimize}
-                        />
-                        {
+                <BarRow type="flex" justify="end">
+                    {
+                        process.platform !== "darwin" &&
+                        [
+                            <AppButton
+                                name="minimize"
+                                icon={WindowMinimize}
+                                onClick={this.onMinimize}
+                                key="minimize"
+                            />,
                             windowState === "maximized" ?
                             <AppButton
                                 name="restore"
                                 icon={WindowRestore}
                                 onClick={this.onRestore}
+                                key="restore"
                             /> :
                             <AppButton
                                 name="maximize"
                                 icon={WindowMaximize}
                                 onClick={this.onMaximize}
+                                key="maximize"
+                            />,
+                            <AppButton
+                                name="close"
+                                icon={WindowClose}
+                                onClick={this.onClose}
+                                key="close"
                             />
-                        }
-                        <AppButton
-                            name="close"
-                            icon={WindowClose}
-                            onClick={this.onClose}
-                        />
-                    </ButtonsCol>
+                        ]
+                    }
                 </BarRow>
             </Header>
         );
