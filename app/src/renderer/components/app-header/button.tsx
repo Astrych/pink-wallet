@@ -14,7 +14,7 @@ const Button = styled.button`
     margin-bottom: auto;
     padding: 0;
     height: 25px;
-    color: white;
+    color: ${(props) => props.theme.topButtons};
     background-color: transparent;
 
     &:hover {

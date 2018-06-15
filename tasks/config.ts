@@ -4,8 +4,9 @@ import args from "commander";
 
 
 args
-.option("-s --env <env>", "Environment", /^(development|production)$/i, "development")
-.option("-s --platform <plt>", "Platform", /^(linux|windows|mac|all)$/i, "all")
+.option("-e, --env <env>", "Environment", /^(development|production)$/i, "development")
+.option("-p, --platform <plt>", "Platform", /^(linux|windows|mac|all)$/i, "all")
+.option("-a, --analyze", "Lunch Bundle Analyzer")
 .parse(process.argv);
 
 
@@ -53,3 +54,6 @@ export const isDev = config.releaseType === "production" ? false : true;
 
 // Exports target platform (defaults to "all").
 export const platform = args.platform;
+
+// Should we lunch bundle analyzer.
+export const analyze = args.analyze;

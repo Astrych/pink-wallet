@@ -3,8 +3,9 @@ import webpack from "webpack";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import tsImportPluginFactory from "ts-import-plugin";
+import { BundleAnalyzerPlugin }  from "webpack-bundle-analyzer";
 
-import { config, isDev as dev } from "./config";
+import { config, isDev as dev, analyze } from "./config";
 
 
 export const rendererConfig: webpack.Configuration = {
@@ -115,10 +116,13 @@ export const rendererConfig: webpack.Configuration = {
     },
     plugins: dev ? [
 
-        // Enables HMR globally.
         new webpack.HotModuleReplacementPlugin()
 
     ] : []
+}
+
+if (analyze) {
+    rendererConfig.plugins.unshift(new BundleAnalyzerPlugin());
 }
 
 rendererConfig.plugins.unshift(

@@ -3,14 +3,14 @@ import styled from "styled-components";
 import { Layout, Row, Col } from "antd";
 
 
-export const AppHeader = styled(Layout.Header)`
-    background-color: black;
+export const Header = styled(Layout.Header)`
+    background-color: ${(props) => props.theme.primary};
     max-height: 35px;
     padding: 0;
 `;
 
 export const BarRow = styled(Row)`
-    background-color: black;
+    background-color: ${(props) => props.theme.primary};
     margin: 5px;
     height: 25px;
     -webkit-app-region: drag;
@@ -20,10 +20,6 @@ export const BarRow = styled(Row)`
 
 export const LogoCol = styled(Col)`
     text-align: left;
-`;
-
-export const TitleCol = styled(Col)`
-    text-align: center;
 `;
 
 export const ButtonsCol = styled(Col)`

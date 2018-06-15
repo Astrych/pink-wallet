@@ -6,30 +6,33 @@ import { ThemeProvider } from "styled-components";
 import { BrowserRouter } from "react-router-dom";
 import { Layout } from "antd";
 
-import AppBar from "./app-bar";
+import AppHeader from "./app-header";
+import AppContent from "./app-content";
 import { State } from "../logic/root-reducer";
+import themes from "../themes";
 
 
 function mapStateToProps(state: State) {
 
     return {
-        theme: state.settings.theme
+        currentTheme: state.settings.currentTheme
     };
 }
 
-interface Props {
-    theme
+interface PinkAppProps {
+    currentTheme
 }
 
-class PinkApp extends Component<Props> {
+class PinkApp extends Component<PinkAppProps> {
 
     render() {
-        const { theme } = this.props;
+        const { currentTheme } = this.props;
         return (
-            <ThemeProvider theme={{theme}}>
+            <ThemeProvider theme={themes[currentTheme]}>
                 <BrowserRouter>
                     <Layout>
-                        <AppBar />
+                        <AppHeader />
+                        <AppContent />
                     </Layout>
                 </BrowserRouter>
             </ThemeProvider>

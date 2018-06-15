@@ -1,13 +1,12 @@
 
 import { remote } from "electron";
-import React from "react";
+import React, { Component } from "react";
 
 import {
 
-    AppHeader,
+    Header,
     BarRow,
     LogoCol,
-    TitleCol,
     ButtonsCol
 
 } from "./layout";
@@ -21,14 +20,13 @@ import {
 
 } from "./icons";
 import AppButton from "./button";
-import Title from "./title";
 
 
 interface AppBarState {
     windowState: string
 }
 
-class AppBar extends React.Component<{}, AppBarState> {
+class AppHeader extends Component<{}, AppBarState> {
 
     window = remote.getCurrentWindow();
     appTitle = this.getTitle();
@@ -87,36 +85,31 @@ class AppBar extends React.Component<{}, AppBarState> {
 
     private onMinimize = () => {
         this.window.minimize();
-    }
+    };
 
     private onMaximize = () => {
         this.window.maximize();
-    }
+    };
 
     private onRestore = () => {
         this.window.unmaximize();
-    }
+    };
 
     private onClose = () => {
         this.window.close();
-    }
+    };
 
     public render() {
 
         const { windowState } = this.state;
 
         return (
-            <AppHeader>
+            <Header>
                 <BarRow type="flex" justify="center">
-                    <LogoCol span={8}>
+                    <LogoCol span={12}>
                         <PinkIcon />
                     </LogoCol>
-                    <TitleCol span={8}>
-                        <Title>
-                            {this.appTitle}
-                        </Title>
-                    </TitleCol>
-                    <ButtonsCol span={8}>
+                    <ButtonsCol span={12}>
                         <AppButton
                             name="minimize"
                             icon={WindowMinimize}
@@ -139,12 +132,12 @@ class AppBar extends React.Component<{}, AppBarState> {
                             name="close"
                             icon={WindowClose}
                             onClick={this.onClose}
-                        />;
+                        />
                     </ButtonsCol>
                 </BarRow>
-            </AppHeader>
+            </Header>
         );
     }
 }
 
-export default AppBar;
+export default AppHeader;
