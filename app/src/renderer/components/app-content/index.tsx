@@ -6,7 +6,7 @@ import { Tabs, Switch } from "antd";
 import {
 
     Content,
-    TabBar
+    TabsBar,
 
 } from "./layout";
 import TabIcon from "./tab-icon";
@@ -51,15 +51,36 @@ class AppContent extends Component<AppContentProps> {
 
         return (
             <Content>
-                <TabBar defaultActiveKey="dashboard">
-                    <TabPane tab={<TabIcon name="dashboard" />} key="dashboard" />
-                    <TabPane tab={<TabIcon name="send" />} key="send" />
-                    <TabPane tab={<TabIcon name="receive" />} key="receive" />
-                    <TabPane tab={<TabIcon name="addressBook" />} key="address-book" />
-                    <TabPane tab={<TabIcon name="sideStakes" />} key="side-stakes" />
-                    <TabPane tab={<TabIcon name="transactions" />} key="transactions"/>
-                    <TabPane tab={<TabIcon name="messages" />} key="messages" />
-                </TabBar>
+                <TabsBar defaultActiveKey="dashboard">
+                    <TabPane
+                        tab={<TabIcon name="dashboard" title="Dashboard" />}
+                        key="dashboard"
+                    />
+                    <TabPane
+                        tab={<TabIcon name="send" title="Send" />}
+                        key="send"
+                    />
+                    <TabPane
+                        tab={<TabIcon name="receive" title="Receive" />}
+                        key="receive"
+                    />
+                    <TabPane
+                        tab={<TabIcon name="addressBook" title="Address Book" />}
+                        key="addressBook"
+                    />
+                    <TabPane
+                        tab={<TabIcon name="sideStakes" title="Side Stakes" />}
+                        key="side-stakes"
+                    />
+                    <TabPane
+                        tab={<TabIcon name="transactions" title="Transactions" />}
+                        key="transactions"
+                    />
+                    <TabPane
+                        tab={<TabIcon name="messages" title="Messages" />}
+                        key="messages"
+                    />
+                </TabsBar>
                 <Switch
                     checkedChildren="Light"
                     unCheckedChildren="Dark"

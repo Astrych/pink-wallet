@@ -8,9 +8,19 @@ export const Content = styled(Layout.Content)`
     height: 100vh;
 `;
 
-export const TabBar = styled(Tabs)`
+export const TabsBar = styled(Tabs)`
     .ant-tabs-ink-bar {
-        background-color: ${props => props.theme.mainText};
+        background-color: ${props => props.theme.primaryText};
         height: 3px;
+    }
+    .ant-tabs-tab {
+        padding: 10px 0px 10px 0px;
+        margin: 0;
+        color: ${props => props.theme.icons};
+    }
+
+    .ant-tabs-tab-active, .ant-tabs-tab:hover {
+        color: ${props => props.theme.primaryText};
+        font-weight: 400;
     }
 `;
