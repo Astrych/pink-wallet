@@ -7,7 +7,7 @@ import { Provider as StoreProvider } from "react-redux";
 
 import configureStore from "./logic/store";
 import PinkApp from "./components/pink-app";
-import themes from "./themes";
+
 
 // Inherits env vars from main process
 // (fix bad Linux behaviour in that regard).
@@ -28,6 +28,7 @@ injectGlobal`
     }
     div#app {
         height: 100%;
+        --title-bar-height: 35px;
     }
 `;
 

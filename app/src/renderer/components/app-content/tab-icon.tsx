@@ -11,7 +11,7 @@ const Icon = styled.div`
 `;
 
 const Svg = styled.svg`
-    width: 26px;
+    width: 31px;
     height: 26px;
     stroke-width: 1;
     stroke-opacity: 0.5;

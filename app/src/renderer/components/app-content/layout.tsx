@@ -13,12 +13,13 @@ export const Content = styled(Layout.Content)`
 
 export const TabsBar = styled(Tabs)`
     width: 100%;
-    height: calc(100vh - 35px);
+    height: calc(100vh - var(--title-bar-height));
     display: flex;
     flex-direction: column;
     .ant-tabs-bar {
         border-bottom: none;
         margin-top: 16px;
+        margin-bottom: 16px;
         margin-left: 20px;
         margin-right: 20px;
     }
@@ -49,5 +50,16 @@ export const TabsBar = styled(Tabs)`
     }
     .ant-tabs-content {
         flex: 1;
+    }
+    .ant-tabs-tabpane {
+        background-color: ${props => props.theme.secondary};
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-areas:
+            ". a a ."
+            ". a a .";
+    }
+    .ant-tabs-tabpane-inactive {
+        height: inherit !important;
     }
 `;
