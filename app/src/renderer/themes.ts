@@ -6,6 +6,7 @@ const dark = {
     menu: "#434343",
     mainText: "#f790b5",
     topButtons: "white",
+    icons: "white",
 };
 
 const light = {
@@ -15,6 +16,7 @@ const light = {
     menu: "#434343",
     mainText: "#f790b5",
     topButtons: "black",
+    icons: "black",
 };
 
 export default {

@@ -1,15 +1,19 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Switch } from "antd";
+import { Tabs, Switch } from "antd";
 
 import {
 
     Content,
+    TabBar
 
 } from "./layout";
+import TabIcon from "./tab-icon";
 import { changeTheme } from "../../logic/settings/actions";
 
+
+const TabPane = Tabs.TabPane;
 
 function mapStateToProps(state, ownProps) {
 
@@ -47,6 +51,15 @@ class AppContent extends Component<AppContentProps> {
 
         return (
             <Content>
+                <TabBar defaultActiveKey="dashboard">
+                    <TabPane tab={<TabIcon name="dashboard" />} key="dashboard" />
+                    <TabPane tab={<TabIcon name="send" />} key="send" />
+                    <TabPane tab={<TabIcon name="receive" />} key="receive" />
+                    <TabPane tab={<TabIcon name="addressBook" />} key="address-book" />
+                    <TabPane tab={<TabIcon name="sideStakes" />} key="side-stakes" />
+                    <TabPane tab={<TabIcon name="transactions" />} key="transactions"/>
+                    <TabPane tab={<TabIcon name="messages" />} key="messages" />
+                </TabBar>
                 <Switch
                     checkedChildren="Light"
                     unCheckedChildren="Dark"
