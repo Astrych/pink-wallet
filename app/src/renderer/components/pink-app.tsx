@@ -4,8 +4,8 @@ import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import { BrowserRouter } from "react-router-dom";
-import { Layout } from "antd";
 
+import { AppLayout } from "./app-content/layout";
 import AppHeader from "./app-header";
 import AppContent from "./app-content";
 import { State } from "../logic/root-reducer";
@@ -30,10 +30,10 @@ class PinkApp extends Component<PinkAppProps> {
         return (
             <ThemeProvider theme={theme ? theme : themes["default"]}>
                 <BrowserRouter>
-                    <Layout>
+                    <AppLayout>
                         <AppHeader />
                         <AppContent />
-                    </Layout>
+                    </AppLayout>
                 </BrowserRouter>
             </ThemeProvider>
         );

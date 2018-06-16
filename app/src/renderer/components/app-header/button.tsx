@@ -10,7 +10,7 @@ const Button = styled.button`
     user-select: none;
     border: none;
     padding: 0;
-    color: ${(props) => props.theme.topButtons};
+    color: ${(props) => props.theme.headerButtons};
     background-color: transparent;
 
     &:hover {
@@ -36,7 +36,7 @@ function AppButton(props: AppButtonProps) {
         <Button
             aria-label={name}
             title={title}
-            tabIndex={-1} 
+            tabIndex={-1}
             onClick={onClick}>
             <Icon
                 size={25}

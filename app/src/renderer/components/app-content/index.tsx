@@ -1,7 +1,6 @@
 
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Tabs, Switch } from "antd";
+import { Tabs } from "antd";
 
 import {
 
@@ -10,90 +9,71 @@ import {
 
 } from "./layout";
 import TabIcon from "./tab-icon";
-import { changeTheme } from "../../logic/settings/actions";
+import MenuButton from "./menu-button";
+import Dashboard from "../dashboard";
+import Send from "../send";
+import Receive from "../receive";
+import AddressBook from "../address-book";
+import SideStakes from "../side-stakes";
+import Transactions from "../transactions";
+import Messages from "../messages";
 
 
 const TabPane = Tabs.TabPane;
 
-function mapStateToProps(state, ownProps) {
-
-    return {
-        ...ownProps, // WORKARONUD FOR STRANGE TYPINGS BUG.
-        currentTheme: state.settings.currentTheme,
-    };
-}
-
-function mapDispatchToProps(dispatch: Function) {
-
-    return {
-        switchTheme: (theme) => {
-            dispatch(changeTheme(theme));
-        }
-    };
-}
-
-interface AppContentProps {
-    currentTheme,
-    switchTheme: Function
-}
-
-class AppContent extends Component<AppContentProps> {
-
-    private onThemeSwitch = () => {
-
-        const { currentTheme } = this.props;
-        const newTheme = currentTheme === "dark" ? "light" : "dark";
-
-        this.props.switchTheme(newTheme);
-    };
+class AppContent extends Component {
 
     render() {
 
         return (
             <Content>
-                <TabsBar defaultActiveKey="dashboard">
+                <TabsBar defaultActiveKey="dashboard" tabBarExtraContent={<MenuButton />}>
                     <TabPane
                         tab={<TabIcon name="dashboard" title="Dashboard" />}
                         key="dashboard"
-                    />
+                    >
+                        <Dashboard />
+                    </TabPane>
                     <TabPane
                         tab={<TabIcon name="send" title="Send" />}
                         key="send"
-                    />
+                    >
+                        <Send />
+                    </TabPane>
                     <TabPane
                         tab={<TabIcon name="receive" title="Receive" />}
                         key="receive"
-                    />
+                    >
+                        <Receive />
+                    </TabPane>
                     <TabPane
                         tab={<TabIcon name="addressBook" title="Address Book" />}
                         key="addressBook"
-                    />
+                    >
+                        <AddressBook />
+                    </TabPane>
                     <TabPane
                         tab={<TabIcon name="sideStakes" title="Side Stakes" />}
                         key="side-stakes"
-                    />
+                    >
+                        <SideStakes />
+                    </TabPane>
                     <TabPane
                         tab={<TabIcon name="transactions" title="Transactions" />}
                         key="transactions"
-                    />
+                    >
+                        <Transactions />
+                    </TabPane>
                     <TabPane
                         tab={<TabIcon name="messages" title="Messages" />}
                         key="messages"
-                    />
+                    >
+                        <Messages />
+                    </TabPane>
                 </TabsBar>
-                <Switch
-                    checkedChildren="Light"
-                    unCheckedChildren="Dark"
-                    onChange={this.onThemeSwitch}
-                />
             </Content>
         );
     }
 }
 
-export default connect<AppContentProps>(
-    mapStateToProps,
-    mapDispatchToProps
-)(
-    AppContent
-);
+export default AppContent;

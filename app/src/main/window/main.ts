@@ -1,5 +1,5 @@
 
-import { BrowserWindow, screen } from "electron";
+import { BrowserWindow } from "electron";
 
 
 export let mainWindow: BrowserWindow | null;
@@ -18,13 +18,15 @@ export function createMainWindow() {
         minHeight: 526,
         show: false,
         frame: false,
-        backgroundColor: "#eb78ab",
         titleBarStyle: "hiddenInset",
         icon: `${__dirname}/img/icon-256x256.png`,
     });
 
     mainWindow.setMenu(null);
     mainWindow.on("closed", () => mainWindow = null);
+
+    // Undocumented function allowing  for dynamic color change.
+    (mainWindow as any).setBackgroundColor("#484848");
 
     // Will be removed by Webpack in production.
     if (process.env.NODE_ENV !== "production") {
