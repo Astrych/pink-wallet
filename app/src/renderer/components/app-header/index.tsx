@@ -8,15 +8,8 @@ import {
     BarRow,
 
 } from "./layout";
-import {
-
-    WindowMinimize,
-    WindowMaximize,
-    WindowRestore,
-    WindowClose,
-
-} from "./icons";
-import AppButton from "./button";
+import HeaderButton from "./button";
+import HeaderIcon from "./icon";
 
 
 interface AppBarState {
@@ -106,31 +99,31 @@ class AppHeader extends Component<{}, AppBarState> {
                     {
                         process.platform !== "darwin" &&
                         [
-                            <AppButton
+                            <HeaderButton
                                 name="minimize"
-                                icon={WindowMinimize}
+                                icon={<HeaderIcon name="minimize" />}
                                 onClick={this.onMinimize}
                                 key="minimize"
                             />,
                             windowState === "maximized" ?
-                            <AppButton
+                            <HeaderButton
                                 name="restore"
-                                icon={WindowRestore}
+                                icon={<HeaderIcon name="maximize" />}
                                 onClick={this.onRestore}
                                 key="restore"
                             /> :
-                            <AppButton
+                            <HeaderButton
                                 name="maximize"
-                                icon={WindowMaximize}
+                                icon={<HeaderIcon name="maximize" />}
                                 onClick={this.onMaximize}
                                 key="maximize"
                             />,
-                            <AppButton
+                            <HeaderButton
                                 name="close"
-                                icon={WindowClose}
+                                icon={<HeaderIcon name="close" />}
                                 onClick={this.onClose}
                                 key="close"
-                            />
+                            />,
                         ]
                     }
                 </BarRow>

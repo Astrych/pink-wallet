@@ -2,8 +2,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import { WindowIcon } from "./icons"; 
-
 
 const Button = styled.button`
     -webkit-app-region: no-drag;
@@ -12,6 +10,8 @@ const Button = styled.button`
     padding: 0;
     color: ${(props) => props.theme.headerButtons};
     background-color: transparent;
+    width: 24px;
+    height: 25px;
 
     &:hover {
         color: grey;
@@ -21,30 +21,25 @@ const Button = styled.button`
     }
 `;
 
-interface AppButtonProps {
+interface HeaderButtonProps {
     name: string;
-    icon: WindowIcon;
+    icon: JSX.Element;
     onClick: React.EventHandler<React.MouseEvent<any>>;
 }
 
-function AppButton(props: AppButtonProps) {
+export function HeaderButton(props: HeaderButtonProps) {
 
-    const { name, icon: Icon, onClick } = props;
-    const title = name[0].toUpperCase() + name.substring(1);
+    const { name, icon, onClick } = props;
 
     return (
         <Button
             aria-label={name}
-            title={title}
             tabIndex={-1}
-            onClick={onClick}>
-            <Icon
-                size={25}
-                color="inherit"
-                css={{verticalAlign: "baseline"}}
-            />
+            onClick={onClick}
+        >
+            {icon}
         </Button>
     );
 }
 
-export default AppButton;
+export default HeaderButton;
