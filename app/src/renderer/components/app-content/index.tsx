@@ -1,5 +1,6 @@
 
 import React, { Component } from "react";
+import { HashRouter as Router, Route } from "react-router-dom";
 import { Tabs } from "antd";
 
 import {
@@ -8,8 +9,8 @@ import {
     TabsBar,
 
 } from "./layout";
-import TabIcon from "./tab-icon";
 import MenuButton from "./menu-button";
+import TabLink from "./tab-link";
 import Dashboard from "../dashboard";
 import Send from "../send";
 import Receive from "../receive";
@@ -27,50 +28,52 @@ class AppContent extends Component {
 
         return (
             <Content>
-                <TabsBar defaultActiveKey="dashboard" tabBarExtraContent={<MenuButton />}>
-                    <TabPane
-                        tab={<TabIcon name="dashboard" title="Dashboard" />}
-                        key="dashboard"
-                    >
-                        <Dashboard />
-                    </TabPane>
-                    <TabPane
-                        tab={<TabIcon name="send" title="Send" />}
-                        key="send"
-                    >
-                        <Send />
-                    </TabPane>
-                    <TabPane
-                        tab={<TabIcon name="receive" title="Receive" />}
-                        key="receive"
-                    >
-                        <Receive />
-                    </TabPane>
-                    <TabPane
-                        tab={<TabIcon name="addressBook" title="Address Book" />}
-                        key="addressBook"
-                    >
-                        <AddressBook />
-                    </TabPane>
-                    <TabPane
-                        tab={<TabIcon name="sideStakes" title="Side Stakes" />}
-                        key="side-stakes"
-                    >
-                        <SideStakes />
-                    </TabPane>
-                    <TabPane
-                        tab={<TabIcon name="transactions" title="Transactions" />}
-                        key="transactions"
-                    >
-                        <Transactions />
-                    </TabPane>
-                    <TabPane
-                        tab={<TabIcon name="messages" title="Messages" />}
-                        key="messages"
-                    >
-                        <Messages />
-                    </TabPane>
-                </TabsBar>
+                <Router>
+                    <TabsBar defaultActiveKey="dashboard" tabBarExtraContent={<MenuButton />}>
+                        <TabPane
+                            tab={<TabLink to="/" name="dashboard" title="Dashboard" />}
+                            key="dashboard"
+                        >
+                            <Route exact path="/" component={Dashboard} />
+                        </TabPane>
+                        <TabPane
+                            tab={<TabLink to="/send" name="send" title="Send" />}
+                            key="send"
+                        >
+                            <Route exact path="/send" component={Send} />
+                        </TabPane>
+                        <TabPane
+                            tab={<TabLink to="/receive" name="receive" title="Receive" />}
+                            key="receive"
+                        >
+                            <Route exact path="/receive" component={Receive} />
+                        </TabPane>
+                        <TabPane
+                            tab={<TabLink to="/addressBook" name="addressBook" title="Address Book" />}
+                            key="addressBook"
+                        >
+                            <Route exact path="/addressBook" component={AddressBook} />
+                        </TabPane>
+                        <TabPane
+                            tab={<TabLink to="/sideStakes" name="sideStakes" title="Side Stakes" />}
+                            key="sideStakes"
+                        >
+                            <Route exact path="/sideStakes" component={SideStakes} />
+                        </TabPane>
+                        <TabPane
+                            tab={<TabLink to="/transactions" name="transactions" title="Transactions" />}
+                            key="transactions"
+                        >
+                            <Route exact path="/transactions" component={Transactions} />
+                        </TabPane>
+                        <TabPane
+                            tab={<TabLink to="/messages" name="messages" title="Messages" />}
+                            key="messages"
+                        >
+                            <Route exact path="/messages" component={Messages} />
+                        </TabPane>
+                    </TabsBar>
+                </Router>
             </Content>
         );
     }

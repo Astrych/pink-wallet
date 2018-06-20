@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 
 const Icon = styled.div`
-    width: 80px;
+    width: 95px;
     display: flex;
     flex-flow: column;
     align-items: center;

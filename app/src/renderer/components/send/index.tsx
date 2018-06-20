@@ -9,6 +9,7 @@ export default class Send extends Component {
     render() {
         return (
             <TabContent>
+                <h1>TODO: Send</h1>
             </TabContent>
         );
     }

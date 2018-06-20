@@ -9,6 +9,7 @@ export default class AddressBook extends Component {
     render() {
         return (
             <TabContent>
+                <h1>TODO: Address Book</h1>
             </TabContent>
         );
     }

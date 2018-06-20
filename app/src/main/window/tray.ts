@@ -5,27 +5,41 @@ import { splashWindow } from "./splash";
 import { mainWindow } from "./main";
 
 
+function toggleWindow() {
+
+    if (splashWindow && !splashWindow.isDestroyed()) {
+
+        if (!splashWindow.isVisible()) {
+            splashWindow.show();
+        } else {
+            splashWindow.hide();
+        }
+
+    } else if (mainWindow && !mainWindow.isDestroyed()) {
+
+        if (!mainWindow.isVisible()) {
+            mainWindow.show();
+        } else {
+            mainWindow.hide();
+        }
+    }
+}
+
 const menuTemplate: Electron.MenuItemConstructorOptions[] = [
     {
-        label: `Show ${process.env.APP_TITLE}`,
+        label: `Show/Hide ${process.env.APP_TITLE}`,
         click() {
-            mainWindow.show();
+            toggleWindow();
         }
     },
     { type: "separator" },
-    {
-        label: `Hide ${process.env.APP_TITLE}`,
-        click() {
-            mainWindow.hide();
-        }
-    },
     {
         label: "Quit",
         click() {
             tray.destroy();
             app.quit();
         }
-    }
+    },
 ];
 
 export let tray: Tray | null;
@@ -38,31 +52,4 @@ export function createTray() {
 
     const contextMenu = Menu.buildFromTemplate(menuTemplate);
     tray.setContextMenu(contextMenu);
-
-    tray.on("double-click", event => {
-        if (splashWindow && !splashWindow.isDestroyed()) {
-
-            if (splashWindow.isVisible()) {
-                splashWindow.hide();
-
-            } else {
-                splashWindow.show();
-            }
-
-        } else if (mainWindow && !mainWindow.isDestroyed()) {
-
-            if (mainWindow.isVisible()) {
-                mainWindow.hide();
-
-            } else {
-                mainWindow.show();
-            }
-        }
-    });
-
-    tray.on("click", event => {
-        if (mainWindow && mainWindow.isVisible()) {
-        // TODO: Show widget near tray icon.
-        }
-    });
 }

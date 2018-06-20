@@ -9,6 +9,7 @@ export default class Transactions extends Component {
     render() {
         return (
             <TabContent>
+                <h1>TODO: Transactions</h1>
             </TabContent>
         );
     }

@@ -4,8 +4,8 @@ import styled from "styled-components";
 
 
 const Svg = styled.svg`
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     fill: currentColor;
 `;
 

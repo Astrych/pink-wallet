@@ -1,8 +1,9 @@
 
-import { screen } from "electron";
+import { BrowserWindow, screen } from "electron";
 
 
-export function centerWindow(window) {
+export function centerWindow(window: BrowserWindow): void {
+
     const dimensions = window.getBounds();
     const display = screen.getDisplayMatching(dimensions) || screen.getPrimaryDisplay();
     const x = display.bounds.x + (display.bounds.width - dimensions.width)/2;

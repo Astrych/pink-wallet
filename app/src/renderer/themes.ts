@@ -6,6 +6,8 @@ const dark = {
     menu: "#434343",
     primaryText: "#f790b5",
     headerButtons: "white",
+    headerButtonsHover: "grey",
+    headerButtonsActive: "#f790b5",
     tabsIcons: "white",
     tabsBorder: "#e8e8e8",
 };
@@ -17,6 +19,8 @@ const light = {
     menu: "#434343",
     primaryText: "#f04e97",
     headerButtons: "black",
+    headerButtonsHover: "lightgrey",
+    headerButtonsActive: "#f04e97",
     tabsIcons: "black",
     tabsBorder: "black",
 };

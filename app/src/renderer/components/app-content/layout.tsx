@@ -25,12 +25,18 @@ export const TabsBar = styled(Tabs)`
     }
     .ant-tabs-ink-bar {
         background-color: ${props => props.theme.primaryText};
+        margin-top: 10px;
     }
     .ant-tabs-tab {
         color: ${props => props.theme.tabsIcons};
-        padding: 10px 10px 10px 10px;
+        padding: 0;
         margin: 0;
         transition: none;
+        > a {
+            color: inherit;
+            text-decoration: none;
+            transition: none;
+        }
     }
 
     .ant-tabs-tab:hover, .ant-tabs-tab-active {
@@ -43,6 +49,7 @@ export const TabsBar = styled(Tabs)`
     }
     .ant-tabs-nav {
         float: right;
+        padding: 10px;
     }
     .ant-tabs-extra-content {
         float: left !important;
