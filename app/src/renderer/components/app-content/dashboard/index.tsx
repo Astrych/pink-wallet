@@ -1,11 +1,12 @@
 
 import { remote } from "electron";
 import React, { Component } from "react";
+import { I18n } from "react-i18next";
 import { connect } from "react-redux";
 import { Switch } from "antd";
 
 import TabContent from "../tab-content";
-import { changeTheme } from "../../logic/settings/actions";
+import { changeTheme } from "../../../logic/settings/actions";
 
 
 function mapStateToProps(state, ownProps) {
@@ -45,13 +46,28 @@ class Dashboard extends Component<DashboardProps> {
     };
 
     render() {
+
+        const { currentTheme } = this.props;
+
         return (
             <TabContent>
-                <Switch
-                    checkedChildren="Light"
-                    unCheckedChildren="Dark"
-                    onChange={this.onThemeSwitch}
-                />
+                <I18n ns="translations">
+                    {(_, { i18n }) => <>
+                        <Switch
+                            checkedChildren="Light"
+                            unCheckedChildren="Dark"
+                            defaultChecked={currentTheme === "dark" ? false : true}
+                            onChange={this.onThemeSwitch}
+                            key="themeSwitcher"
+                        />
+                        <Switch
+                            checkedChildren="PL"
+                            unCheckedChildren="EN"
+                            onChange={(isEN: boolean) => i18n.changeLanguage(isEN ? "pl": "en")}
+                            key="langSwitcher"
+                        />
+                    </>}
+                </I18n>
             </TabContent>
         );
     }

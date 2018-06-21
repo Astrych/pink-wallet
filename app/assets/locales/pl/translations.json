@@ -1,0 +1,11 @@
+{
+    "tabs": {
+        "dashboard": "Tablica",
+        "send": "Wyślij",
+        "receive": "Odbierz",
+        "addressBook": "Książka adresowa",
+        "sideStakes": "Side Stakes",
+        "transactions": "Transakcje",
+        "messages": "Wiadomości"
+    }
+}

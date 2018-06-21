@@ -1,0 +1,11 @@
+{
+    "tabs": {
+        "dashboard": "Dashboard",
+        "send": "Send",
+        "receive": "Receive",
+        "addressBook": "Address Book",
+        "sideStakes": "Side Stakes",
+        "transactions": "Transactions",
+        "messages": "Messages"
+    }
+}

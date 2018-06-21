@@ -7,6 +7,12 @@ const TabContent = styled.div`
     grid-area: a;
     align-self: center;
     justify-self: center;
+
+    display: flex;
+    flex-direction: column;
+    > *:not(:last-child) {
+        margin-bottom: 5px;
+    }
 `;
 
 export default TabContent;

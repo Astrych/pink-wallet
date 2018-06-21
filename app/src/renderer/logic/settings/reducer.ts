@@ -1,11 +1,5 @@
-/**
- * Settings reducers.
- * @module settings/reducer
- * @see module:settings/actions
- * @see module:settings/selectors
- */
 
-import { CHANGE_THEME } from "./constants";
+import { CHANGE_THEME } from "./types";
 
 
 const initialState = {

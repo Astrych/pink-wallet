@@ -15,8 +15,8 @@ const Svg = styled.svg`
     height: 26px;
     stroke-width: 1;
     stroke-opacity: 0.5;
-    stroke: ${props => props.theme.tabsIcons};
-    fill: ${props => props.theme.tabsIcons};
+    stroke: ${props => props.theme.tabs.icons};
+    fill: ${props => props.theme.tabs.icons};
 `;
 
 const Span = styled.span`

@@ -1,14 +1,8 @@
-/**
- * Settings action's creators.
- * @module settings/actions
- * @see module:settings/reducer
- * @see module:settings/selectors
- */
 
- import { CHANGE_THEME } from "./constants";
+import { CHANGE_THEME } from "./types";
 
 
-export const changeTheme = (theme) => ({
+export const changeTheme = theme => ({
     type: CHANGE_THEME,
     payload: theme
 });

@@ -28,7 +28,7 @@ export const TabsBar = styled(Tabs)`
         margin-top: 10px;
     }
     .ant-tabs-tab {
-        color: ${props => props.theme.tabsIcons};
+        color: ${props => props.theme.tabs.icons};
         padding: 0;
         margin: 0;
         transition: none;

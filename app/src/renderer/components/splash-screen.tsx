@@ -3,7 +3,7 @@ import { ipcRenderer } from "electron";
 import React from "react";
 import { hot } from "react-hot-loader";
 
-import AnimatedSplashImg from "./splash/image";
+import SplashImg from "./splash/image";
 import SplashProgress from "./splash/progress";
 
 
@@ -30,7 +30,7 @@ class SplashScreen extends React.Component {
         const { show, progress } = this.state;
 
         return <>
-            <AnimatedSplashImg onLoad={this.onImgLoad} animate={show} />
+            <SplashImg onLoad={this.onImgLoad} animate={show} />
             {show && <SplashProgress progress={progress} />}
         </>;
     }

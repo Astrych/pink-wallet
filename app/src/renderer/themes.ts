@@ -5,11 +5,15 @@ const dark = {
     secondary: "#575757",
     menu: "#434343",
     primaryText: "#f790b5",
-    headerButtons: "white",
-    headerButtonsHover: "grey",
-    headerButtonsActive: "#f790b5",
-    tabsIcons: "white",
-    tabsBorder: "#e8e8e8",
+    header: {
+        buttons: "white",
+        buttonsHover: "grey",
+        buttonsActive: "#f790b5",
+    },
+    tabs: {
+        icons: "white",
+        border: "#e8e8e8",
+    },
 };
 
 const light = {
@@ -18,11 +22,15 @@ const light = {
     secondary: "white",
     menu: "#434343",
     primaryText: "#f04e97",
-    headerButtons: "black",
-    headerButtonsHover: "lightgrey",
-    headerButtonsActive: "#f04e97",
-    tabsIcons: "black",
-    tabsBorder: "black",
+    header: {
+        buttons: "black",
+        buttonsHover: "lightgrey",
+        buttonsActive: "#f04e97",
+    },
+    tabs: {
+        icons: "black",
+        border: "black",
+    },
 };
 
 export default {

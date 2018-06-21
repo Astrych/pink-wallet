@@ -8,16 +8,16 @@ const Button = styled.button`
     user-select: none;
     border: none;
     padding: 0;
-    color: ${props => props.theme.headerButtons};
+    color: ${props => props.theme.header.buttons};
     background-color: transparent;
     width: 24px;
     height: 25px;
 
     &:hover {
-        color: ${props => props.theme.headerButtonsHover};
+        color: ${props => props.theme.header.buttonsHover};
     }
     &:active {
-        color: ${props => props.theme.headerButtonsActive};
+        color: ${props => props.theme.header.buttonsActive};
     }
 `;
 

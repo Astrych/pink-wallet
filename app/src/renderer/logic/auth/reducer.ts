@@ -1,9 +1,3 @@
-/**
- * Authentication reducers.
- * @module auth/reducer
- * @see module:auth/actions
- * @see module:auth/selectors
- */
 
 const initialState = {
 

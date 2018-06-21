@@ -16,7 +16,7 @@ const Button = styled.button`
 `;
 
 const MenuIcon = styled(Menu)`
-    color: ${props => props.theme.tabsIcons};
+    color: ${props => props.theme.tabs.icons};
 `;
 
 export default function MenuButton() {
