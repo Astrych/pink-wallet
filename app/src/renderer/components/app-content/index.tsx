@@ -29,9 +29,9 @@ class AppContent extends Component {
 
         return (
             <Content>
-                <I18n ns="translations">
-                    {t => (
-                        <Router>
+                <Router>
+                    <I18n ns="translations">
+                        {t => (
                             <TabsBar defaultActiveKey="dashboard" tabBarExtraContent={<MenuButton />}>
                                 <TabPane
                                     tab={<TabLink to="/" name="dashboard" title={t("tabs.dashboard")} />}
@@ -76,9 +76,9 @@ class AppContent extends Component {
                                     <Route exact path="/messages" component={Messages} />
                                 </TabPane>
                             </TabsBar>
-                        </Router>
-                    )}
-                </I18n>
+                        )}
+                    </I18n>
+                </Router>
             </Content>
         );
     }

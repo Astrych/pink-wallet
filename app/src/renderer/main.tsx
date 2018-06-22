@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { injectGlobal } from "styled-components";
 import { Provider } from "react-redux";
-import "./i18n";
+import "./locales";
 
 import configureStore from "./logic/store";
 import PinkApp from "./components/pink-app";

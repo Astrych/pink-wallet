@@ -64,5 +64,5 @@ npm run coverage
 1. Auto-downloader module: downloading platform-specific daemon wallet.
 2. Auto-updater module (for UI and daemon).
 3. Responsive layout / 3 modes: full app, widget, in-tray.
-4. Internationalization integration.
+4. Internationalisation integration.
 5. ...
