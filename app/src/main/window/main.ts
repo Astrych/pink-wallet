@@ -19,7 +19,7 @@ export function createMainWindow() {
         show: false,
         frame: false,
         titleBarStyle: "hiddenInset",
-        icon: `${__dirname}/img/icon-256x256.png`,
+        icon: `${__dirname}/img/icon.${process.platform === "win32" ? "ico" : "png"}`,
     });
 
     mainWindow.setMenu(null);

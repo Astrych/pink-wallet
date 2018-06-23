@@ -17,7 +17,7 @@ export function createSplashWindow() {
         frame: false,
         show: false,
         skipTaskbar: true,
-        icon: `${__dirname}/img/icon-256x256.png`
+        icon: `${__dirname}/img/icon.png`
     });
 
     // Will be removed by Webpack in production.

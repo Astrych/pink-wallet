@@ -46,7 +46,11 @@ export let tray: Tray | null;
 
 export function createTray() {
 
-    tray = new Tray(`${__dirname}/img/icon-256x256.png`);
+    let icon;
+    if (process.platform === "win32") icon = "icon.ico";
+    else icon = "icon-tray.png";
+
+    tray = new Tray(`${__dirname}/img/${icon}`)
 
     tray.setToolTip(process.env.APP_TITLE);
 

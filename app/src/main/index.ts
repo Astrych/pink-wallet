@@ -63,6 +63,9 @@ app.on("ready", () => {
 app.on("activate", () => {
     if (mainWindow === null) {
         createMainWindow();
+        mainWindow.once("ready-to-show", () => {
+            mainWindow.show();
+        });
     }
 });
 
