@@ -1,8 +1,8 @@
 
 const dark = {
 
-    primary: "#484848",
-    secondary: "#575757",
+    primary: "#3b3b3b",
+    secondary: "#525252",
     menu: "#434343",
     primaryText: "#f790b5",
     header: {
@@ -13,6 +13,7 @@ const dark = {
     tabs: {
         icons: "white",
         border: "#e8e8e8",
+        scrolls: "#575757",
     },
 };
 
@@ -30,6 +31,7 @@ const light = {
     tabs: {
         icons: "black",
         border: "black",
+        scrolls: "#e0e0e0",
     },
 };
 

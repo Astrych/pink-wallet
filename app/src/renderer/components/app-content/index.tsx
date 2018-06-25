@@ -32,7 +32,11 @@ class AppContent extends Component {
                 <Router>
                     <I18n ns="translations">
                         {t => (
-                            <TabsBar defaultActiveKey="dashboard" tabBarExtraContent={<MenuButton />}>
+                            <TabsBar
+                                tabPosition="left"
+                                defaultActiveKey="dashboard"
+                                tabBarExtraContent={<MenuButton name="settings" title="Settings" />}
+                            >
                                 <TabPane
                                     tab={<TabLink to="/" name="dashboard" title={t("tabs.dashboard")} />}
                                     key="dashboard"

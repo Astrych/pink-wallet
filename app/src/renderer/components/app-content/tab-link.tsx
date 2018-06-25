@@ -7,9 +7,9 @@ import TabIcon from "./tab-icon";
 
 
 interface TabLinkProps extends RouteComponentProps<TabLinkProps> {
-    to: string,
-    name: string,
-    title: string
+    to: string;
+    name: string;
+    title: string;
 }
 
 class TabLink extends Component<TabLinkProps> {

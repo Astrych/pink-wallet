@@ -3,38 +3,20 @@ import React from "react";
 import styled from "styled-components";
 
 
-const Icon = styled.div`
-    width: 95px;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-`;
-
 const Svg = styled.svg`
     width: 31px;
-    height: 26px;
-    stroke-width: 1;
-    stroke-opacity: 0.5;
-    stroke: ${props => props.theme.tabs.icons};
-    fill: ${props => props.theme.tabs.icons};
+    height: 31px;
+    margin: 18px 50px 18px 50px;
+    fill: currentColor;
 `;
 
-const Span = styled.span`
-    user-select: none;
-    margin-top: 3px;
-    font-size: 12px;
-`;
-
-
+// TODO: use props.title as a tooltip info.
 function TabIcon(props) {
 
     return (
-        <Icon>
-            <Svg>
-                <use xlinkHref={`svg/tab-icons.svg#${props.name}`} />
-            </Svg>
-            <Span>{props.title}</Span>
-        </Icon>
+        <Svg>
+            <use xlinkHref={`svg/tab-icons.svg#${props.name}`} />
+        </Svg>
     );
 }
 
