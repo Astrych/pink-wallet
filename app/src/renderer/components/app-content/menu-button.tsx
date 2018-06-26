@@ -11,6 +11,7 @@ const Button = styled.button`
     user-select: none;
     border: none;
     padding: 0;
+    margin: 15px 0px 15px 0px;
     background-color: transparent;
     :focus {
         outline: none;

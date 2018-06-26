@@ -29,7 +29,7 @@ injectGlobal`
     }
     div#app {
         height: 100%;
-        --title-bar-height: 35px;
+        --title-bar-height: 58px;
     }
 `;
 

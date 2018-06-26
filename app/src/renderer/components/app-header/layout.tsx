@@ -5,7 +5,7 @@ import { Layout, Row } from "antd";
 
 export const Header = styled(Layout.Header)`
     background-color: ${(props) => props.theme.primary};
-    max-height: 35px;
+    max-height: var(--title-bar-height, 35px);
     padding: 0;
 `;
 

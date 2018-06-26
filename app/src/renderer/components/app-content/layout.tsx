@@ -47,6 +47,9 @@ export const TabsBar = styled(Tabs)`
     .ant-tabs-tab:hover {
         transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     }
+    .ant-tabs-nav-container {
+        margin-top: 40px;
+    }
     .ant-tabs-tab-prev {
         left: -1px;
     }

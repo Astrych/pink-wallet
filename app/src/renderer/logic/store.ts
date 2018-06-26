@@ -8,23 +8,32 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 
-import rootReducer from "./root-reducer";
-import listeners from "./side-effects";
+import rootReducer, { State } from "./root-reducer";
+import rootListeners from "./root-listeners";
 
 
 // Devtools store integration.
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+interface ListenerParams {
+    action: string;
+    dispatch: Function;
+    state: State;
+}
+
+interface Listeners {
+    [key: string]: (params: ListenerParams) => Promise<void>;
+}
 
 class SideEffects {
 
-    private listeners: object[];
+    private listeners: Listeners[];
 
-    constructor(...listeners: object[]) {
+    constructor(...listeners: Listeners[]) {
         this.listeners = listeners;
     }
 
-    replaceListeners(...listeners: object[]) {
+    replaceListeners(...listeners: Listeners[]) {
         this.listeners = listeners;
     }
 
@@ -34,23 +43,41 @@ class SideEffects {
             const preActionState = store.getState();
             next(action);
 
-            setTimeout(() => {
+            // https://sdgluck.github.io/2015/08/29/request-idle-callback/#[2]
+            // new Promise((resolve, reject) => {
+            //     requestIdleCallback(nextListener);
+            //     function nextListener(deadline) {
+                    // if(deadline.timeRemaining <= 0) {
+                    //     requestIdleCallback(nextListener);
+                    //     return;
+                    // }
+            //     }
+            // });
+
+            requestIdleCallback(() => {
 
                 this.listeners.forEach(listener => {
                     if (listener[action.type]) {
+
                         listener[action.type]({
+
                             action,
                             dispatch: store.dispatch,
                             state: preActionState
+
+                        })
+                        .catch(err => {
+                            console.log(`Uncaught error in listener [${action.type}]!`);
+                            console.error(err);
                         });
                     }
                 });
-            });
+            }, { timeout: 200 });
         };
     }
 }
 
-const sideEffects = new SideEffects(listeners);
+const sideEffects = new SideEffects(rootListeners);
 
 const enhancements = composeEnhancers(
     applyMiddleware(thunk, sideEffects.middleware()),
@@ -73,11 +100,11 @@ export default function configureStore() {
                     store.replaceReducer(newRootReducer.default);
                 });
             });
-            module.hot.accept("./side-effects", () => {
-                import("./side-effects")
-                .then(newListeners => {
+            module.hot.accept("./root-listeners", () => {
+                import("./root-listeners")
+                .then(newRootListeners => {
                     sideEffects.replaceListeners(
-                        newListeners.default
+                        newRootListeners.default
                     );
                 });
             });
