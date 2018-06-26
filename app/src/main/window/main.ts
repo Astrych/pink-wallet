@@ -1,5 +1,5 @@
 
-import { BrowserWindow } from "electron";
+import { BrowserWindow , session} from "electron";
 
 
 export let mainWindow: BrowserWindow | null;

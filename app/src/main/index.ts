@@ -1,5 +1,5 @@
 
-import { app, ipcMain } from "electron";
+import { app, ipcMain, session } from "electron";
 
 import { splashWindow, createSplashWindow } from "./window/splash";
 import { mainWindow, createMainWindow } from "./window/main";
@@ -56,6 +56,27 @@ app.on("ready", () => {
         createSplashWindow();
         createMainWindow();
         createTray();
+
+        // Will be removed by Webpack in production.
+        if (process.env.NODE_ENV !== "production") {
+            // HACK: patches webrequest to fix devtools incompatibility with electron 2.x.
+            // See https://github.com/electron/electron/issues/13008#issuecomment-400261941
+            session.defaultSession.webRequest.onBeforeRequest(
+                {} as Electron.OnBeforeRequestFilter,
+                (details, callback) => {
+                    if (details.url.indexOf("7accc8730b0f99b5e7c0702ea89d1fa7c17bfe33") !== -1) {
+                        callback({
+                            redirectURL: details.url.replace(
+                                "7accc8730b0f99b5e7c0702ea89d1fa7c17bfe33",
+                                "57c9d07b416b5a2ea23d28247300e4af36329bdc"
+                            )
+                        });
+                    } else {
+                        callback({ cancel: false })
+                    }
+                }
+            );
+        }
 
     }, 200);
 });
