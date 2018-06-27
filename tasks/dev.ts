@@ -108,7 +108,17 @@ export function monitorWindowFiles(done: Function) {
     });
 
     // Notice: backslash absolute paths are not working outside cwd param.
-    watch("main/**/*.ts", { cwd: config.dirs.app.src }, series("stop app"));
+    watch("main/**/*.ts", { cwd: config.dirs.app.src }, series("stop app"))
+    .on("add", path => console.log(`[Main watch] File ${path} has been added`))
+    .on("change", path => console.log(`[Main watch] File ${path} has been changed`))
+    .on("unlink", path => console.log(`[Main watch] File ${path} has been removed`))
+    .on("addDir", path => console.log(`[Main watch] Directory ${path} has been added`))
+    .on("unlinkDir", path => console.log(`[Main watch] Directory ${path} has been removed`))
+    .on("error", error => console.log(`[Main watch] Watcher error: ${error}`))
+    .on("ready", () => console.log("[Main watch] Initial scan complete. Ready for changes"))
+    .on("raw", (event, path, details) => {
+      console.log("[Main watch] Raw event info:", event, path, details);
+    });
 
     done();
 }

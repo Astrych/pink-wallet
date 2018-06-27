@@ -94,19 +94,13 @@ export default function configureStore() {
     if (process.env.NODE_ENV !== "production") {
 
         if (module.hot) {
-            module.hot.accept("./root-reducer", () => {
-                import("./root-reducer")
-                .then(newRootReducer => {
-                    store.replaceReducer(newRootReducer.default);
-                });
+            module.hot.accept("./root-reducer", async () => {
+                const module = await import("./root-reducer");
+                store.replaceReducer(module.default);
             });
-            module.hot.accept("./root-listeners", () => {
-                import("./root-listeners")
-                .then(newRootListeners => {
-                    sideEffects.replaceListeners(
-                        newRootListeners.default
-                    );
-                });
+            module.hot.accept("./root-listeners", async () => {
+                const module = await import("./root-listeners");
+                sideEffects.replaceListeners(module.default);
             });
         }
     }

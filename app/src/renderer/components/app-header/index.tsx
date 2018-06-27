@@ -6,6 +6,7 @@ import {
 
     Header,
     BarRow,
+    Filler,
 
 } from "./layout";
 import HeaderButton from "./button";
@@ -95,6 +96,7 @@ class AppHeader extends Component<{}, AppBarState> {
 
         return (
             <Header>
+                <Filler />
                 <BarRow type="flex" justify="end">
                     {
                         process.platform !== "darwin" &&

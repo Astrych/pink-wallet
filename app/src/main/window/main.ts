@@ -26,7 +26,7 @@ export function createMainWindow() {
     mainWindow.on("closed", () => mainWindow = null);
 
     // Undocumented function allowing for dynamic color change.
-    (mainWindow as any).setBackgroundColor("#484848");
+    (mainWindow as any).setBackgroundColor("#3b3b3b");
 
     // Will be removed by Webpack in production.
     if (process.env.NODE_ENV !== "production") {
