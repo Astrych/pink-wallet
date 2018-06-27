@@ -1,19 +1,31 @@
 
-import styled from "styled-components";
-import { Layout, Tabs } from "antd";
+import styled, { css } from "styled-components";
+import { Tabs } from "antd";
 
 
-export const AppLayout = styled(Layout)`
+export const AppLayout = styled.div`
     height: 100vh;
+    width: 100vw;
 `;
 
-export const Content = styled(Layout.Content)`
-    background-color: ${props => props.theme.primary};
+const logoFiller = css`
+    .ant-tabs-nav-container::before {
+        content: "";
+        height: 58px;
+        width: 131px;
+        position: fixed;
+        top: 25px;
+        background-image: url("img/logo-shadow.png");
+        background-size: 50%;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
 `;
 
 export const TabsBar = styled(Tabs)`
     color: ${props => props.theme.tabs.icons};
-    height: calc(100vh - var(--title-bar-height));
+    background-color: ${props => props.theme.primary};
+    height: 100vh;
     .ant-tabs-bar[role=tablist] {
         background-color: ${props => props.theme.secondary};
         border-right: none;
@@ -36,8 +48,6 @@ export const TabsBar = styled(Tabs)`
             transition: none;
             text-align: center;
             -webkit-user-drag: none;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
         }
     }
     .ant-tabs-tab:hover,
@@ -48,8 +58,9 @@ export const TabsBar = styled(Tabs)`
         transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     }
     .ant-tabs-nav-container {
-        margin-top: 39px;
+        margin-top: 97px;
     }
+    ${process.platform !== "darwin" ? logoFiller : ""}
     .ant-tabs-tab-prev {
         left: -1px;
     }
@@ -71,8 +82,11 @@ export const TabsBar = styled(Tabs)`
         }
     }
     .ant-tabs-content {
-        height: 100%;
+        height: calc(100vh - 10px);
+        margin: 5px 5px 5px 0px !important;
         border-left: none;
+        -webkit-app-region: drag;
+        user-select: none;
     }
     .ant-tabs-tabpane {
         height: inherit;

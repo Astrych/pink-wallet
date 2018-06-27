@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 
 const TabContent = styled.div`
+    -webkit-app-region: no-drag;
     background-color: ${props => props.theme.secondary};
     grid-area: a;
     align-self: center;
