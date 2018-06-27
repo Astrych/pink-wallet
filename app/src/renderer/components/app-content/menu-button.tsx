@@ -21,14 +21,13 @@ const Button = styled.button`
 
 interface MenuButtonProps {
     name: string;
-    title: string;
 }
 
 export default function MenuButton(props: MenuButtonProps) {
 
     return (
         <Button>
-            <TabIcon name={props.name} title={props.title} />
+            <TabIcon name={props.name} />
         </Button>
     );
 }

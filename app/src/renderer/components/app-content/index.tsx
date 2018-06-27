@@ -35,7 +35,7 @@ class AppContent extends Component {
                             <TabsBar
                                 tabPosition="left"
                                 defaultActiveKey="dashboard"
-                                tabBarExtraContent={<MenuButton name="settings" title="Settings" />}
+                                tabBarExtraContent={<MenuButton name="settings" />}
                             >
                                 <TabPane
                                     tab={<TabLink to="/" name="dashboard" title={t("tabs.dashboard")} />}

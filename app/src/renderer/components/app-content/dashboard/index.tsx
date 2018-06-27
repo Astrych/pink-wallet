@@ -41,7 +41,7 @@ class Dashboard extends Component<DashboardProps> {
         const newTheme = currentTheme === "dark" ? "light" : "dark";
 
         this.props.switchTheme(newTheme);
-        const newBackgroundColor = newTheme === "dark" ? "#484848" : "#eceaea";
+        const newBackgroundColor = newTheme === "dark" ? "#3b3b3b" : "#eceaea";
         (this.window as any).setBackgroundColor(newBackgroundColor);
     };
 

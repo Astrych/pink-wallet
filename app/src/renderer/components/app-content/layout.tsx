@@ -8,14 +8,14 @@ export const AppLayout = styled(Layout)`
 `;
 
 export const Content = styled(Layout.Content)`
-    background-color: ${(props) => props.theme.primary};
+    background-color: ${props => props.theme.primary};
 `;
 
 export const TabsBar = styled(Tabs)`
     color: ${props => props.theme.tabs.icons};
     height: calc(100vh - var(--title-bar-height));
     .ant-tabs-bar[role=tablist] {
-        background-color: ${(props) => props.theme.secondary};
+        background-color: ${props => props.theme.secondary};
         border-right: none;
         display: flex;
         flex-direction: column;
@@ -75,7 +75,6 @@ export const TabsBar = styled(Tabs)`
         border-left: none;
     }
     .ant-tabs-tabpane {
-        /* background-color: ${props => props.theme.secondary}; */
         height: inherit;
         display: grid;
         grid-template-columns: repeat(4, 1fr);

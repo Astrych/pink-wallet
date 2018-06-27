@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
+import { Tooltip } from "antd";
 
 import TabIcon from "./tab-icon";
 
@@ -28,9 +29,11 @@ class TabLink extends Component<TabLinkProps> {
         const { to, name, title } = this.props;
 
         return (
-            <Link to={to} onClick={this.onLinkClick}>
-                <TabIcon name={name} title={title} />
-            </Link>
+            <Tooltip placement="right" title={title} mouseEnterDelay={0.8}>
+                <Link to={to} onClick={this.onLinkClick}>
+                    <TabIcon name={name} />
+                </Link>
+            </Tooltip>
         );
     }
 }

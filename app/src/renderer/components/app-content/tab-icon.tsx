@@ -10,7 +10,6 @@ const Svg = styled.svg`
     fill: currentColor;
 `;
 
-// TODO: use props.title as a tooltip info.
 function TabIcon(props) {
 
     return (
