@@ -10,6 +10,7 @@ import thunk from "redux-thunk";
 
 import rootReducer, { State } from "./root-reducer";
 import rootListeners from "./root-listeners";
+import { go } from "./async-runner";
 
 
 // Devtools store integration.
@@ -29,50 +30,47 @@ class SideEffects {
 
     private listeners: Listeners[];
 
-    constructor(...listeners: Listeners[]) {
+    constructor(listeners: Listeners[]) {
         this.listeners = listeners;
     }
 
-    replaceListeners(...listeners: Listeners[]) {
+    replaceListeners(listeners: Listeners[]) {
         this.listeners = listeners;
     }
 
     middleware() {
 
+        function* callListeners(listeners, { action, dispatch, state }) {
+            for (const listener of listeners) {
+
+                if (listener[action.type]) {
+
+                    yield listener[action.type]({
+
+                        action,
+                        dispatch,
+                        state
+                    })
+                    .catch(err => {
+                        console.error(`Uncaught error in listener [${action.type}]!`, err);
+                    });
+                }
+            }
+        }
+
         return store => next => action => {
             const preActionState = store.getState();
             next(action);
 
-            // https://sdgluck.github.io/2015/08/29/request-idle-callback/#[2]
-            // new Promise((resolve, reject) => {
-            //     requestIdleCallback(nextListener);
-            //     function nextListener(deadline) {
-                    // if(deadline.timeRemaining <= 0) {
-                    //     requestIdleCallback(nextListener);
-                    //     return;
-                    // }
-            //     }
-            // });
+            const onYield = ret => console.debug("ACTION LISTENER: SIDE EFFECTS", ret);
 
-            requestIdleCallback(() => {
+            go(callListeners(this.listeners, {
+                action,
+                dispatch: store.dispatch,
+                state: preActionState
 
-                this.listeners.forEach(listener => {
-                    if (listener[action.type]) {
-
-                        listener[action.type]({
-
-                            action,
-                            dispatch: store.dispatch,
-                            state: preActionState
-
-                        })
-                        .catch(err => {
-                            console.log(`Uncaught error in listener [${action.type}]!`);
-                            console.error(err);
-                        });
-                    }
-                });
-            }, { timeout: 200 });
+            }), { onYield })
+            .catch(error => console.error(error));
         };
     }
 }
