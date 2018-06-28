@@ -16,10 +16,8 @@ process.env = remote.process.env;
 
 injectGlobal`
     html, body {
-        height: auto;
+        height: 100%;
         box-sizing: border-box;
-        -webkit-app-region: no-drag;
-        user-select: none;
     }
     body {
         margin: 0;
@@ -30,7 +28,8 @@ injectGlobal`
         border-style: none;
     }
     div#app {
-        height: auto;
+        height: 100%;
+        --title-bar-height: 58px;
     }
 `;
 

@@ -2,7 +2,13 @@
 import { remote } from "electron";
 import React, { Component } from "react";
 
-import { Buttons } from "./layout";
+import {
+
+    Header,
+    BarRow,
+    Filler,
+
+} from "./layout";
 import HeaderButton from "./button";
 import HeaderIcon from "./icon";
 
@@ -89,38 +95,41 @@ class AppHeader extends Component<{}, AppBarState> {
         const { windowState } = this.state;
 
         return (
-            <Buttons>
-                {
-                    process.platform !== "darwin" &&
-                    [
-                        <HeaderButton
-                            name="minimize"
-                            icon={<HeaderIcon name="minimize" />}
-                            onClick={this.onMinimize}
-                            key="minimize"
-                        />,
-                        windowState === "maximized" ?
-                        <HeaderButton
-                            name="restore"
-                            icon={<HeaderIcon name="maximize" />}
-                            onClick={this.onRestore}
-                            key="restore"
-                        /> :
-                        <HeaderButton
-                            name="maximize"
-                            icon={<HeaderIcon name="maximize" />}
-                            onClick={this.onMaximize}
-                            key="maximize"
-                        />,
-                        <HeaderButton
-                            name="close"
-                            icon={<HeaderIcon name="close" />}
-                            onClick={this.onClose}
-                            key="close"
-                        />,
-                    ]
-                }
-            </Buttons>
+            <Header>
+                <Filler />
+                <BarRow type="flex" justify="end">
+                    {
+                        process.platform !== "darwin" &&
+                        [
+                            <HeaderButton
+                                name="minimize"
+                                icon={<HeaderIcon name="minimize" />}
+                                onClick={this.onMinimize}
+                                key="minimize"
+                            />,
+                            windowState === "maximized" ?
+                            <HeaderButton
+                                name="restore"
+                                icon={<HeaderIcon name="maximize" />}
+                                onClick={this.onRestore}
+                                key="restore"
+                            /> :
+                            <HeaderButton
+                                name="maximize"
+                                icon={<HeaderIcon name="maximize" />}
+                                onClick={this.onMaximize}
+                                key="maximize"
+                            />,
+                            <HeaderButton
+                                name="close"
+                                icon={<HeaderIcon name="close" />}
+                                onClick={this.onClose}
+                                key="close"
+                            />,
+                        ]
+                    }
+                </BarRow>
+            </Header>
         );
     }
 }
