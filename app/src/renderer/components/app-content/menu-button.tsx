@@ -2,7 +2,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import TabIcon from "./tab-icon";
+import SvgIcon from "../atoms/svg-icon";
 
 
 const Button = styled.button`
@@ -27,7 +27,7 @@ export default function MenuButton(props: MenuButtonProps) {
 
     return (
         <Button>
-            <TabIcon name={props.name} />
+            <SvgIcon name={props.name} size={31} />
         </Button>
     );
 }

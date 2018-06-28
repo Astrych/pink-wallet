@@ -1,11 +1,11 @@
 {
     "tabs": {
-        "dashboard": "Dashboard",
-        "send": "Send",
-        "receive": "Receive",
+        "dashboard": "General overview of wallet",
+        "send": "Send coins",
+        "receive": "Wallet addresses",
         "addressBook": "Address Book",
-        "sideStakes": "Side Stakes",
-        "transactions": "Transactions",
+        "sideStakes": "Side Staking",
+        "transactions": "Transactions history",
         "messages": "Messages"
     }
 }

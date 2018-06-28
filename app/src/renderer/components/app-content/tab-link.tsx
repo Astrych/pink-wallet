@@ -4,7 +4,7 @@ import { withRouter, RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 import { Tooltip } from "antd";
 
-import TabIcon from "./tab-icon";
+import SvgIcon from "../atoms/svg-icon";
 
 
 interface TabLinkProps extends RouteComponentProps<TabLinkProps> {
@@ -31,7 +31,7 @@ class TabLink extends Component<TabLinkProps> {
         return (
             <Tooltip placement="right" title={title} mouseEnterDelay={0.8}>
                 <Link to={to} onClick={this.onLinkClick}>
-                    <TabIcon name={name} />
+                    <SvgIcon name={name} size={31} />
                 </Link>
             </Tooltip>
         );

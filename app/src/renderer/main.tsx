@@ -30,6 +30,7 @@ injectGlobal`
     div#app {
         height: 100%;
         --title-bar-height: 58px;
+        --tabs--bar-width: 131px;
     }
 `;
 

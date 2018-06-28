@@ -1,11 +1,11 @@
 {
     "tabs": {
-        "dashboard": "Tablica",
-        "send": "Wyślij",
-        "receive": "Odbierz",
+        "dashboard": "Podsumowanie",
+        "send": "Wyślij monety",
+        "receive": "Adresy portfela",
         "addressBook": "Książka adresowa",
-        "sideStakes": "Side Stakes",
-        "transactions": "Transakcje",
+        "sideStakes": "Bicie monet - cele",
+        "transactions": "Historia transakcji",
         "messages": "Wiadomości"
     }
 }

@@ -10,7 +10,7 @@ import {
 
 } from "./layout";
 import HeaderButton from "./button";
-import HeaderIcon from "./icon";
+import SvgIcon from "../atoms/svg-icon";
 
 
 interface AppBarState {
@@ -103,26 +103,26 @@ class AppHeader extends Component<{}, AppBarState> {
                         [
                             <HeaderButton
                                 name="minimize"
-                                icon={<HeaderIcon name="minimize" />}
+                                icon={<SvgIcon name="minimize" size={14} />}
                                 onClick={this.onMinimize}
                                 key="minimize"
                             />,
                             windowState === "maximized" ?
                             <HeaderButton
                                 name="restore"
-                                icon={<HeaderIcon name="maximize" />}
+                                icon={<SvgIcon name="maximize" size={14} />}
                                 onClick={this.onRestore}
                                 key="restore"
                             /> :
                             <HeaderButton
                                 name="maximize"
-                                icon={<HeaderIcon name="maximize" />}
+                                icon={<SvgIcon name="maximize" size={14} />}
                                 onClick={this.onMaximize}
                                 key="maximize"
                             />,
                             <HeaderButton
                                 name="close"
-                                icon={<HeaderIcon name="close" />}
+                                icon={<SvgIcon name="close" size={14} />}
                                 onClick={this.onClose}
                                 key="close"
                             />,

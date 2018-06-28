@@ -15,7 +15,7 @@ const logoFiller = css`
     .ant-tabs-nav-container::before {
         content: "";
         height: 58px;
-        width: 131px;
+        width: var(--tabs--bar-width);
         position: fixed;
         top: 20px;
         background-image: url("img/logo-shadow.png");
@@ -38,6 +38,7 @@ export const TabsBar = styled(Tabs)`
         background-color: ${props => props.theme.primaryText};
     }
     .ant-tabs-bar .ant-tabs-tab {
+        width: calc(var(--tabs--bar-width) + 2px);
         padding: 0;
         margin: 0;
         text-align: center;
@@ -45,6 +46,7 @@ export const TabsBar = styled(Tabs)`
         > a {
             display: flex;
             align-items: center;
+            padding: 18px 50px 18px 50px;
             color: inherit;
             text-decoration: none;
             transition: none;
@@ -79,9 +81,9 @@ export const TabsBar = styled(Tabs)`
         :hover {
             color: ${props => props.theme.primaryText};
             transition: width 0.3s
-                    cubic-bezier(0.645, 0.045, 0.355, 1),
-                    opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
-                    color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+                        cubic-bezier(0.645, 0.045, 0.355, 1),
+                        opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
+                        color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
         }
         &.ant-tabs-tab-btn-disabled {
             color: rgba(0, 0, 0, 0.25);
@@ -96,6 +98,11 @@ export const TabsBar = styled(Tabs)`
     .ant-tabs-tab-prev-icon:before,
     .ant-tabs-tab-next-icon:before {
         font-size: 18px;
+    }
+    .ant-tabs-extra-content {
+        > button {
+            padding: 18px 50px 18px 50px;
+        }
     }
     .ant-tabs-content {
         height: 100%;
