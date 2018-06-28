@@ -26,8 +26,4 @@ export const Filler = styled.div`
     width: 131px;
     background-color: ${props => props.theme.secondary};
     float: left;
-    background-image: url("img/logo-shadow.png");
-    background-size: 50%;
-    background-repeat: no-repeat;
-    background-position: center;
 `;
