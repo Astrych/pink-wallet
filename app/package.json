@@ -19,6 +19,9 @@
     "Blockchain"
   ],
   "main": "main.js",
+  "dependencies": {
+    "electron-log": "2.2.16"
+  },
   "devDependencies": {
     "electron-debug": "2.0.0",
     "electron-devtools-installer": "2.2.4"

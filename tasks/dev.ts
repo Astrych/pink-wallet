@@ -86,7 +86,7 @@ export function serveRendererView(done: Function) {
 
         if (process.platform !== "win32") {
 
-            process.on("SIGINT" as "loaded", () => {
+            process.on("SIGINT", () => {
                 kill(appProccess.pid, "SIGKILL");
                 process.exit();
             });
