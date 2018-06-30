@@ -28,26 +28,23 @@ if (process.platform === "linux") {
     app.disableHardwareAcceleration();
 }
 
-const shouldQuit = makeSingleInstance();
-if (shouldQuit) app.quit();
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) app.quit();
 
-function makeSingleInstance() {
+app.on("second-instance", () => {
     if (process.mas) return false;
+    if (splashWindow || mainWindow) {
+        if (splashWindow) {
+            splashWindow.focus();
 
-    return app.makeSingleInstance(() => {
-        if (splashWindow || mainWindow) {
-            if (splashWindow) {
-                splashWindow.focus();
-
-            } else {
-                if (mainWindow && mainWindow.isMinimized()) {
-                    mainWindow.restore();
-                }
-                mainWindow.focus();
+        } else {
+            if (mainWindow && mainWindow.isMinimized()) {
+                mainWindow.restore();
             }
+            mainWindow.focus();
         }
-    });
-}
+    }
+});
 
 app.on("ready", () => {
 
@@ -69,6 +66,13 @@ app.on("ready", () => {
                             redirectURL: details.url.replace(
                                 "7accc8730b0f99b5e7c0702ea89d1fa7c17bfe33",
                                 "57c9d07b416b5a2ea23d28247300e4af36329bdc"
+                            )
+                        });
+                    } else if (details.url.indexOf("164c37e3f235134c88e80fac2a182cfba3f07f00") !== -1) {
+                        callback({
+                            redirectURL: details.url.replace(
+                                "164c37e3f235134c88e80fac2a182cfba3f07f00",
+                                "a10b9cedb40738cb152f8148ddab4891df876959"
                             )
                         });
                     } else {
