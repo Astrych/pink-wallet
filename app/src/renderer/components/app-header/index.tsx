@@ -40,6 +40,7 @@ class AppHeader extends Component<{}, AppBarState> {
             this.window.on("unmaximize", () => {
                 const bounds = this.window.getBounds();
                 bounds.width += 1;
+                bounds.y -= 17;
                 this.window.setBounds(bounds);
                 bounds.width -= 1;
                 this.window.setBounds(bounds);

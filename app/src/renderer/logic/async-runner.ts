@@ -1,5 +1,5 @@
 
-function doGo(it, options) {
+function doGo(task, options) {
 
     const {
 
@@ -13,15 +13,15 @@ function doGo(it, options) {
 
         try {
 
-            let val = it.next();
+            let val = task.next();
             while (!val.done) {
 
                 onYield && onYield(val.value);
                 if (deadline.timeRemaining() <= 0) {
-                    doGo(it, options);
+                    doGo(task, options);
                     return;
                 }
-                val = it.next();
+                val = task.next();
             }
             resolve(val.value);
 
@@ -32,8 +32,8 @@ function doGo(it, options) {
     }, { timeout: 200 });
 }
 
-export function go(it, { onYield }) {
+export function go(task, { onYield }) {
     return new Promise((resolve, reject) => {
-        doGo(it, { resolve, reject, onYield });
+        doGo(task, { resolve, reject, onYield });
     });
 }

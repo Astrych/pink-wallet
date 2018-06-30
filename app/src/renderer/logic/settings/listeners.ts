@@ -1,8 +1,21 @@
 
-export async function themeListener({ action, dispatch, state }) {
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-    console.log("DISPATCH TEST! 2");
+export async function themeListener1({ action, dispatch, state }) {
+
+    console.debug("ThemeListener 1");
+    await timeout(3000);
     dispatch({
-        type: "SUCCESS"
+        type: "SUCCESS1"
+    });
+}
+
+export async function themeListener2({ action, dispatch, state }) {
+
+    console.debug("ThemeListener 2");
+    dispatch({
+        type: "SUCCESS2"
     });
 }

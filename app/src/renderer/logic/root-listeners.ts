@@ -1,9 +1,18 @@
 
 import { CHANGE_THEME } from "./settings/types";
-import { themeListener } from "./settings/listeners"
+import {
+
+    themeListener1,
+    themeListener2,
+
+} from "./settings/listeners"
 
 
-export default [{
-
-    [CHANGE_THEME]: themeListener
-}];
+export default [
+    {
+        [CHANGE_THEME]: themeListener1
+    },
+    {
+        [CHANGE_THEME]: themeListener2
+    },
+];
