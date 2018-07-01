@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { ThemeProvider } from "styled-components";
-import { BrowserRouter } from "react-router-dom";
 
 import { AppLayout } from "./app-content/layout";
 import AppHeader from "./app-header";
@@ -29,12 +28,10 @@ class PinkApp extends Component<PinkAppProps> {
         const theme = themes[this.props.currentTheme];
         return (
             <ThemeProvider theme={theme ? theme : themes["default"]}>
-                <BrowserRouter>
-                    <AppLayout>
-                        <AppHeader />
-                        <AppContent />
-                    </AppLayout>
-                </BrowserRouter>
+                <AppLayout>
+                    <AppHeader />
+                    <AppContent />
+                </AppLayout>
             </ThemeProvider>
         );
     }

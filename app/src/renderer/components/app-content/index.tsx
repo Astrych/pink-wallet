@@ -1,7 +1,8 @@
 
 import React, { Component } from "react";
 import { I18n } from "react-i18next";
-import { HashRouter as Router, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router";
+import { Route } from "react-router-dom";
 import { Tabs } from "antd";
 
 import {
@@ -29,7 +30,7 @@ class AppContent extends Component {
 
         return (
             <Content>
-                <Router>
+                <MemoryRouter>
                     <I18n ns="translations">
                         {t => (
                             <TabsBar
@@ -82,7 +83,7 @@ class AppContent extends Component {
                             </TabsBar>
                         )}
                     </I18n>
-                </Router>
+                </MemoryRouter>
             </Content>
         );
     }
