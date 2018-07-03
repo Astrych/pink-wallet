@@ -1,5 +1,5 @@
 
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Layout, Tabs } from "antd";
 
 
@@ -8,34 +8,20 @@ export const AppLayout = styled(Layout)`
 `;
 
 export const Content = styled(Layout.Content)`
-    background-color: ${props => props.theme.primary};
-`;
-
-const logoFiller = css`
-    .ant-tabs-nav-container::before {
-        content: "";
-        height: 58px;
-        width: var(--tabs--bar-width);
-        position: fixed;
-        top: 20px;
-        background-image: url("img/logo-shadow.png");
-        background-size: 50%;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
+    background-color: ${props => props.theme.content.primary};
 `;
 
 export const TabsBar = styled(Tabs)`
     color: ${props => props.theme.tabs.icons};
     height: calc(100vh - var(--title-bar-height));
     .ant-tabs-bar[role=tablist] {
-        background-color: ${props => props.theme.secondary};
+        background-color: ${props => props.theme.content.secondary};
         border-right: none;
         display: flex;
         flex-direction: column;
     }
     .ant-tabs-ink-bar {
-        background-color: ${props => props.theme.primaryText};
+        background-color: ${props => props.theme.text.primary};
     }
     .ant-tabs-bar .ant-tabs-tab {
         width: calc(var(--tabs--bar-width) + 2px);
@@ -58,15 +44,14 @@ export const TabsBar = styled(Tabs)`
     }
     .ant-tabs-tab:hover,
     .ant-tabs-tab-active {
-        color: ${props => props.theme.primaryText};
+        color: ${props => props.theme.text.primary};
     }
     .ant-tabs-tab:hover {
         transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     }
     .ant-tabs-nav-container {
-        margin-top: 39px;
+        margin-top: 32px;
     }
-    ${process.platform !== "darwin" ? logoFiller : ""}
     .ant-tabs-tab-prev {
         left: -1px;
     }
@@ -79,7 +64,7 @@ export const TabsBar = styled(Tabs)`
         color: inherit;
         transition: none;
         :hover {
-            color: ${props => props.theme.primaryText};
+            color: ${props => props.theme.text.primary};
             transition: width 0.3s
                         cubic-bezier(0.645, 0.045, 0.355, 1),
                         opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),

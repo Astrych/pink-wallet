@@ -4,26 +4,19 @@ import { Layout, Row } from "antd";
 
 
 export const Header = styled(Layout.Header)`
-    background-color: ${props => props.theme.primary};
     max-height: var(--title-bar-height);
+    background-color: ${props => props.theme.header.bar};
     padding: 0;
 `;
 
-export const BarRow = styled(Row)`
+export const DragBar = styled(Row)`
+    --bar-row-margin: 5px;
     -webkit-app-region: drag;
     user-select: none;
-    --bar-row-margin: 5px;
-    margin: var(--bar-row-margin) var(--bar-row-margin) 0px 0px;
+    margin: var(--bar-row-margin) var(--bar-row-margin) 0px var(--bar-row-margin);
     height: calc(var(--title-bar-height) - var(--bar-row-margin));
     line-height: 11px;
-    > *:not(:last-child) {
+    > button:not(:last-child) {
         margin-right: 10px;
     }
-`;
-
-export const Filler = styled.div`
-    height: var(--title-bar-height);
-    width: 131px;
-    background-color: ${props => props.theme.secondary};
-    float: left;
 `;

@@ -5,8 +5,7 @@ import React, { Component } from "react";
 import {
 
     Header,
-    BarRow,
-    Filler,
+    DragBar,
 
 } from "./layout";
 import HeaderButton from "./button";
@@ -97,8 +96,7 @@ class AppHeader extends Component<{}, AppBarState> {
 
         return (
             <Header>
-                <Filler />
-                <BarRow type="flex" justify="end">
+                <DragBar type="flex" justify="end">
                     {
                         process.platform !== "darwin" &&
                         [
@@ -129,7 +127,7 @@ class AppHeader extends Component<{}, AppBarState> {
                             />,
                         ]
                     }
-                </BarRow>
+                </DragBar>
             </Header>
         );
     }

@@ -12,8 +12,8 @@ export function createMainWindow() {
    * https://github.com/electron/electron/issues/13118
    */
     mainWindow = new BrowserWindow({
-        width: 1255,
-        height: 783,
+        width: 1257,
+        height: 805,
         minWidth: 960,
         minHeight: 526,
         show: false,

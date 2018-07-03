@@ -8,16 +8,16 @@ const Button = styled.button`
     user-select: none;
     border: none;
     padding: 0;
-    color: ${props => props.theme.header.buttons};
+    color: ${props => props.theme.header.buttons.default};
     background-color: transparent;
     width: 24px;
     height: 25px;
 
     &:hover {
-        color: ${props => props.theme.header.buttonsHover};
+        color: ${props => props.theme.header.buttons.hover};
     }
     &:active {
-        color: ${props => props.theme.header.buttonsActive};
+        color: ${props => props.theme.header.buttons.active};
     }
 `;
 
@@ -33,7 +33,6 @@ export function HeaderButton(props: HeaderButtonProps) {
 
     return (
         <Button
-            aria-label={name}
             tabIndex={-1}
             onClick={onClick}
         >
