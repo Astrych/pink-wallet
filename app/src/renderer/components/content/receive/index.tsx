@@ -1,16 +1,16 @@
 
 import React, { Component } from "react";
 
-import TabContent from "../tab-content";
+import View from "../view";
 
 
 export default class Receive extends Component {
 
     render() {
         return (
-            <TabContent>
+            <View>
                 <h1>TODO: Receive</h1>
-            </TabContent>
+            </View>
         );
     }
 }

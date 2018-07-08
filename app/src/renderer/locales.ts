@@ -10,7 +10,7 @@ function loadLocales(url, _, cb) {
     .then(locale => {
         cb(locale, { status: "200" });
     })
-    .catch(err => {
+    .catch(() => {
         cb(null, { status: "404" });
     });
 }

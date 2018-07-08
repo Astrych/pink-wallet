@@ -1,6 +1,11 @@
 
-import { BrowserWindow , session} from "electron";
+import { BrowserWindow } from "electron";
+import Store from "electron-store";
 
+import { getCenterPos } from "../utils";
+
+
+const store = new Store();
 
 export let mainWindow: BrowserWindow | null;
 
@@ -11,9 +16,21 @@ export function createMainWindow() {
    * minWidth > 960: window is not responding on drag to left or right edge and win + left/right.
    * https://github.com/electron/electron/issues/13118
    */
-    mainWindow = new BrowserWindow({
+
+    const color = store.get("window.color", "#3b3b3b");
+    let { x, y } = store.get("window.position", {});
+    const { width, height } = store.get("window.size", {
         width: 1257,
-        height: 805,
+        height: 805
+    });
+
+    if (!x && !y) [ x, y ] = getCenterPos(width, height);
+
+    mainWindow = new BrowserWindow({
+        x,
+        y,
+        width,
+        height,
         minWidth: 960,
         minHeight: 526,
         show: false,
@@ -26,7 +43,7 @@ export function createMainWindow() {
     mainWindow.on("closed", () => mainWindow = null);
 
     // Undocumented function allowing for dynamic color change.
-    (mainWindow as any).setBackgroundColor("#3b3b3b");
+    (mainWindow as any).setBackgroundColor(color);
 
     // Will be removed by Webpack in production.
     if (process.env.NODE_ENV !== "production") {

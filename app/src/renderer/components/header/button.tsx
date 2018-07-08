@@ -22,14 +22,13 @@ const Button = styled.button`
 `;
 
 interface HeaderButtonProps {
-    name: string;
     icon: JSX.Element;
     onClick: React.EventHandler<React.MouseEvent<any>>;
 }
 
 export function HeaderButton(props: HeaderButtonProps) {
 
-    const { name, icon, onClick } = props;
+    const { icon, onClick } = props;
 
     return (
         <Button

@@ -1,16 +1,16 @@
 
 import React, { Component } from "react";
 
-import TabContent from "../tab-content";
+import View from "../view";
 
 
 export default class Send extends Component {
 
     render() {
         return (
-            <TabContent>
+            <View>
                 <h1>TODO: Send</h1>
-            </TabContent>
+            </View>
         );
     }
 }

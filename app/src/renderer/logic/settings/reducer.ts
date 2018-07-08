@@ -1,4 +1,6 @@
 
+import produce from "immer";
+
 import { CHANGE_THEME } from "./types";
 
 
@@ -8,16 +10,16 @@ const initialState = {
     themes: ["dark", "light"]
 };
 
-function reducer(state=initialState, action) {
+const reducer = produce((draft, action) => {
 
     switch (action.type) {
         case CHANGE_THEME: {
-            return { ...state, currentTheme: action.payload };
+            draft.currentTheme = action.payload;
         }
     }
 
-    return state;
-}
+}, initialState);
+
 
 export default {
 

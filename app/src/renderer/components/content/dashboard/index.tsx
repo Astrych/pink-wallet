@@ -1,34 +1,20 @@
 
 import { remote } from "electron";
 import React, { Component } from "react";
-import { I18n } from "react-i18next";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { I18n } from "react-i18next";
 import { Switch } from "antd";
 
-import TabContent from "../tab-content";
+import View from "../view";
+
 import { changeTheme } from "../../../logic/settings/actions";
+import { AppState } from "../../../logic/root-reducer";
 
-
-function mapStateToProps(state, ownProps) {
-
-    return {
-        ...ownProps, // WORKARONUD FOR STRANGE TYPINGS BUG.
-        currentTheme: state.settings.currentTheme,
-    };
-}
-
-function mapDispatchToProps(dispatch: Function) {
-
-    return {
-        switchTheme: (theme) => {
-            dispatch(changeTheme(theme));
-        }
-    };
-}
 
 interface DashboardProps {
-    currentTheme,
-    switchTheme: Function
+    currentTheme: string;
+    changeTheme: Function;
 }
 
 class Dashboard extends Component<DashboardProps> {
@@ -37,10 +23,11 @@ class Dashboard extends Component<DashboardProps> {
 
     private onThemeSwitch = () => {
 
-        const { currentTheme } = this.props;
+        const { currentTheme, changeTheme } = this.props;
         const newTheme = currentTheme === "dark" ? "light" : "dark";
 
-        this.props.switchTheme(newTheme);
+        changeTheme(newTheme);
+
         const newBackgroundColor = newTheme === "dark" ? "#3b3b3b" : "#eceaea";
         (this.window as any).setBackgroundColor(newBackgroundColor);
     };
@@ -50,7 +37,7 @@ class Dashboard extends Component<DashboardProps> {
         const { currentTheme } = this.props;
 
         return (
-            <TabContent>
+            <View>
                 <I18n ns="translations">
                     {(_, { i18n }) => <>
                         <Switch
@@ -68,12 +55,32 @@ class Dashboard extends Component<DashboardProps> {
                         />
                     </>}
                 </I18n>
-            </TabContent>
+            </View>
         );
     }
 }
 
-export default connect<DashboardProps>(
+interface StateProps {
+    currentTheme: string;
+}
+
+function mapStateToProps(state: AppState): StateProps {
+
+    return {
+        currentTheme: state.settings.currentTheme,
+    };
+}
+
+interface DispatchProps {
+    changeTheme: Function;
+}
+
+function mapDispatchToProps(dispatch): DispatchProps {
+
+    return bindActionCreators({ changeTheme }, dispatch);
+}
+
+export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(

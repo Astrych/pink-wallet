@@ -4,19 +4,12 @@ import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { ThemeProvider } from "styled-components";
 
-import { AppLayout } from "./app-content/layout";
-import AppHeader from "./app-header";
-import AppContent from "./app-content";
-import { State } from "../logic/root-reducer";
+import { AppLayout } from "./content/layout";
+import AppHeader from "./header";
+import AppContent from "./content";
+import { AppState } from "../logic/root-reducer";
 import themes from "../themes";
 
-
-function mapStateToProps(state: State) {
-
-    return {
-        currentTheme: state.settings.currentTheme
-    };
-}
 
 interface PinkAppProps {
     currentTheme
@@ -35,6 +28,13 @@ class PinkApp extends Component<PinkAppProps> {
             </ThemeProvider>
         );
     }
+}
+
+function mapStateToProps(state: AppState) {
+
+    return {
+        currentTheme: state.settings.currentTheme
+    };
 }
 
 export default hot(module)(

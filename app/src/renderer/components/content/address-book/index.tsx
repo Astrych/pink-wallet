@@ -1,16 +1,16 @@
 
 import React, { Component } from "react";
 
-import TabContent from "../tab-content";
+import View from "../view";
 
 
 export default class AddressBook extends Component {
 
     render() {
         return (
-            <TabContent>
+            <View>
                 <h1>TODO: Address Book</h1>
-            </TabContent>
+            </View>
         );
     }
 }

@@ -1,12 +1,17 @@
 
+import produce from "immer";
+
+
 const initialState = {
 
 };
 
-function reducer(state=initialState, action) {
+const reducer = produce((draft, action) => {
 
-    return state;
-}
+
+
+}, initialState);
+
 
 export default {
 

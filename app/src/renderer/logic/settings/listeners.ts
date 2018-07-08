@@ -1,9 +1,12 @@
 
-function timeout(ms) {
+import { ListenerParams } from "../side-effects";
+
+
+function timeout(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function themeListener1({ action, dispatch, state }) {
+export async function themeListener1({ action, dispatch, state }: ListenerParams) {
 
     console.debug("ThemeListener 1");
     await timeout(3000);
@@ -12,7 +15,7 @@ export async function themeListener1({ action, dispatch, state }) {
     });
 }
 
-export async function themeListener2({ action, dispatch, state }) {
+export async function themeListener2({ action, dispatch, state }: ListenerParams) {
 
     console.debug("ThemeListener 2");
     dispatch({

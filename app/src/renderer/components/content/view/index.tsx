@@ -2,7 +2,7 @@
 import styled from "styled-components";
 
 
-const TabContent = styled.div`
+const View = styled.div`
     background-color: ${props => props.theme.content.secondary};
     grid-area: a;
     align-self: center;
@@ -15,4 +15,4 @@ const TabContent = styled.div`
     }
 `;
 
-export default TabContent;
+export default View;

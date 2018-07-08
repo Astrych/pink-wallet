@@ -5,7 +5,7 @@ import auth from "./auth/reducer";
 import settings from "./settings/reducer";
 
 
-export interface State {
+export interface AppState {
 
     auth: typeof auth.initialState;
     settings: typeof settings.initialState;

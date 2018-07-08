@@ -20,7 +20,8 @@
   ],
   "main": "main.js",
   "dependencies": {
-    "electron-log": "2.2.16"
+    "electron-log": "2.2.16",
+    "electron-store": "2.0.0"
   },
   "devDependencies": {
     "electron-debug": "2.0.0",
