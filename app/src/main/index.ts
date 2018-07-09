@@ -2,7 +2,7 @@
 import { app, ipcMain, session } from "electron";
 
 import { splashWindow, createSplashWindow } from "./window/splash";
-import { mainWindow, createMainWindow } from "./window/main";
+import { mainWindow, createMainWindow, state as mainState } from "./window/main";
 import { tray, createTray } from "./window/tray";
 
 
@@ -105,6 +105,9 @@ ipcMain.on("data-loaded", () => {
 
     splashWindow.destroy();
     mainWindow.show();
+    if (mainState.isMaximized) {
+        mainWindow.maximize();
+    }
 
     // Will be removed by Webpack in production.
     if (process.env.NODE_ENV !== "production") {

@@ -19,7 +19,6 @@ interface AppBarState {
 class AppHeader extends Component<{}, AppBarState> {
 
     window = remote.getCurrentWindow();
-    appTitle = this.getTitle();
 
     state = {
         windowState: this.getWindowState()
@@ -32,19 +31,6 @@ class AppHeader extends Component<{}, AppBarState> {
         this.window.on("restore", () => this.onWindowStateChanged("normal"));
         this.window.on("hide", () => this.onWindowStateChanged("hidden"));
         this.window.on("show", () => this.onWindowStateChanged("normal"));
-
-        // Workaround: partial fix for issue with maximization and restoring
-        // https://github.com/electron/electron/issues/12971
-        if (process.platform === "win32") {
-            this.window.on("unmaximize", () => {
-                const bounds = this.window.getBounds();
-                bounds.width += 1;
-                bounds.y -= 17;
-                this.window.setBounds(bounds);
-                bounds.width -= 1;
-                this.window.setBounds(bounds);
-            });
-        }
     }
 
     public shouldComponentUpdate(nextProps: {}, nextState: AppBarState) {
@@ -53,10 +39,6 @@ class AppHeader extends Component<{}, AppBarState> {
 
     private onWindowStateChanged(windowState: string) {
         this.setState({ windowState });
-    }
-
-    private getTitle() {
-        return this.window.getTitle();
     }
 
     private getWindowState() {

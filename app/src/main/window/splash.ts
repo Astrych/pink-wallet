@@ -1,7 +1,7 @@
 
 import { BrowserWindow, screen } from "electron";
 
-import { centerWindow } from "../utils";
+import { getCenterPosition } from "../utils";
 
 
 export let splashWindow: BrowserWindow | null;
@@ -34,7 +34,8 @@ export function createSplashWindow() {
         // Workaround for issue:
         // https://github.com/electron/electron/issues/3490
         if (process.platform === "linux") {
-            centerWindow(splashWindow);
+            const pos = getCenterPosition(splashWindow);
+            splashWindow.setPosition(pos.x, pos.y);
         }
         splashWindow.show();
     });

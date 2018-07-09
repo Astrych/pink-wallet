@@ -30,11 +30,15 @@
     "coverage": "jest --collectCoverageFrom=app/src/**.{ts,tsx} --coverage"
   },
   "dependencies": {
+    "@types/ramda": "^0.25.34",
     "antd": "3.6.5",
     "axios": "0.18.0",
+    "electron-log": "2.2.16",
+    "electron-store": "2.0.0",
     "i18next": "11.3.5",
     "i18next-xhr-backend": "1.5.1",
     "immer": "1.3.1",
+    "ramda": "^0.25.0",
     "react": "16.4.1",
     "react-dom": "16.4.1",
     "react-i18next": "7.8.0",
@@ -46,9 +50,7 @@
     "redux-thunk": "2.3.0",
     "reselect": "3.0.1",
     "styled-components": "3.3.3",
-    "styled-icons": "2.3.0",
-    "electron-log": "2.2.16",
-    "electron-store": "2.0.0"
+    "styled-icons": "2.3.0"
   },
   "devDependencies": {
     "@types/browser-sync": "0.0.41",
