@@ -1,5 +1,6 @@
 
 import { app, ipcMain, session } from "electron";
+import logger from "electron-log";
 
 import { splashWindow, createSplashWindow } from "./window/splash";
 import { mainWindow, createMainWindow, state as mainState } from "./window/main";
@@ -20,6 +21,10 @@ if (process.env.NODE_ENV !== "production") {
     .catch(err => {
         console.error("Failed to load electron-debug", err);
     });
+
+    if (process.platform === "win32") {
+        (app as any).setAppUserModelId("pinkcoin.wallet.desktop.ui");
+    }
 }
 
 // Required on Linux platorm (bug workaround).
@@ -46,9 +51,16 @@ app.on("second-instance", () => {
     }
 });
 
+logger.transports.file.level = "info";
+
 app.on("ready", () => {
 
-    setTimeout(() => { // Transparency workaround.
+    logger.info("App is starting...");
+
+    // setTimeout as a workaround for transparency issue
+    // https://github.com/electron/electron/issues/2170
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=854601#c7
+    setTimeout(() => {
 
         createSplashWindow();
         createMainWindow();
@@ -56,7 +68,7 @@ app.on("ready", () => {
 
         // Will be removed by Webpack in production.
         if (process.env.NODE_ENV !== "production") {
-            // HACK: patches webrequest to fix devtools incompatibility with electron 2.x.
+            // Workaround: patches webrequest to fix devtools incompatibility with electron >= 2.0
             // See https://github.com/electron/electron/issues/13008#issuecomment-400261941
             session.defaultSession.webRequest.onBeforeRequest(
                 {} as Electron.OnBeforeRequestFilter,
@@ -82,7 +94,7 @@ app.on("ready", () => {
             );
         }
 
-    }, 200);
+    }, 300);
 });
 
 app.on("activate", () => {
@@ -96,6 +108,7 @@ app.on("activate", () => {
 
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
+        logger.info("App is quitting...");
         tray.destroy();
         app.quit();
     }

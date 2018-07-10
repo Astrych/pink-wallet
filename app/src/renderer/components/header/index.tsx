@@ -13,12 +13,13 @@ import SvgIcon from "../atoms/svg-icon";
 
 
 interface AppBarState {
-    windowState: string
+    windowState: string;
 }
 
 class AppHeader extends Component<{}, AppBarState> {
 
     window = remote.getCurrentWindow();
+    notification: Notification | null = null;
 
     state = {
         windowState: this.getWindowState()
@@ -62,6 +63,21 @@ class AppHeader extends Component<{}, AppBarState> {
 
     private onMaximize = () => {
         this.window.maximize();
+
+        Notification.requestPermission().then(status => {
+            if ((Notification as any).permission !== status) {
+                (Notification as any).permission = status;
+            }
+            this.notification = new Notification(
+                "Test was downloaded",
+                {
+                    body: "Application will be restarted to install new updates!"
+                }
+            );
+            this.notification.onclick = () => {
+                console.log("Notification clicked");
+            }
+        });
     };
 
     private onRestore = () => {

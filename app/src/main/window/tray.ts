@@ -48,6 +48,7 @@ export function createTray() {
 
     let icon;
     if (process.platform === "win32") icon = "icon.ico";
+    else if (process.platform === "linux") icon = "icon-tray@2x.png";
     else icon = "icon-tray.png";
 
     tray = new Tray(`${__dirname}/img/${icon}`)

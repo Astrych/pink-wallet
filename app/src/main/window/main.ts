@@ -1,8 +1,10 @@
 
-import { BrowserWindow, Rectangle } from "electron";
+import { BrowserWindow } from "electron";
 import Store from "electron-store";
 import R from "ramda";
+import debounce from "lodash.debounce";
 
+import { initAutoUpdater } from "../auto-updater";
 import { getCenterPosition } from "../utils";
 
 
@@ -41,12 +43,12 @@ export function createMainWindow() {
     state.position = store.get("window.position", state.position);
     state.size = store.get("window.size", state.size);
 
-  /**
-   * Bug with Frameless window and minWidth / minHeight on Linux.
-   * minHeight > 526: window is not responding on drag to upper edge and win + up/down.
-   * minWidth > 960: window is not responding on drag to left or right edge and win + left/right.
-   * https://github.com/electron/electron/issues/13118
-   */
+    /**
+     * Workaround for gug with Frameless window and minWidth / minHeight on Linux.
+     * minHeight > 526: window is not responding on drag to upper edge and win + up/down.
+     * minWidth > 960: window is not responding on drag to left or right edge and win + left/right.
+     * https://github.com/electron/electron/issues/13118
+     */
     mainWindow = new BrowserWindow({
         width: state.size.width,
         height: state.size.height,
@@ -54,6 +56,7 @@ export function createMainWindow() {
         minHeight: 526,
         show: false,
         frame: false,
+        useContentSize: true,
         titleBarStyle: "hiddenInset",
         icon: `${__dirname}/img/icon.${process.platform === "win32" ? "ico" : "png"}`,
     });
@@ -62,6 +65,7 @@ export function createMainWindow() {
     mainWindow.on("closed", () => mainWindow = null);
 
     mainWindow.once("ready-to-show", () => {
+        initAutoUpdater();
         if (R.isEmpty(state.position) && !state.isMaximized) {
             // Workaround for issue:
             // https://github.com/electron/electron/issues/3490
@@ -72,7 +76,8 @@ export function createMainWindow() {
 
         } else {
             // Workaround for strage bounds in maximized state.
-            if (state.position.x < 0) {
+            // Related to issue https://github.com/electron/electron/issues/12971
+            if (process.platform === "win32" && state.position.x < 0) {
                 state.position.x -= state.position.x;
                 state.position.y -= state.position.y;
                 state.size.width -= 2*state.position.x;
@@ -88,6 +93,7 @@ export function createMainWindow() {
             state.size = { width, height };
         }
     }
+
     function updateState() {
         state.isMaximized = mainWindow.isMaximized();
     }
@@ -104,18 +110,26 @@ export function createMainWindow() {
                 mainWindow.setBounds(bounds);
                 bounds.width -= 1;
                 mainWindow.setBounds(bounds);
-            });
+            }, 2);
         }
     });
-    mainWindow.on("resize", updateBounds);
-    mainWindow.on("move", updateBounds);
+    mainWindow.on("resize", debounce(updateBounds, 100));
+    mainWindow.on("move", debounce(updateBounds, 100));
 
     mainWindow.on("close", () => {
         updateState();
-        store.set("window.position", state.position);
-        store.set("window.size", state.size);
-        store.set("window.isMaximized", state.isMaximized);
-        store.set("window.color", state.color);
+
+        const statesToSave = {
+            "window.isMaximized": state.isMaximized,
+            "window.position": state.position,
+            "window.size": state.size,
+            "window.color": state.color
+        };
+
+        // Saves state to file.
+        for (const [key, value] of Object.entries(statesToSave)) {
+            store.set(key, value);
+        }
     });
 
     // Undocumented function allowing for dynamic color change.
