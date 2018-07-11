@@ -2,10 +2,10 @@
 // Base gulp modules.
 import { task, parallel, src, dest } from "gulp";
 import changed from "gulp-changed";
-import install from "gulp-install";
 
 // Builder config.
-import { config, isDev as dev } from "./config";
+import { installAppLibs } from "./dev";
+import { config } from "./config";
 
 
 function copyAssets() {
@@ -15,20 +15,12 @@ function copyAssets() {
               .pipe(dest(config.dirs.build));
 }
 
-function installLibs() {
-
-    return src("{*.json,.npmrc,LICENSE}", { cwd: config.dirs.app.main })
-              .pipe(changed(config.dirs.build))
-              .pipe(dest(config.dirs.build))
-              .pipe(install({ production: !dev }));
-}
-
 
 const taskName1 = "prepare assets -> copy files";
-const taskName2 = "prepare assets -> install vendor libs if required";
+const taskName2 = "prepare assets -> install vendor libs (if required)";
 
 task(taskName1, copyAssets);
-task(taskName2, installLibs);
+task(taskName2, installAppLibs);
 
 export default {
 

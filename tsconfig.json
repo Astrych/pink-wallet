@@ -9,6 +9,10 @@
         "strict": true,
         "noImplicitAny": false,
         "strictNullChecks": false,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "*": ["build/node_modules/*"]
+        }
     }
 }

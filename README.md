@@ -4,7 +4,7 @@ Bare bone project (app shell). Work in progress.
 
 ## Requirements
 
-Developed with Node.js 10.1.0.
+Node.js: developed with version 10.1.0.
 
 ## Instalation and running in dev mode
 
@@ -47,7 +47,7 @@ npm run builder
 
 Tests only:
 ```
-npm run test
+npm test
 ```
 
 Tests + coverage:

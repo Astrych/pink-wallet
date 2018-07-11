@@ -1,6 +1,6 @@
 
 // Base gulp modules.
-import { task, series, parallel } from "gulp";
+import { task, series } from "gulp";
 
 // Imports build tasks definitions.
 import appBuilder from "./tasks/app-builder";
@@ -9,8 +9,10 @@ import appPackager from "./tasks/app-packager";
 
 // Imports development tasks.
 import {
-    
+
     clean,
+    cleanAll,
+    installAppLibs,
     serveRendererView,
     monitorWindowFiles
 
@@ -19,19 +21,20 @@ import { platform } from "./tasks/config";
 
 
 task("clean", clean);
+task("clean-all", cleanAll);
 
 // Build tasks.
 task("prepare app: main part", appBuilder.mainTask);
 task("prepare app: all parts", appBuilder.allTasks);
 task("prepare libs and assets", assetsBuilder.tasks);
 
-task("build: development", parallel(
+task("build: development", series(
 
     "prepare libs and assets",
     "prepare app: main part"
 ));
 
-task("build: production", parallel(
+task("build: production", series(
 
     "prepare libs and assets",
     "prepare app: all parts"
@@ -48,7 +51,10 @@ task("start", series(
     "watch window files"
 ));
 
+// Prepares build folder + app vendor libs.
+task("prepare", installAppLibs);
+
 task("default", series("start"));
 
-// Production build main task.
+// Production build task.
 task("builder", series("clean", "build: production", appPackager[platform]));

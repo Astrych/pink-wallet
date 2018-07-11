@@ -1,10 +1,12 @@
 
-import fs from "fs";
+import path from "path";
 import webpack from "webpack";
 import nodeExternals from "webpack-node-externals";
 
 import { config, isDev as dev } from "./config";
 
+
+const appNodeModules = path.join(config.dirs.build, "node_modules");
 
 export const mainConfig: webpack.Configuration = {
 
@@ -23,7 +25,8 @@ export const mainConfig: webpack.Configuration = {
     },
     resolve: {
 
-        extensions: [".ts", ".js", ".json", ".node"]
+        extensions: [".ts", ".js", ".json", ".node"],
+        modules: [appNodeModules]
     },
     module: {
 
@@ -39,7 +42,10 @@ export const mainConfig: webpack.Configuration = {
         __dirname: false,
         __filename: false
     },
-    externals: [nodeExternals()],
+    externals: [
+        nodeExternals(),
+        nodeExternals({ modulesDir: appNodeModules })
+    ],
     plugins: dev ? [
 
         new webpack.EnvironmentPlugin({

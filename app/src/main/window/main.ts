@@ -1,4 +1,5 @@
 
+import path from "path";
 import { BrowserWindow } from "electron";
 import Store from "electron-store";
 import R from "ramda";
@@ -58,7 +59,7 @@ export function createMainWindow() {
         frame: false,
         useContentSize: true,
         titleBarStyle: "hiddenInset",
-        icon: `${__dirname}/img/icon.${process.platform === "win32" ? "ico" : "png"}`,
+        icon: path.join(__dirname, "img", `icon.${process.platform === "win32" ? "ico" : "png"}`),
     });
 
     mainWindow.setMenu(null);

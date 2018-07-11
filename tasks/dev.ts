@@ -4,7 +4,9 @@ import { spawn, ChildProcess } from "child_process";
 import kill from "tree-kill";
 import del from "del";
 import extend from "xtend";
-import { task, watch, series } from "gulp";
+import { task, src, dest, watch, series } from "gulp";
+import changed from "gulp-changed";
+import install from "gulp-install";
 import Browser from "browser-sync";
 import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
@@ -21,6 +23,30 @@ export function clean() {
 
     return del([`${config.dirs.build}`, `${config.dirs.release}`], { force: true });
 }
+
+
+export function cleanAll() {
+
+    return del([
+        `${config.dirs.build}`,
+        `${config.dirs.release}`,
+        "node_modules",
+        "coverage"
+    ], { force: true });
+}
+
+
+/**
+ * Installs app vendor libs.
+ */
+export function installAppLibs() {
+
+    return src("{*.json,.npmrc,LICENSE}", { cwd: config.dirs.app.main })
+              .pipe(changed(config.dirs.build))
+              .pipe(dest(config.dirs.build))
+              .pipe(install({}));
+}
+
 
 /**
  * Creates electron app process.
