@@ -2,6 +2,7 @@
     <defs>
         <symbol id="minimize" viewBox="0 0 20 2">
             <polygon
+                stroke-width="2px"
                 transform="translate(-120.000000, -418.000000)"
                 points="120.003 420 140.003 420 140.003 418 120.003 418"
             >
@@ -9,7 +10,7 @@
         </symbol>
         <symbol id="maximize" viewBox="0 0 20 20">
             <path
-                stroke="none"
+                stroke-width="3px"
                 fill-rule="evenodd"
                 transform="translate(-240.000000, -80.000000)"
                 d="M242,98 L258,98 L258,82 L242,82 L242,98 Z M240,100 L260,100 L260,80 L240,80 L240,100 Z"
@@ -18,6 +19,7 @@
         </symbol>
         <symbol id="close" viewBox="0 0 20 20">
             <polygon
+                stroke-width="2px"
                 transform="translate(-360.000000, -80.000000)"
                 points="371.4489 89.9997 380.0029 98.5537 378.5559 99.9997 370.0029 91.4457 361.4489 99.9997 360.0029 98.5537 368.5559 89.9997 360.0029 81.4457 361.4489 79.9997 370.0029 88.5537 378.5559 79.9997 380.0029 81.4457"
             >

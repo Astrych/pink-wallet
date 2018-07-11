@@ -1,5 +1,5 @@
 
-import { BrowserWindow, screen } from "electron";
+import { BrowserWindow } from "electron";
 
 import { getCenterPosition } from "../utils";
 

@@ -62,9 +62,11 @@ app.on("ready", () => {
     // https://bugs.chromium.org/p/chromium/issues/detail?id=854601#c7
     setTimeout(() => {
 
-        createSplashWindow();
-        createMainWindow();
         createTray();
+        createMainWindow();
+
+        // Circumvents issue with CSS animation stuttering on app launch.
+        setImmediate(createSplashWindow);
 
         // Will be removed by Webpack in production.
         if (process.env.NODE_ENV !== "production") {

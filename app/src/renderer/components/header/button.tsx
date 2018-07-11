@@ -11,27 +11,39 @@ const Button = styled.button`
     color: ${props => props.theme.header.buttons.default};
     background-color: transparent;
     width: 24px;
-    height: 25px;
+    height: 24px;
 
     &:hover {
         color: ${props => props.theme.header.buttons.hover};
     }
     &:active {
-        color: ${props => props.theme.header.buttons.active};
+        stroke: ${props => {
+            switch(props.name) {
+                case "minimize":
+                    return props.theme.header.buttons.active.minimize;
+                case "maximize":
+                case "restore":
+                    return props.theme.header.buttons.active.maximizeRetore;
+                case "close":
+                    return props.theme.header.buttons.active.close;
+            }
+        }};
     }
 `;
 
 interface HeaderButtonProps {
+    name: "minimize" | "restore" | "maximize" | "close" ;
     icon: JSX.Element;
     onClick: React.EventHandler<React.MouseEvent<any>>;
 }
 
 export function HeaderButton(props: HeaderButtonProps) {
 
-    const { icon, onClick } = props;
+    const { name, icon, onClick } = props;
 
     return (
         <Button
+            name={name}
             tabIndex={-1}
             onClick={onClick}
         >

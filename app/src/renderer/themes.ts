@@ -5,8 +5,13 @@ const dark = {
         bar: "darkgrey",
         buttons: {
             default: "white",
-            hover: "grey",
-            active: "#f790b5",
+            hover: "black",
+            active: {
+                minimize: "yellow",
+                maximizeRetore: "green",
+                close: "red",
+            },
+
         }
     },
     content: {
@@ -30,8 +35,12 @@ const light = {
         bar: "darkgrey",
         buttons: {
             default: "black",
-            hover: "lightgrey",
-            active: "#f04e97",
+            hover: "white",
+            active: {
+                minimize: "yellow",
+                maximizeRetore: "green",
+                close: "red",
+            },
         }
     },
     content: {

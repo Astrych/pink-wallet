@@ -12,6 +12,7 @@ const Svg = styled.svg`
     height: ${(props: SvgProps) => props.size}px;
     margin: auto;
     fill: currentColor;
+    stroke-width: 20px;
 `;
 
 interface SvgIconProps {

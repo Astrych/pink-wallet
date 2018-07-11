@@ -99,22 +99,26 @@ class AppHeader extends Component<{}, AppBarState> {
                         process.platform !== "darwin" &&
                         [
                             <HeaderButton
+                                name="minimize"
                                 icon={<SvgIcon name="minimize" size={14} />}
                                 onClick={this.onMinimize}
                                 key="minimize"
                             />,
                             windowState === "maximized" ?
                             <HeaderButton
+                                name="restore"
                                 icon={<SvgIcon name="maximize" size={14} />}
                                 onClick={this.onRestore}
                                 key="restore"
                             /> :
                             <HeaderButton
+                                name="maximize"
                                 icon={<SvgIcon name="maximize" size={14} />}
                                 onClick={this.onMaximize}
                                 key="maximize"
                             />,
                             <HeaderButton
+                                name="close"
                                 icon={<SvgIcon name="close" size={14} />}
                                 onClick={this.onClose}
                                 key="close"

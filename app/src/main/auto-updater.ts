@@ -30,4 +30,9 @@ function showUpdateInfo(info) {
     const versionInfo = info.label ? `Version ${info.version}` : "The latest version";
 
     // TODO: Send message to renderer proccess about update.
+    const notification = new Notification({
+        title: versionInfo,
+        body: "Test notification in main process"
+    });
+    notification.show();
 }
