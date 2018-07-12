@@ -138,7 +138,10 @@
     "moduleDirectories": [
       "node_modules",
       "build/node_modules"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^logic/(.*)": "renderer/logic/$1"
+    }
   },
   "build": {
     "appId": "pinkcoin.wallet.desktop.ui",
