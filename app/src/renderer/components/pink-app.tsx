@@ -7,8 +7,8 @@ import { ThemeProvider } from "styled-components";
 import { AppLayout } from "./content/layout";
 import AppHeader from "./header";
 import AppContent from "./content";
-import { AppState } from "../logic/root-reducer";
 import themes from "../themes";
+import { AppState } from "@logic/root-reducer";
 
 
 interface PinkAppProps {

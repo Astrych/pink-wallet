@@ -44,7 +44,8 @@ export const rendererConfig: webpack.Configuration = {
 
         extensions: [".tsx", ".ts", ".js", ".json"],
         alias: {
-            "logic": path.resolve(config.dirs.app.src, "renderer", "logic")
+            "@logic": path.resolve(config.dirs.app.src, "renderer", "logic"),
+            "@components": path.resolve(config.dirs.app.src, "renderer", "components")
         }
     },
     module: {

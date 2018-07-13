@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { injectGlobal } from "styled-components";
 
-import SplashScreen from "./components/splash-screen";
+import SplashScreen from "@components/splash-screen";
 
 
 // Inherits env vars from main process

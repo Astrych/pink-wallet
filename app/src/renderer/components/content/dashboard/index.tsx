@@ -8,8 +8,8 @@ import { Switch } from "antd";
 
 import View from "../view";
 
-import { changeTheme } from "logic/settings/actions";
-import { AppState } from "logic/root-reducer";
+import { changeTheme } from "@logic/settings/actions";
+import { AppState } from "@logic/root-reducer";
 
 
 interface DashboardProps {

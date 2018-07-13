@@ -4,10 +4,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { injectGlobal } from "styled-components";
 import { Provider } from "react-redux";
-import "./locales";
 
-import configureStore from "./logic/store";
-import PinkApp from "./components/pink-app";
+import configureStore from "@logic/store";
+import PinkApp from "@components/pink-app";
+
+import "./locales";
 
 
 // Inherits env vars from main process
