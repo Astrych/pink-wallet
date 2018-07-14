@@ -5,6 +5,7 @@ import logger from "electron-log";
 import { splashWindow, createSplashWindow } from "./window/splash";
 import { mainWindow, createMainWindow, state as mainState } from "./window/main";
 import { tray, createTray } from "./window/tray";
+import { startDaemon } from "./daemon/runner";
 
 
 // Will be removed by Webpack in production.
@@ -94,6 +95,8 @@ app.on("ready", () => {
                     }
                 }
             );
+
+            startDaemon();
         }
 
     }, 300);

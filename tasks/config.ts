@@ -38,7 +38,8 @@ export const config = {
             assets: "app/assets"
         },
         build: "build",
-        release: "dist"
+        release: "dist",
+        devDaemon: "daemon",
     },
 
     appTitle: "Pink Wallet"
