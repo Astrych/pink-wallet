@@ -25,7 +25,7 @@ const LoadProgress = styled(Progress)`
     position: absolute;
     top: 50%;
     left: 50%;
-    animation: ${fadeIn} 1.0s ease-in;
+    animation: ${fadeIn} 0.5s ease-in;
 
     .ant-progress-circle-trail {
         stroke: rgba(255, 255, 255, 0.31);

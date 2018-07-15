@@ -1,14 +1,26 @@
 
-import { app, ipcMain, session } from "electron";
-import logger from "electron-log";
+import {
 
-import { splashWindow, createSplashWindow } from "./window/splash";
-import { mainWindow, createMainWindow, state as mainState } from "./window/main";
-import { tray, createTray } from "./window/tray";
-import { startDaemon } from "./daemon/runner";
+    app,
+    Tray,
+    ipcMain,
+    session,
+    BrowserWindow
+
+} from "electron";
+
+import { createSplashWindow } from "./window/splash";
+import {
+
+    createMainWindow,
+    state as mainWindowState
+
+} from "./window/main";
+import { createTray } from "./window/tray";
+import { startDaemon, onDaemonStarted } from "./daemon/runner";
+import logger from "./logger";
 
 
-// Will be removed by Webpack in production.
 if (process.env.NODE_ENV !== "production") {
 
     // Disables annoing warnings in development mode.
@@ -24,6 +36,7 @@ if (process.env.NODE_ENV !== "production") {
     });
 
     if (process.platform === "win32") {
+        // any as a workaround for lack of typings for that function.
         (app as any).setAppUserModelId("pinkcoin.wallet.desktop.ui");
     }
 }
@@ -34,11 +47,12 @@ if (process.platform === "linux") {
     app.disableHardwareAcceleration();
 }
 
+// Ensures only one instance of the application.
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) app.quit();
 
 app.on("second-instance", () => {
-    if (process.mas) return false;
+    if (process.mas) return;
     if (splashWindow || mainWindow) {
         if (splashWindow) {
             splashWindow.focus();
@@ -52,7 +66,10 @@ app.on("second-instance", () => {
     }
 });
 
-logger.transports.file.level = "info";
+
+let tray: Tray;
+let mainWindow: BrowserWindow | null;
+let splashWindow: BrowserWindow | null;
 
 app.on("ready", () => {
 
@@ -63,13 +80,9 @@ app.on("ready", () => {
     // https://bugs.chromium.org/p/chromium/issues/detail?id=854601#c7
     setTimeout(() => {
 
-        createTray();
-        createMainWindow();
+        mainWindow = createMainWindow();
+        splashWindow = createSplashWindow(startDaemon);
 
-        // Circumvents issue with CSS animation stuttering on app launch.
-        setImmediate(createSplashWindow);
-
-        // Will be removed by Webpack in production.
         if (process.env.NODE_ENV !== "production") {
             // Workaround: patches webrequest to fix devtools incompatibility with electron >= 2.0
             // See https://github.com/electron/electron/issues/13008#issuecomment-400261941
@@ -95,8 +108,6 @@ app.on("ready", () => {
                     }
                 }
             );
-
-            startDaemon();
         }
 
     }, 300);
@@ -119,15 +130,31 @@ app.on("window-all-closed", () => {
     }
 });
 
-ipcMain.on("data-loaded", () => {
+// onDaemonStarted(() => {
+
+//     splashWindow.destroy();
+//     tray = createTray(mainWindow);
+//     mainWindow.show();
+
+//     if (mainWindowState.isMaximized) {
+//         mainWindow.maximize();
+//     }
+
+//     if (process.env.NODE_ENV !== "production") {
+//         mainWindow.webContents.openDevTools({ mode : "detach" });
+//     }
+// });
+
+ipcMain.on("splash-finished", () => {
 
     splashWindow.destroy();
+    tray = createTray(mainWindow);
     mainWindow.show();
-    if (mainState.isMaximized) {
+
+    if (mainWindowState.isMaximized) {
         mainWindow.maximize();
     }
 
-    // Will be removed by Webpack in production.
     if (process.env.NODE_ENV !== "production") {
         mainWindow.webContents.openDevTools({ mode : "detach" });
     }

@@ -59,7 +59,7 @@ export function createMainWindow() {
         frame: false,
         useContentSize: true,
         titleBarStyle: "hiddenInset",
-        icon: path.join(__dirname, "img", `icon.${process.platform === "win32" ? "ico" : "png"}`),
+        icon: path.join(__dirname, `img/icon.${process.platform === "win32" ? "ico" : "png"}`),
     });
 
     mainWindow.setMenu(null);
@@ -162,4 +162,6 @@ export function createMainWindow() {
     } else {
         mainWindow.loadFile(process.env.MAIN_VIEW);
     }
+
+    return mainWindow;
 }

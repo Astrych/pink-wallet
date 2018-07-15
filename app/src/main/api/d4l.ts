@@ -1,15 +1,14 @@
 
 import { apiCall } from "./utils";
-
-
-const d4lUrl = "https://donate.with.pink/api";
+import { d4lBaseURL } from "./config";
 
 
 export async function getD4LData() {
 
     const reqData = {
 
-        url: `${d4lUrl}/accounts/`,
+        baseURL: d4lBaseURL,
+        url: `/accounts/`,
         method: "GET"
     };
     const resData = await apiCall(reqData);

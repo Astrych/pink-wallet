@@ -1,60 +1,69 @@
 
-import { app, Tray, Menu } from "electron";
+import path from "path";
+import {
 
-import { splashWindow } from "./splash";
-import { mainWindow } from "./main";
+    app,
+    Tray,
+    Menu,
+    BrowserWindow
+
+} from "electron";
 
 
-function toggleWindow() {
+export let tray: Tray;
 
-    if (splashWindow && !splashWindow.isDestroyed()) {
+export function createTray(mainWindow: BrowserWindow) {
 
-        if (!splashWindow.isVisible()) {
-            splashWindow.show();
-        } else {
-            splashWindow.hide();
-        }
-
-    } else if (mainWindow && !mainWindow.isDestroyed()) {
-
-        if (!mainWindow.isVisible()) {
-            mainWindow.show();
-        } else {
-            mainWindow.hide();
-        }
-    }
-}
-
-const menuTemplate: Electron.MenuItemConstructorOptions[] = [
-    {
-        label: `Show/Hide ${process.env.APP_TITLE}`,
-        click() {
-            toggleWindow();
-        }
-    },
-    { type: "separator" },
-    {
-        label: "Quit",
-        click() {
-            tray.destroy();
-            app.quit();
-        }
-    },
-];
-
-export let tray: Tray | null;
-
-export function createTray() {
-
-    let icon;
+    let icon = "icon-tray.png";
     if (process.platform === "win32") icon = "icon.ico";
     else if (process.platform === "linux") icon = "icon-tray@2x.png";
-    else icon = "icon-tray.png";
 
-    tray = new Tray(`${__dirname}/img/${icon}`)
-
+    tray = new Tray(path.join(__dirname, `img/${icon}`));
     tray.setToolTip(process.env.APP_TITLE);
 
-    const contextMenu = Menu.buildFromTemplate(menuTemplate);
-    tray.setContextMenu(contextMenu);
+    function toggleWindowVisibility() {
+
+        if (mainWindow && !mainWindow.isDestroyed()) {
+            mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+        }
+    }
+
+    function updateMenu() {
+
+        const menuTemplate: Electron.MenuItemConstructorOptions[] = [
+            {
+                label: `${mainWindow.isVisible() ? "Hide" : "Show"} ${process.env.APP_TITLE}`,
+                click() {
+                    toggleWindowVisibility();
+                }
+            },
+            { type: "separator" },
+            {
+                label: "Quit",
+                click() {
+                    tray.destroy();
+                    app.quit();
+                }
+            },
+        ];
+
+        const contextMenu = Menu.buildFromTemplate(menuTemplate);
+        tray.setContextMenu(contextMenu);
+    }
+
+    updateMenu();
+
+    tray.on("click", () => {
+        toggleWindowVisibility();
+    });
+    mainWindow.on("show", () => {
+        updateMenu();
+        tray.setHighlightMode("always");
+    });
+    mainWindow.on("hide", () => {
+        updateMenu();
+        tray.setHighlightMode("never");
+    });
+
+    return tray;
 }

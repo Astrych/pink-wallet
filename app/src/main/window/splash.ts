@@ -1,12 +1,17 @@
 
+import path from "path";
 import { BrowserWindow } from "electron";
 
 import { getCenterPosition } from "../utils";
 
 
+interface RunOnStart {
+    (window: BrowserWindow): Promise<void>;
+}
+
 export let splashWindow: BrowserWindow | null;
 
-export function createSplashWindow() {
+export function createSplashWindow(runOnStart: RunOnStart) {
 
     splashWindow = new BrowserWindow({
         width: 810,
@@ -17,10 +22,9 @@ export function createSplashWindow() {
         frame: false,
         show: false,
         skipTaskbar: true,
-        icon: `${__dirname}/img/icon.png`
+        icon: path.join(__dirname, "img/icon.png")
     });
 
-    // Will be removed by Webpack in production.
     if (process.env.NODE_ENV !== "production") {
         splashWindow.loadURL(process.env.SPLASH_VIEW);
 
@@ -37,6 +41,12 @@ export function createSplashWindow() {
             const pos = getCenterPosition(splashWindow);
             splashWindow.setPosition(pos.x, pos.y);
         }
+
         splashWindow.show();
+        // splashWindow.webContents.openDevTools({ mode : "detach" });
+
+        runOnStart(splashWindow);
     });
+
+    return splashWindow;
 }

@@ -1,7 +1,8 @@
 
 import { Notification } from "electron";
 import { autoUpdater } from "electron-updater";
-import logger from "electron-log";
+
+import logger from "./logger";
 
 
 // TODO: requires configuration of Github repo:
@@ -9,7 +10,6 @@ import logger from "electron-log";
 // https://github.com/iffy/electron-updater-example/blob/master/main.js
 export function initAutoUpdater() {
 
-    showUpdateInfo({});
     if (process.env.NODE_ENV !== "production") return;
 
     autoUpdater.logger = logger;

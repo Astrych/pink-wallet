@@ -4,6 +4,11 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "jsx": "react",
+        "lib": [
+            "dom",
+            "es2017",
+            "esnext.asynciterable"
+        ],
         "sourceMap": true,
         "removeComments": true,
         "strict": true,
@@ -18,6 +23,9 @@
             ],
             "@components/*": [
                 "app/src/renderer/components/*"
+            ],
+            "@assets/*": [
+                "app/assets/*"
             ],
             "*": ["build/node_modules/*"]
         }

@@ -44,6 +44,7 @@ export const rendererConfig: webpack.Configuration = {
 
         extensions: [".tsx", ".ts", ".js", ".json"],
         alias: {
+            "@assets": config.dirs.app.assets,
             "@logic": path.resolve(config.dirs.app.src, "renderer", "logic"),
             "@components": path.resolve(config.dirs.app.src, "renderer", "components")
         }
@@ -109,6 +110,13 @@ export const rendererConfig: webpack.Configuration = {
                             javascriptEnabled: true
                         }
                     }
+                ]
+            },
+            {
+                test: /\.(png|svg)$/i,
+                use: [
+                    "url-loader",
+                    "img-loader"
                 ]
             }
         ]

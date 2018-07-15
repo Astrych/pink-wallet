@@ -2,6 +2,8 @@
 import React from "react";
 import styled, { keyframes, css } from "styled-components";
 
+import pinkBuffalo from "@assets/img/Buffalo-pink.png";
+
 
 interface SplashImgProps {
     onLoad: React.EventHandler<React.SyntheticEvent<any>>;
@@ -18,7 +20,6 @@ const anim = css`
 `;
 
 const Img = styled.img`
-
     height: 100%;
     object-fit: scale-down;
     margin: auto;
@@ -31,7 +32,7 @@ function SplashImg(props: SplashImgProps) {
 
     return (
         <Img
-            src="./img/Buffalo-pink.png"
+            src={pinkBuffalo}
             alt="Pink Buffalo Logo"
             onLoad={props.onLoad}
             animate={props.animate}
