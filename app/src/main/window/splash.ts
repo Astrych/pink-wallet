@@ -43,7 +43,7 @@ export function createSplashWindow(runOnStart: RunOnStart) {
         }
 
         splashWindow.show();
-        // splashWindow.webContents.openDevTools({ mode : "detach" });
+        splashWindow.webContents.openDevTools({ mode : "detach" });
 
         runOnStart(splashWindow);
     });

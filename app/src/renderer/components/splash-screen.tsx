@@ -7,6 +7,10 @@ import SplashImg from "./splash/image";
 import SplashProgress from "./splash/progress";
 
 
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 interface ProgresStepArgs {
     step: number;
     total: number;
@@ -21,43 +25,46 @@ export function calcProgressSteps({ step, total, subSteps }: ProgresStepArgs) {
     );
 }
 
-const progressQueue = [];
+const progressQueue: Array<number> = [];
 
 class SplashScreen extends React.Component {
 
-    state = { show: false, progress: 0 };
+    state = { show: false, progress: 0, error: false };
 
     componentDidMount() {
 
-        const subSteps = 16;
+        // Creates illusion of more fluid progression.
+        const updateProgressState = async (event, steps: number) => {
+            while (--steps + 1) {
+                while (progressQueue.length < 1) await sleep(10);
 
-        const queueProgressUpdate = (subStep, maxSteps) => {
-            setTimeout(() => {
-                const progress = progressQueue.shift();
-                progress && this.setState({ progress });
-                if (subStep < maxSteps && progressQueue.length > 0) {
-                    queueProgressUpdate(subStep + 1, maxSteps);
+                this.setState({ progress: progressQueue.shift() });
+
+                await sleep(30);
+
+                // On progress successful finish.
+                if (!steps) {
+                    await sleep(500);
+                    event.sender.send("splash-finished");
                 }
-
-            }, 40);
+            }
         };
 
         ipcRenderer.on("daemon-start-progress", (event, data) => {
+            if (data.error) {
+                this.setState({ error: true });
+                return;
+            }
+
+            const subSteps = 100/data.total;
             progressQueue.push(...calcProgressSteps({
                 step: data.step,
                 total: data.total,
                 subSteps
             }));
 
-            queueProgressUpdate(0, subSteps);
+            if (data.step === 0) updateProgressState(event, 100);
         });
-    }
-
-    componentDidUpdate() {
-
-        if (this.state.progress === 100) {
-            setTimeout(() => ipcRenderer.send("splash-finished"), 500);
-        }
     }
 
     onImgLoad = () => {
@@ -65,11 +72,11 @@ class SplashScreen extends React.Component {
     }
 
     render() {
-        const { show, progress } = this.state;
+        const { show, progress, error } = this.state;
 
         return <>
             <SplashImg onLoad={this.onImgLoad} animate={show} />
-            {show && <SplashProgress progress={progress} />}
+            {show && <SplashProgress progress={progress} error={error} />}
         </>;
     }
 }

@@ -20,17 +20,7 @@ async function getBlockchainData(method: string, params=null) {
         method: "POST",
         data: payload,
     };
-    const resData = await apiCall(reqData);
-
-    console.log("=======================================");
-    console.log(resData);
-    console.log("=======================================");
-
-    // if (resData.status === 200) {
-    //     return resData.data;
-    // } else {
-    //     throw { message: "Error!", code: resData.status };
-    // }
+    return await apiCall(reqData);
 }
 
 

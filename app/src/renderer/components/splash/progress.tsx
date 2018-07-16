@@ -34,12 +34,27 @@ const LoadProgress = styled(Progress)`
 
 interface SplashProgressProps {
     progress: number;
+    error: boolean;
 }
 
 function SplashProgress(props: SplashProgressProps) {
 
+    interface VariadicProps {
+        percent: number;
+        status?: "exception";
+    }
+
+    const variadicProps: VariadicProps = {
+        percent: props.progress
+    };
+    if (props.error) variadicProps.status = "exception";
+
     return(
-        <LoadProgress type="circle" percent={props.progress} width={80} />
+        <LoadProgress
+            type="circle"
+            width={80}
+            {...variadicProps}
+        />
     );
 }
 

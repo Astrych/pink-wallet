@@ -17,7 +17,8 @@ const startStages = [
     "Loading block index...",
     "Loading wallet...",
     "Loading addresses...",
-    "Done loading"
+    "Done loading",
+    "ThreadRPCServer started"
 ];
 
 const rpcuser = "pinkcoinrpc";
@@ -27,7 +28,9 @@ export let pink2d: ChildProcess | null = null;
 
 export async function startDaemon(window: BrowserWindow) {
 
-    const command = path.join(__dirname, "..", "daemon", "pink2d.exe");
+    let binary = "pink2d";
+    if (process.platform === "win32") binary += ".exe";
+    const command = path.join(__dirname, "..", "daemon", binary);
     const dataDir = path.join(__dirname, "..", "daemon", "data");
 
     // TODO: Data folder must exist or process will exit!!
@@ -38,7 +41,6 @@ export async function startDaemon(window: BrowserWindow) {
         command,
         [
             "-testnet",
-            "-daemon",
             "-printtoconsole",
             `-datadir=${dataDir}`,
             `-rpcuser=${rpcuser}`,
@@ -59,10 +61,11 @@ export async function startDaemon(window: BrowserWindow) {
 
     for await (const line of chunksToLines(pink2d.stdout)) {
 
+        // TODO: Parse error logs and send error in daemon-start-progress message.
+
         const stagePassed = startStages.some(stage => {
 
             const onTheList = line.includes(stage);
-
             if(onTheList) {
 
                 // Is stage the last entry on the startStages list?
@@ -84,20 +87,26 @@ export async function startDaemon(window: BrowserWindow) {
 
             progressStep += 1;
 
+            // Not used right now.
             if (progressStep === startStages.length) {
                 emitter.emit("daemon-started");
+
+                try {
+                    const resData = await getBlockCount();
+                    console.log("=======================GET DATA=======================");
+                    console.log(`Response status: ${resData.status}`);
+                    console.log(`Response message: ${resData.statusText}`);
+                    console.log(`Number of blocks ${resData.data}`);
+                } catch (err) {
+                    console.log("=======================THROW END=======================");
+                    console.error(err);
+                }
             }
         }
-
-        //     getBlockCount().then(blocks => {
-        //         console.log(`Number of blocks ${blocks}`);
-        //     }).catch(err => {
-        //         console.log(err);
-        //     });
-        // }
     }
 }
 
+// Not used right now.
 export function onDaemonStarted(cb) {
     emitter.on("daemon-started", cb);
 }

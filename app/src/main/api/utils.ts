@@ -1,20 +1,38 @@
 
 import axios from "axios";
 
+import logger from "../logger";
 
-const messageSwitcher = (errors, code) => (errors)[code];
 
-export async function apiCall(reqData, errors={}) {
+export async function apiCall(reqData) {
 
     try {
-        return await axios(reqData);
+        const resData = await axios(reqData);
+
+        if (resData.status === 200) {
+            return resData.data;
+        } else {
+            throw {
+                code: resData.status,
+                message: resData.statusText
+            };
+        }
 
     } catch (err) {
-        console.error(err);
-        if (err.code) {
-            throw messageSwitcher(errors, err.code);
+        if (err.response) {
+            throw {
+                code: err.response.status,
+                message: err.response.statusText
+            };
         } else {
-            throw { message: "Connection error!" };
+            logger.error(err);
+            if (err.message.includes("ECONNREFUSED")) {
+                const message = "Wrong URL specified or server is not running!";
+                logger.error(message);
+                throw {  code: 110, message };
+            } else {
+                throw {  code: 1, message: "Unknown connection error!" };
+            }
         }
     }
 }

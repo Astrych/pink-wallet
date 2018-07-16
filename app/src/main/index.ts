@@ -130,21 +130,6 @@ app.on("window-all-closed", () => {
     }
 });
 
-// onDaemonStarted(() => {
-
-//     splashWindow.destroy();
-//     tray = createTray(mainWindow);
-//     mainWindow.show();
-
-//     if (mainWindowState.isMaximized) {
-//         mainWindow.maximize();
-//     }
-
-//     if (process.env.NODE_ENV !== "production") {
-//         mainWindow.webContents.openDevTools({ mode : "detach" });
-//     }
-// });
-
 ipcMain.on("splash-finished", () => {
 
     splashWindow.destroy();
