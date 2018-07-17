@@ -1,9 +1,11 @@
 
 import { Readable } from "stream";
+import crypto from "crypto";
 
 
 export async function* chunksToLines(chunks: Readable): AsyncIterable<string> {
 
+    if (!chunks) throw new Error("Parameter is undefined!");
     if (!(Symbol.asyncIterator in chunks)) {
         throw new Error("Parameter is not an asynchronous iterable");
     }
@@ -31,4 +33,17 @@ export function stripEndOfLine(line: string): string {
     const match = RE_NEWLINE.exec(line);
     if (! match) return line;
     return line.slice(0, match.index);
+}
+
+export function randomizeAuth() {
+    return new Promise((resolve, reject) => {
+        crypto.randomBytes(50, (err, buffer) => {
+            if (err) {
+                reject(err);
+            } else {
+                const token = buffer.toString("hex");
+                resolve(token);
+            }
+        });
+    });
 }

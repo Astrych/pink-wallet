@@ -19,7 +19,7 @@ export function createTray(mainWindow: BrowserWindow) {
     else if (process.platform === "linux") icon = "icon-tray@2x.png";
 
     tray = new Tray(path.join(__dirname, `img/${icon}`));
-    tray.setToolTip(process.env.APP_TITLE);
+    tray.setToolTip(process.env.APP_TITLE as string);
 
     function toggleWindowVisibility() {
 

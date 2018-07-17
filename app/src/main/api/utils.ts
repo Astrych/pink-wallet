@@ -10,6 +10,10 @@ export async function apiCall(reqData) {
         const resData = await axios(reqData);
 
         if (resData.status === 200) {
+            console.debug("-----------------------------");
+            console.debug(resData.status);
+            console.debug(resData.statusText);
+            console.debug("-----------------------------");
             return resData.data;
         } else {
             throw {

@@ -5,7 +5,7 @@ import { BrowserWindow } from "electron";
 import EventEmitter from "events";
 
 import { getBlockCount } from "../api/blockchain";
-import { chunksToLines, stripEndOfLine } from "./utils";
+import { chunksToLines, randomizeAuth } from "./utils";
 import logger from "../logger";
 
 
@@ -21,12 +21,9 @@ const startStages = [
     "ThreadRPCServer started"
 ];
 
-const rpcuser = "pinkcoinrpc";
-const rpcpassword = "H7BZ9mLPBBoYo1gDjec1zsy5bTQQg458M9DA4Q7estnT";
-
 export let pink2d: ChildProcess | null = null;
 
-export async function startDaemon(window: BrowserWindow) {
+export async function startDaemon(window: BrowserWindow | null) {
 
     let binary = "pink2d";
     if (process.platform === "win32") binary += ".exe";
@@ -34,8 +31,13 @@ export async function startDaemon(window: BrowserWindow) {
     const dataDir = path.join(__dirname, "..", "daemon", "data");
 
     // TODO: Data folder must exist or process will exit!!
+    // TODO: Set chmod +x on pink2d for Linux (possibly for Mac??).
 
     const startTime = process.hrtime();
+
+    // Generates random auth.
+    const rpcuser = await randomizeAuth();
+    const rpcpassword = await randomizeAuth();
 
     pink2d = spawn(
         command,
@@ -50,7 +52,7 @@ export async function startDaemon(window: BrowserWindow) {
     );
 
     pink2d.on("error", err => {
-        logger.error("Daemon process error:", err);
+        logger.error("Daemon Process", err);
     });
 
     pink2d.on("exit", (code, signal) => {
@@ -59,50 +61,56 @@ export async function startDaemon(window: BrowserWindow) {
 
     let progressStep = 0;
 
-    for await (const line of chunksToLines(pink2d.stdout)) {
+    try {
 
-        // TODO: Parse error logs and send error in daemon-start-progress message.
+        for await (const line of chunksToLines(pink2d.stdout)) {
 
-        const stagePassed = startStages.some(stage => {
+            // TODO: Parse error logs and send error in daemon-start-progress message.
 
-            const onTheList = line.includes(stage);
-            if(onTheList) {
+            const stagePassed = startStages.some(stage => {
 
-                // Is stage the last entry on the startStages list?
-                if (startStages.indexOf(stage) === startStages.length - 1) {
-                    const totalTime = process.hrtime(startTime);
-                    logger.log(`Daemon started in ${totalTime[0]}s and ${totalTime[1]/1e6}ms.`);
+                const onTheList = line.includes(stage);
+                if(onTheList) {
+
+                    // Is stage the last entry on the startStages list?
+                    if (startStages.indexOf(stage) === startStages.length - 1) {
+                        const totalTime = process.hrtime(startTime);
+                        logger.log(`Daemon started in ${totalTime[0]}s and ${totalTime[1]/1e6}ms.`);
+                    }
                 }
-            }
 
-            return onTheList;
-        });
-
-        if (stagePassed) {
-
-            window.webContents.send("daemon-start-progress", {
-                step: progressStep,
-                total: startStages.length
+                return onTheList;
             });
 
-            progressStep += 1;
+            if (stagePassed) {
 
-            // Not used right now.
-            if (progressStep === startStages.length) {
-                emitter.emit("daemon-started");
+                window && window.webContents.send("daemon-start-progress", {
+                    step: progressStep,
+                    total: startStages.length
+                });
 
-                try {
-                    const resData = await getBlockCount();
-                    console.log("=======================GET DATA=======================");
-                    console.log(`Response status: ${resData.status}`);
-                    console.log(`Response message: ${resData.statusText}`);
-                    console.log(`Number of blocks ${resData.data}`);
-                } catch (err) {
-                    console.log("=======================THROW END=======================");
-                    console.error(err);
+                progressStep += 1;
+
+                if (progressStep === startStages.length) {
+                    // Not used right now.
+                    emitter.emit("daemon-started");
+
+                    try {
+                        const resData = await getBlockCount();
+                        console.log(`Number of blocks ${resData.data}`);
+                    } catch (err) {
+                        console.error(err);
+                    }
                 }
             }
         }
+
+    } catch (err) {
+
+        if (err.message === "Parameter is undefined!") {
+            throw new Error("Daemon is not running!");
+        }
+        throw err;
     }
 }
 

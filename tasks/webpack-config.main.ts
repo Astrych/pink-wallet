@@ -6,7 +6,7 @@ import nodeExternals from "webpack-node-externals";
 import { config, isDev as dev } from "./config";
 
 
-const appNodeModules = path.join(config.dirs.build, "node_modules");
+const appNodeModules = path.join(config.dirs.build as string, "node_modules");
 
 export const mainConfig: webpack.Configuration = {
 

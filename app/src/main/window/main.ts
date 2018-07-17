@@ -15,8 +15,8 @@ export let mainWindow: BrowserWindow | null;
 
 interface WindowState {
     position: {
-        x?: number,
-        y?: number
+        x: number,
+        y: number
     };
     size: {
         width: number,
@@ -27,7 +27,10 @@ interface WindowState {
 };
 
 export const state: WindowState = {
-    position: {},
+    position: {
+        x: 0,
+        y: 0
+    },
     size: {
         width: 1257,
         height: 805,
@@ -70,7 +73,7 @@ export function createMainWindow() {
         if (R.isEmpty(state.position) && !state.isMaximized) {
             // Workaround for issue:
             // https://github.com/electron/electron/issues/3490
-            if (process.platform === "linux") {
+            if (mainWindow && process.platform === "linux") {
                 state.position = getCenterPosition(mainWindow);
                 mainWindow.setPosition(state.position.x, state.position.y);
             }
@@ -83,20 +86,20 @@ export function createMainWindow() {
                 state.position.y -= state.position.y;
                 state.size.width -= 2*state.position.x;
             }
-            mainWindow.setPosition(state.position.x, state.position.y);
+            mainWindow && mainWindow.setPosition(state.position.x, state.position.y);
         }
     });
 
     function updateBounds() {
-        if (!state.isMaximized) {
-            const { x, y, width, height } = mainWindow.getBounds();
-            state.position = { x, y };
-            state.size = { width, height };
-        }
+        if (!mainWindow || state.isMaximized) return;
+
+        const { x, y, width, height } = mainWindow.getBounds();
+        state.position = { x, y };
+        state.size = { width, height };
     }
 
     function updateState() {
-        state.isMaximized = mainWindow.isMaximized();
+        if (mainWindow) state.isMaximized = mainWindow.isMaximized();
     }
 
     mainWindow.on("maximize", updateState);
@@ -106,6 +109,7 @@ export function createMainWindow() {
         // https://github.com/electron/electron/issues/12971
         if (process.platform === "win32") {
             setTimeout(() => {
+                if (!mainWindow) return;
                 const bounds = mainWindow.getBounds();
                 bounds.width += 1;
                 mainWindow.setBounds(bounds);
@@ -136,9 +140,8 @@ export function createMainWindow() {
     // Undocumented function allowing for dynamic color change.
     (mainWindow as any).setBackgroundColor(state.color);
 
-    // Will be removed by Webpack in production.
     if (process.env.NODE_ENV !== "production") {
-        mainWindow.loadURL(process.env.MAIN_VIEW);
+        mainWindow.loadURL(process.env.MAIN_VIEW as string);
 
         import("electron-devtools-installer")
         .then(module => {
@@ -160,7 +163,7 @@ export function createMainWindow() {
         });
 
     } else {
-        mainWindow.loadFile(process.env.MAIN_VIEW);
+        mainWindow.loadFile(process.env.MAIN_VIEW as string);
     }
 
     return mainWindow;

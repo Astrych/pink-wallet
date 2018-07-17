@@ -21,7 +21,8 @@ import { config } from "./config";
  */
 export function clean() {
 
-    return del([`${config.dirs.build}`, `${config.dirs.release}`], { force: true });
+    return del([
+        `${config.dirs.build}`, `${config.dirs.release}`], { force: true });
 }
 
 
@@ -30,7 +31,6 @@ export function cleanAll() {
     return del([
         `${config.dirs.build}`,
         `${config.dirs.release}`,
-        "node_modules",
         "coverage"
     ], { force: true });
 }

@@ -1,8 +1,9 @@
 
 import path from "path";
-import { BrowserWindow } from "electron";
+import { BrowserWindow, app } from "electron";
 
 import { getCenterPosition } from "../utils";
+import logger from "../logger";
 
 
 interface RunOnStart {
@@ -26,15 +27,16 @@ export function createSplashWindow(runOnStart: RunOnStart) {
     });
 
     if (process.env.NODE_ENV !== "production") {
-        splashWindow.loadURL(process.env.SPLASH_VIEW);
-
+        splashWindow.loadURL(process.env.SPLASH_VIEW as string);
     } else {
-        splashWindow.loadFile(process.env.SPLASH_VIEW);
+        splashWindow.loadFile(process.env.SPLASH_VIEW as string);
     }
+
 
     splashWindow.on("closed", () => splashWindow = null);
 
     splashWindow.once("ready-to-show", () => {
+        if (!splashWindow) return;
         // Workaround for issue:
         // https://github.com/electron/electron/issues/3490
         if (process.platform === "linux") {
@@ -45,7 +47,11 @@ export function createSplashWindow(runOnStart: RunOnStart) {
         splashWindow.show();
         splashWindow.webContents.openDevTools({ mode : "detach" });
 
-        runOnStart(splashWindow);
+        runOnStart(splashWindow)
+        .catch(err => {
+            logger.error(err);
+            app.exit(1);
+        });
     });
 
     return splashWindow;

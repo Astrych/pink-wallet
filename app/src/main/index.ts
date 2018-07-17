@@ -17,7 +17,7 @@ import {
 
 } from "./window/main";
 import { createTray } from "./window/tray";
-import { startDaemon, onDaemonStarted } from "./daemon/runner";
+import { startDaemon } from "./daemon/runner";
 import logger from "./logger";
 
 
@@ -54,11 +54,9 @@ if (!gotTheLock) app.quit();
 app.on("second-instance", () => {
     if (process.mas) return;
     if (splashWindow || mainWindow) {
-        if (splashWindow) {
-            splashWindow.focus();
-
-        } else {
-            if (mainWindow && mainWindow.isMinimized()) {
+        splashWindow && splashWindow.focus();
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) {
                 mainWindow.restore();
             }
             mainWindow.focus();
@@ -86,28 +84,30 @@ app.on("ready", () => {
         if (process.env.NODE_ENV !== "production") {
             // Workaround: patches webrequest to fix devtools incompatibility with electron >= 2.0
             // See https://github.com/electron/electron/issues/13008#issuecomment-400261941
-            session.defaultSession.webRequest.onBeforeRequest(
-                {} as Electron.OnBeforeRequestFilter,
-                (details, callback) => {
-                    if (details.url.indexOf("7accc8730b0f99b5e7c0702ea89d1fa7c17bfe33") !== -1) {
-                        callback({
-                            redirectURL: details.url.replace(
-                                "7accc8730b0f99b5e7c0702ea89d1fa7c17bfe33",
-                                "57c9d07b416b5a2ea23d28247300e4af36329bdc"
-                            )
-                        });
-                    } else if (details.url.indexOf("164c37e3f235134c88e80fac2a182cfba3f07f00") !== -1) {
-                        callback({
-                            redirectURL: details.url.replace(
-                                "164c37e3f235134c88e80fac2a182cfba3f07f00",
-                                "a10b9cedb40738cb152f8148ddab4891df876959"
-                            )
-                        });
-                    } else {
-                        callback({ cancel: false })
+            if (session.defaultSession) {
+                session.defaultSession.webRequest.onBeforeRequest(
+                    {} as Electron.OnBeforeRequestFilter,
+                    (details, callback) => {
+                        if (details.url.indexOf("7accc8730b0f99b5e7c0702ea89d1fa7c17bfe33") !== -1) {
+                            callback({
+                                redirectURL: details.url.replace(
+                                    "7accc8730b0f99b5e7c0702ea89d1fa7c17bfe33",
+                                    "57c9d07b416b5a2ea23d28247300e4af36329bdc"
+                                )
+                            });
+                        } else if (details.url.indexOf("164c37e3f235134c88e80fac2a182cfba3f07f00") !== -1) {
+                            callback({
+                                redirectURL: details.url.replace(
+                                    "164c37e3f235134c88e80fac2a182cfba3f07f00",
+                                    "a10b9cedb40738cb152f8148ddab4891df876959"
+                                )
+                            });
+                        } else {
+                            callback({ cancel: false })
+                        }
                     }
-                }
-            );
+                );
+            }
         }
 
     }, 300);
@@ -115,9 +115,9 @@ app.on("ready", () => {
 
 app.on("activate", () => {
     if (mainWindow === null) {
-        createMainWindow();
+        mainWindow = createMainWindow();
         mainWindow.once("ready-to-show", () => {
-            mainWindow.show();
+            mainWindow && mainWindow.show();
         });
     }
 });
@@ -132,15 +132,18 @@ app.on("window-all-closed", () => {
 
 ipcMain.on("splash-finished", () => {
 
-    splashWindow.destroy();
-    tray = createTray(mainWindow);
-    mainWindow.show();
+    splashWindow && splashWindow.destroy();
+    if (mainWindow) {
 
-    if (mainWindowState.isMaximized) {
-        mainWindow.maximize();
-    }
+        tray = createTray(mainWindow);
+        mainWindow.show();
 
-    if (process.env.NODE_ENV !== "production") {
-        mainWindow.webContents.openDevTools({ mode : "detach" });
+        if (mainWindowState.isMaximized) {
+            mainWindow.maximize();
+        }
+
+        if (process.env.NODE_ENV !== "production") {
+            mainWindow.webContents.openDevTools({ mode : "detach" });
+        }
     }
 });

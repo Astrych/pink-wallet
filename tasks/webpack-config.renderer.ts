@@ -50,9 +50,7 @@ export const rendererConfig: webpack.Configuration = {
         }
     },
     module: {
-
         rules: [
-
             {
                 test: /\.tsx?$/,
                 use: [
@@ -127,39 +125,34 @@ export const rendererConfig: webpack.Configuration = {
         __dirname: false,
         __filename: false
     },
-    plugins: dev ? [
+    plugins: [
+        new ForkTsCheckerWebpackPlugin({
 
-        new webpack.HotModuleReplacementPlugin()
+            tsconfig: "../../tsconfig.json",
+            tslint: "../../tslint.json",
+            watch: ["./renderer"],
+            workers: ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE
+        }),
+        new HtmlWebpackPlugin({
 
-    ] : []
+            title: config.appTitle,
+            template: "./template.html",
+            filename: "splash.html",
+            chunks: ["splash-bundle"],
+            dev
+        }),
+        new HtmlWebpackPlugin({
+
+            title: config.appTitle,
+            template: "./template.html",
+            filename: "main.html",
+            chunks: ["main-bundle"],
+            dev
+        }),
+        analyze && new BundleAnalyzerPlugin(),
+        dev && new webpack.HotModuleReplacementPlugin(),
+
+    // Removes non-plugin boolean
+    // values from conditional checks.
+    ].filter(plugin => plugin != null)
 }
-
-if (analyze) {
-    rendererConfig.plugins.unshift(new BundleAnalyzerPlugin());
-}
-
-rendererConfig.plugins.unshift(
-
-    new ForkTsCheckerWebpackPlugin({
-
-        tsconfig: "../../tsconfig.json",
-        tslint: "../../tslint.json",
-        watch: ["./renderer"]
-    }),
-    new HtmlWebpackPlugin({
-
-        title: config.appTitle,
-        template: "./template.html",
-        filename: "splash.html",
-        chunks: ["splash-bundle"],
-        dev
-    }),
-    new HtmlWebpackPlugin({
-
-        title: config.appTitle,
-        template: "./template.html",
-        filename: "main.html",
-        chunks: ["main-bundle"],
-        dev
-    })
-);

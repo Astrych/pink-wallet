@@ -5,7 +5,7 @@ import { calcProgressSteps } from "../splash-screen";
 describe("Splash screen progress list", () => {
     it("should be correct", () => {
 
-        const progressList = [];
+        const progressList: number[] = [];
 
         const total = 10;
         const subSteps = 2;
