@@ -4,16 +4,20 @@ import axios from "axios";
 import logger from "../logger";
 
 
-export async function apiCall(reqData) {
+axios.defaults.headers.post["content-type"] = "application/json";
+
+interface Data {
+    result: string | number | object | null;
+    error;
+    id;
+}
+
+export async function apiCall(reqData): Promise<Data> {
 
     try {
         const resData = await axios(reqData);
 
         if (resData.status === 200) {
-            console.debug("-----------------------------");
-            console.debug(resData.status);
-            console.debug(resData.statusText);
-            console.debug("-----------------------------");
             return resData.data;
         } else {
             throw {
