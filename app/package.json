@@ -12,13 +12,17 @@
   "bugs": {
     "url": "https://github.com/Astrych/pink-wallet/issues"
   },
+  "daemon-repository": {
+    "user": "Astrych",
+    "name": "Pink2"
+  },
   "keywords": [
     "PINK",
     "Pinkcoin",
     "Charity",
     "Blockchain"
   ],
-  "main": "main.js",
+  "main": "app.js",
   "dependencies": {
     "electron-log": "2.2.16",
     "electron-store": "2.0.0",

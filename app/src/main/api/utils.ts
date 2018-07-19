@@ -1,18 +1,42 @@
 
 import axios from "axios";
 
+import { Auth } from "../daemon/config";
 import logger from "../logger";
 
 
 axios.defaults.headers.post["content-type"] = "application/json";
 
-interface Data {
+
+export interface D4LData {
+    success?: string;
+    accounts?: Array<any>;
+}
+
+export interface RPCData {
     result: string | number | object | null;
     error;
     id;
 }
 
-export async function apiCall(reqData): Promise<Data> {
+export interface GithubData {
+    tag_name: string;
+    name: string;
+    body: string;
+    assets: Array<any>;
+}
+
+type Data = D4LData | RPCData | GithubData;
+
+interface Request {
+    baseURL: string;
+    url?: string;
+    method: string;
+    data?;
+    auth?: Auth;
+}
+
+export async function apiCall(reqData: Request): Promise<Data> {
 
     try {
         const resData = await axios(reqData);

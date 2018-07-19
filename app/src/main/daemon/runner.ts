@@ -7,15 +7,18 @@ import { spawn, ChildProcess } from "child_process";
 import { BrowserWindow } from "electron";
 import EventEmitter from "events";
 
+import { downloadDaemon } from "./downloader";
 import {
 
+    stop,
     getBlockCount,
     getBlockHash,
     getBlockData,
     getConnectionCount,
 
 } from "../api/blockchain";
-import { chunksToLines, randomizeAuth, sleep } from "./utils";
+import config, { initAuth } from "./config";
+import { chunksToLines, sleep } from "./utils";
 import logger from "../logger";
 
 
@@ -39,49 +42,51 @@ export async function startDaemon(window: BrowserWindow | null) {
 
     const startTime = process.hrtime();
 
-    let binary = "pink2d";
-    if (process.platform === "win32") binary += ".exe";
-    const command = path.join(__dirname, "..", "daemon", binary);
-    const dataDir = path.join(__dirname, "..", "daemon", "data");
+    try { await downloadDaemon(); } catch (err) {
+        if (err.code === 404) {
+            throw Error("Daemon binary not available!");
+        }
+        throw err;
+    }
 
-    try { await fs.access(command); } catch {
+    try { await fs.access(config.command); } catch {
         // TODO: Download daemon or exit??
-        throw Error("Daemon binary does not exist!");
+        logger.warn("Daemon binary does not exist!");
     }
 
-    // Checks binary executable flag for non-Windows
-    // platforms and sets access rights if necessary.
+    // Checks binary executable permission for non-Windows
+    // platforms and sets correct access rights if necessary.
     if (process.platform !== "win32") {
-        const stat = await fs.stat(command);
-        if (!(stat.mode & 100)) await fs.chmod(command, "700");
+        const stat = await fs.stat(config.command);
+        if (!((stat.mode >> 6) & 1)) {
+            await fs.chmod(config.command, "700");
+        }
     }
 
-    try { await fs.access(dataDir); } catch {
+    try { await fs.access(config.dataDir); } catch {
 
         logger.warn("Daemon data directory does not exist! Recreating it...");
 
-        try { await fs.mkdir(dataDir); } catch (err) {
+        try { await fs.mkdir(config.dataDir); } catch (err) {
             if (err.message.includes("ENOENT")) {
                 const pathSep = process.platform !== "win32" ? "/" : "\\";
-                const daemonDir = dataDir.substring(0, dataDir.lastIndexOf(pathSep));
+                const daemonDir = config.dataDir.substring(0, config.dataDir.lastIndexOf(pathSep));
                 throw Error(`Main daemon directory does not exist: ${daemonDir}`);
             }
             throw err;
         }
     }
 
-    // Generates random auth.
-    const username = await randomizeAuth();
-    const password = await randomizeAuth();
+    const newAuth = await initAuth();
 
     pink2d = spawn(
-        command,
+        config.command,
         [
             "-testnet",
             "-printtoconsole",
-            `-datadir=${dataDir}`,
-            `-rpcuser=${username}`,
-            `-rpcpassword=${password}`,
+            `-datadir=${config.dataDir}`,
+            `-rpcuser=${newAuth.username}`,
+            `-rpcpassword=${newAuth.password}`,
             "-rpcallowip=127.0.0.1"
         ],
     );
@@ -89,7 +94,7 @@ export async function startDaemon(window: BrowserWindow | null) {
     pink2d.on("error", err => {
         logger.error("Daemon Process", err);
         if (process.platform !== "win32" && err.message.includes("EACCES")) {
-            logger.error("Daemon binary probably is not executable!");
+            logger.error("Daemon binary is not executable or has wrong owner!");
         }
         if (err.message.includes("ENOENT")) {
             logger.error("Daemon binary probably does not exist!");
@@ -106,20 +111,18 @@ export async function startDaemon(window: BrowserWindow | null) {
         window,
         progressStep: 0,
         startTime,
-        auth: {
-            username,
-            password
-        }
     };
 
     // Handles daemon log stream.
     try { await handleLogStream(params); } catch (err) {
 
-        window && window.webContents.send("daemon-start-progress", {
-            step: params.progressStep,
-            total: startStages.length,
-            error: true
-        });
+        if (window && !window.isDestroyed()) {
+            window.webContents.send("daemon-start-progress", {
+                step: params.progressStep,
+                total: startStages.length,
+                error: true
+            });
+        }
 
         if (err.message === "Parameter is undefined!") {
             throw new Error("Daemon has not started!");
@@ -128,18 +131,26 @@ export async function startDaemon(window: BrowserWindow | null) {
     }
 }
 
-interface HandlerParams {
+interface LogHandlerParams {
     stdout: Readable;
     window: BrowserWindow | null;
     progressStep: number;
     startTime: [number, number];
-    auth;
 }
 
-async function handleLogStream({ stdout, window, progressStep, startTime, auth }: HandlerParams ) {
+async function handleLogStream({
+    stdout,
+    window,
+    progressStep,
+    startTime,
+}: LogHandlerParams) {
+
+    const logFile = await fs.open(path.join(config.dataDir, "daemon.log"), "a");
+
+    // TODO: Parse error logs and send error in daemon-start-progress message.
     for await (const line of chunksToLines(stdout)) {
 
-        // TODO: Parse error logs and send error in daemon-start-progress message.
+        logFile.appendFile(line);
 
         const stagePassed = startStages.some(stage => {
 
@@ -158,50 +169,69 @@ async function handleLogStream({ stdout, window, progressStep, startTime, auth }
 
         if (stagePassed) {
 
-            await sleep(1000);
-
-            window && window.webContents.send("daemon-start-progress", {
-                step: progressStep,
-                total: startStages.length
-            });
+            if (window && !window.isDestroyed()){
+                window.webContents.send("daemon-start-progress", {
+                    step: progressStep,
+                    total: startStages.length
+                });
+            }
 
             progressStep += 1;
 
             if (progressStep === startStages.length) {
-                // Not used right now.
                 emitter.emit("daemon-started");
-
-                try {
-                    const countData = await getBlockCount(auth);
-                    console.log("Number of blocks:");
-                    console.log(util.inspect(countData, {showHidden: false, depth: null}));
-
-                    const hashData = await getBlockHash(auth, 2);
-                    console.log("Block 2 hash:");
-                    console.log(util.inspect(hashData, {showHidden: false, depth: null}));
-
-                    const blockData = await getBlockData(auth, hashData.result as string);
-                    console.log(`Block ${hashData.result} data:`);
-                    console.log(util.inspect(blockData, {showHidden: false, depth: null}));
-
-                    const connectionCountData = await getConnectionCount(auth);
-                    console.log("Connection count:");
-                    console.log(util.inspect(connectionCountData, {showHidden: false, depth: null}));
-                } catch (err) {
-                    console.error(err);
-                }
             }
         }
     }
 
-    // If we are here wallet daemon is not running...
-    // TODO: How to handle this??
-    // Check folders and binary existance and recreate if necessary?
-    // Restart daemon?
-    throw Error("Daemon is not running!");
+    logFile.close();
+
+    emitter.emit("daemon-stopped");
 }
 
-// Not used right now.
 export function onDaemonStarted(cb) {
     emitter.on("daemon-started", cb);
 }
+
+export function onDaemonStopped(cb) {
+    emitter.on("daemon-stopped", cb);
+}
+
+onDaemonStarted(async () => {
+    try {
+
+        const countData = await getBlockCount(config.auth);
+        console.log("Number of blocks:");
+        console.log(util.inspect(countData, {showHidden: false, depth: null}));
+
+        const hashData = await getBlockHash(config.auth, 2);
+        console.log("Block 2 hash:");
+        console.log(util.inspect(hashData, {showHidden: false, depth: null}));
+
+        const blockData = await getBlockData(config.auth, hashData.result as string);
+        console.log(`Block ${hashData.result} data:`);
+        console.log(util.inspect(blockData, {showHidden: false, depth: null}));
+
+        const connectionCountData = await getConnectionCount(config.auth);
+        console.log("Connection count:");
+        console.log(util.inspect(connectionCountData, {showHidden: false, depth: null}));
+
+        await sleep(10000);
+
+        const stopData = await stop(config.auth);
+        console.log(stopData);
+
+        await sleep(10000);
+
+        const countData2 = await getBlockCount(config.auth);
+        console.log("Number of blocks 2:");
+        console.log(util.inspect(countData2, {showHidden: false, depth: null}));
+
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+onDaemonStopped(() => {
+    logger.warn("DAEMON HAS STOPPED!");
+});

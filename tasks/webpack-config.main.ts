@@ -15,7 +15,7 @@ export const mainConfig: webpack.Configuration = {
     context: config.dirs.app.src,
     entry: {
 
-        main: "./main/index.ts"
+        app: "./main/index.ts"
     },
     output: {
 
@@ -26,7 +26,10 @@ export const mainConfig: webpack.Configuration = {
     resolve: {
 
         extensions: [".ts", ".js", ".json", ".node"],
-        modules: [appNodeModules]
+        modules: [appNodeModules],
+        alias: {
+            "package.json": path.join(config.dirs.app.main, "package.json")
+        }
     },
     module: {
 

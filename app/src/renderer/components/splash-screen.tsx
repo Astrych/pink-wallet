@@ -17,6 +17,9 @@ interface ProgresStepArgs {
     subSteps: number;
 }
 
+/**
+ * Calculates sub-steps to simulate fluid progess update.
+ */
 export function calcProgressSteps({ step, total, subSteps }: ProgresStepArgs) {
     const subProgress = 100/total;
     return Array.from(

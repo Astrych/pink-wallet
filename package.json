@@ -153,9 +153,10 @@
     }
   },
   "build": {
-    "appId": "pinkcoin.wallet.desktop.ui",
+    "appId": "com.electron.pinkcoin",
     "productName": "Pinkcoin Wallet UI",
     "directories": {
+      "app": "build",
       "output": "build"
     },
     "publish": {

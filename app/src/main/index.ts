@@ -9,14 +9,14 @@ import {
 
 } from "electron";
 
-import { createSplashWindow } from "./window/splash";
+import { createSplashWindow } from "./windows/splash";
 import {
 
     createMainWindow,
     state as mainWindowState
 
-} from "./window/main";
-import { createTray } from "./window/tray";
+} from "./windows/main";
+import { createTray } from "./windows/tray";
 import { startDaemon } from "./daemon/runner";
 import logger from "./logger";
 
@@ -37,7 +37,7 @@ if (process.env.NODE_ENV !== "production") {
 
     if (process.platform === "win32") {
         // any as a workaround for lack of typings for that function.
-        (app as any).setAppUserModelId("pinkcoin.wallet.desktop.ui");
+        (app as any).setAppUserModelId("com.electron.pinkcoin");
     }
 }
 

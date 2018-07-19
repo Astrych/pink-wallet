@@ -10,7 +10,7 @@ describe("D4L API", () => {
 
         try {
             const resData = await getD4LData();
-            expect(resData["success"]).toBeDefined();
+            expect(resData.success).toBeDefined();
         } catch (err) {
             expect(err.message && err.code).toBeDefined();
         }

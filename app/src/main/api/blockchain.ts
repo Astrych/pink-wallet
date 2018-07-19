@@ -1,12 +1,11 @@
 
 import { apiCall } from "./utils";
 import { daemonBaseURL } from "./config";
+import { Auth } from "../daemon/config";
+
+import { RPCData } from "./utils";
 
 
-interface Auth {
-    username: string;
-    password: string;
-}
 type Params = string | number | null;
 
 /**
@@ -21,15 +20,13 @@ async function getBlockchainData(auth: Auth, method: string, params:Params=null)
     };
 
     const reqData = {
-
         baseURL: daemonBaseURL,
         method: "POST",
         data: payload,
         auth
     };
-    return await apiCall(reqData);
+    return <RPCData>(await apiCall(reqData));
 }
-
 
 /**
  * Get total number of blocks.
@@ -57,4 +54,11 @@ export async function getBlockData(auth: Auth, blockHash: string) {
  */
 export async function getConnectionCount(auth: Auth) {
     return await getBlockchainData(auth, "getconnectioncount");
+}
+
+/**
+ * Stops the daemon.
+ */
+export async function stop(auth: Auth) {
+    return await getBlockchainData(auth, "stop");
 }

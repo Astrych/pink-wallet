@@ -5,6 +5,8 @@ import packager from "electron-packager";
 import { config } from "./config";
 
 
+// TODO: Replace or enhance with electron-builedr:
+// https://www.electron.build/api/electron-builder/
 /**
  * Creates release versions.
  */
