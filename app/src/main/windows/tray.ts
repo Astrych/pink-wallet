@@ -5,7 +5,8 @@ import {
     app,
     Tray,
     Menu,
-    BrowserWindow
+    BrowserWindow,
+    shell
 
 } from "electron";
 
@@ -39,9 +40,26 @@ export function createTray(mainWindow: BrowserWindow) {
             },
             { type: "separator" },
             {
+                role: "help",
+                submenu: [
+                    {
+                        label: "Visit Pinkcoin website",
+                        click() { shell.openExternal("https://getstarted.with.pink/"); }
+                    },
+                    {
+                        label: "Visit Donate4Life website",
+                        click() { shell.openExternal("https://donate.with.pink/"); }
+                    },
+                    {
+                        label: "Visit Pinkcoin blog",
+                        click() { shell.openExternal("https://pinkbuffaloz.com/"); }
+                    },
+                ]
+            },
+            { type: "separator" },
+            {
                 label: "Quit",
                 click() {
-                    tray.destroy();
                     app.quit();
                 }
             },

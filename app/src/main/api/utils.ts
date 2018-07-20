@@ -5,9 +5,6 @@ import { Auth } from "../daemon/config";
 import logger from "../logger";
 
 
-axios.defaults.headers.post["content-type"] = "application/json";
-
-
 export interface D4LData {
     success?: string;
     accounts?: Array<any>;

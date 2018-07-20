@@ -23,9 +23,19 @@ async function getBlockchainData(auth: Auth, method: string, params:Params=null)
         baseURL: daemonBaseURL,
         method: "POST",
         data: payload,
-        auth
+        headers: {
+            "content-type": "application/json"
+        },
+        auth,
     };
     return <RPCData>(await apiCall(reqData));
+}
+
+/**
+ * Stops the daemon.
+ */
+export async function stop(auth: Auth) {
+    return await getBlockchainData(auth, "stop");
 }
 
 /**
@@ -54,11 +64,4 @@ export async function getBlockData(auth: Auth, blockHash: string) {
  */
 export async function getConnectionCount(auth: Auth) {
     return await getBlockchainData(auth, "getconnectioncount");
-}
-
-/**
- * Stops the daemon.
- */
-export async function stop(auth: Auth) {
-    return await getBlockchainData(auth, "stop");
 }

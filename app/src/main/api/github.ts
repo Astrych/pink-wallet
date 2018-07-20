@@ -19,3 +19,7 @@ export async function getLatestRelease(repoURL) {
     };
     return <GithubData>(await apiCall(reqData));
 }
+
+export async function downloadDaemon(path: string) {
+
+}

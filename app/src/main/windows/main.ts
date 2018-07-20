@@ -1,6 +1,6 @@
 
 import path from "path";
-import { BrowserWindow } from "electron";
+import { BrowserWindow, shell } from "electron";
 import Store from "electron-store";
 import R from "ramda";
 import debounce from "lodash.debounce";
@@ -66,7 +66,14 @@ export function createMainWindow() {
     });
 
     mainWindow.setMenu(null);
+
     mainWindow.on("closed", () => mainWindow = null);
+
+    // Handles external URLs.
+    mainWindow.webContents.on("new-window", (event, url) => {
+        event.preventDefault();
+        shell.openExternal(url);
+    });
 
     mainWindow.once("ready-to-show", () => {
         initAutoUpdater();

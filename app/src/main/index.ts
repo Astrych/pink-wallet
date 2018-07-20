@@ -125,7 +125,6 @@ app.on("activate", () => {
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
         logger.info("App is quitting...");
-        tray.destroy();
         app.quit();
     }
 });
