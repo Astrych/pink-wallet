@@ -2,7 +2,6 @@
 import {
 
     app,
-    Tray,
     ipcMain,
     session,
     BrowserWindow
@@ -19,6 +18,7 @@ import {
 import { createTray } from "./windows/tray";
 import { startDaemon } from "./daemon/runner";
 import logger from "./logger";
+import { sleep } from "./utils";
 
 
 if (process.env.NODE_ENV !== "production") {
@@ -65,52 +65,31 @@ app.on("second-instance", () => {
 });
 
 
-let tray: Tray;
 let mainWindow: BrowserWindow | null;
 let splashWindow: BrowserWindow | null;
 
-app.on("ready", () => {
+app.on("ready", async () => {
 
     logger.info("App is starting...");
 
-    // setTimeout as a workaround for transparency issue
+    // Sleep as a workaround for transparency issue
     // https://github.com/electron/electron/issues/2170
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=854601#c7
-    setTimeout(() => {
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=854601
+    await sleep(300);
 
-        mainWindow = createMainWindow();
-        splashWindow = createSplashWindow(startDaemon);
+    mainWindow = createMainWindow();
+    splashWindow = createSplashWindow(startDaemon);
 
-        if (process.env.NODE_ENV !== "production") {
-            // Workaround: patches webrequest to fix devtools incompatibility with electron >= 2.0
-            // See https://github.com/electron/electron/issues/13008#issuecomment-400261941
-            if (session.defaultSession) {
-                session.defaultSession.webRequest.onBeforeRequest(
-                    {} as Electron.OnBeforeRequestFilter,
-                    (details, callback) => {
-                        if (details.url.indexOf("7accc8730b0f99b5e7c0702ea89d1fa7c17bfe33") !== -1) {
-                            callback({
-                                redirectURL: details.url.replace(
-                                    "7accc8730b0f99b5e7c0702ea89d1fa7c17bfe33",
-                                    "57c9d07b416b5a2ea23d28247300e4af36329bdc"
-                                )
-                            });
-                        } else if (details.url.indexOf("164c37e3f235134c88e80fac2a182cfba3f07f00") !== -1) {
-                            callback({
-                                redirectURL: details.url.replace(
-                                    "164c37e3f235134c88e80fac2a182cfba3f07f00",
-                                    "a10b9cedb40738cb152f8148ddab4891df876959"
-                                )
-                            });
-                        } else {
-                            callback({ cancel: false })
-                        }
-                    }
-                );
-            }
-        }
-
-    }, 300);
+    // Sets CSP headers.
+        // if (session.defaultSession) {
+        //     session.defaultSession.webRequest.onHeadersReceived((details, cb) => {
+        //         cb({
+        //             responseHeaders: {
+        //                 "Content-Security-Policy": "default-src 'none'; script-src 'self'"
+        //             }
+        //         });
+        //     });
+        // }
 });
 
 app.on("activate", () => {
@@ -134,7 +113,7 @@ ipcMain.on("splash-finished", () => {
     splashWindow && splashWindow.destroy();
     if (mainWindow) {
 
-        tray = createTray(mainWindow);
+        createTray(mainWindow);
         mainWindow.show();
 
         if (mainWindowState.isMaximized) {

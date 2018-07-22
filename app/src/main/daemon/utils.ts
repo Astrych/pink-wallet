@@ -33,7 +33,3 @@ export function stripEndOfLine(line: string): string {
     if (! match) return line;
     return line.slice(0, match.index);
 }
-
-export function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}

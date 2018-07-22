@@ -14,31 +14,17 @@ export const rendererConfig: webpack.Configuration = {
     mode: config.releaseType,
     devtool: dev ? "eval-source-map" : "source-map",
     context: config.dirs.app.src,
-    entry: dev ? {
+    entry: {
 
-        "splash-bundle": [
-
-            "./renderer/splash.tsx",
-            "webpack-hot-middleware/client?reload=true"
-        ],
-        "main-bundle": [
-
-            "./renderer/main.tsx",
-            "webpack-hot-middleware/client?reload=true"
-        ]
-
-    } : {
-
-        "splash-bundle": "./renderer/splash.tsx",
-        "main-bundle": `./renderer/main.tsx`
-
+        "main-bundle": [`./renderer/main.tsx`],
+        "splash-bundle": ["./renderer/splash.tsx"],
     },
     output: {
 
         filename: "[name].js",
         libraryTarget: "commonjs2",
         path: config.dirs.build,
-        publicPath: "./"
+        publicPath: "/"
     },
     resolve: {
 
@@ -150,7 +136,6 @@ export const rendererConfig: webpack.Configuration = {
             dev
         }),
         analyze && new BundleAnalyzerPlugin(),
-        dev && new webpack.HotModuleReplacementPlugin(),
 
     // Removes non-plugin boolean
     // values from conditional checks.

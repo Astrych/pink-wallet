@@ -72,7 +72,7 @@ export function createMainWindow() {
     // Handles external URLs.
     mainWindow.webContents.on("new-window", (event, url) => {
         event.preventDefault();
-        shell.openExternal(url);
+        if (url.match(/^https?:\/\//)) shell.openExternal(url);
     });
 
     mainWindow.once("ready-to-show", () => {

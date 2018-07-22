@@ -18,7 +18,8 @@ import {
 
 } from "../api/blockchain";
 import config, { initAuth } from "./config";
-import { chunksToLines, sleep } from "./utils";
+import { chunksToLines } from "./utils";
+import { sleep } from "../utils";
 import logger from "../logger";
 
 

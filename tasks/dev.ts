@@ -1,5 +1,4 @@
 
-import { join } from "path";
 import { spawn, ChildProcess } from "child_process";
 import kill from "tree-kill";
 import del from "del";
@@ -7,10 +6,10 @@ import extend from "xtend";
 import { task, src, dest, watch, series } from "gulp";
 import changed from "gulp-changed";
 import install from "gulp-install";
-import Browser from "browser-sync";
-import webpack from "webpack";
-import webpackDevMiddleware from "webpack-dev-middleware";
-import webpackHotMiddleware from "webpack-hot-middleware";
+import { Server } from "http";
+import Koa from "koa";
+import serveStatic from "koa-static";
+import koaWebpack from "koa-webpack";
 
 import { rendererConfig } from "./webpack-config.renderer";
 import { config } from "./config";
@@ -64,62 +63,49 @@ function runElectronApp(path: string, env: object={}) {
 }
 
 
-let appProccess: ChildProcess;
-let devServer: Browser.BrowserSyncInstance;
-let devBundler: webpack.Compiler;
+let appProccess: ChildProcess | null = null;
+let devServer: Server | null = null;
 
 /**
  * Compiles/packs files and runs development server for HMR.
  */
-export function serveRendererView(done: Function) {
+export async function serveRendererView() {
 
-    devServer = Browser.create();
-    devBundler = webpack(rendererConfig);
+    const app = new Koa();
 
-    const options: Browser.Options = {
+    app.use(serveStatic(config.dirs.build));
 
-        ui: false,
-        ghostMode: false,
-        open: false,
-        notify: false,
-        logSnippet: false,
-        logFileChanges: false,
-        localOnly: true,
-        server: config.dirs.build,
-        middleware: [
+    const middleware = await koaWebpack({
+        config: rendererConfig,
+        devMiddleware: {
+            stats: "minimal",
+            lazy: false,
+            publicPath: "/"
+        },
+        hotClient: {
+            validTargets: [
+                rendererConfig.target as string
+            ],
+        }
+    });
 
-            webpackDevMiddleware(devBundler, {
-                stats: "minimal",
-                hot: true
-            }),
-            webpackHotMiddleware(devBundler)
-        ],
-        files: [
-            join(config.dirs.app.src, "template.html")
-        ],
-        logLevel: "silent"
-    };
+    app.use(middleware);
 
-    devServer.init(options, err => {
+    devServer = app.listen(3000);
 
-        if (err) return done(err);
-
-        appProccess = runElectronApp(config.dirs.build);
-
-        appProccess.on("close", () => {
-            process.exit();
-        });
-
-        if (process.platform !== "win32") {
-
-            process.on("SIGINT", () => {
-                kill(appProccess.pid, "SIGKILL");
+    appProccess = runElectronApp(config.dirs.build);
+    appProccess.on("close", () => {
+        process.exit();
+    });
+    if (process.platform !== "win32") {
+        process.on("SIGINT", () => {
+            middleware.devMiddleware.close();
+            devServer && devServer.close(() => {
+                appProccess && kill(appProccess.pid, "SIGKILL");
                 process.exit();
             });
-        }
-
-        done();
-    });
+        });
+    }
 }
 
 /**
@@ -129,7 +115,7 @@ export function monitorWindowFiles(done: Function) {
 
     // Task stoping application.
     task("stop app", done => {
-        kill(appProccess.pid, "SIGKILL");
+        appProccess && kill(appProccess.pid, "SIGKILL");
         done();
     });
 

@@ -12,3 +12,7 @@ export function getCenterPosition(window: BrowserWindow) {
 
     return { x: Math.floor(x), y: Math.floor(y) };
 }
+
+export function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
