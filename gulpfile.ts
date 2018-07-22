@@ -23,20 +23,23 @@ import { platform } from "./tasks/config";
 task("clean", clean);
 task("clean-all", cleanAll);
 
+// Prepares build folder + app vendor libs.
+task("prepare", installAppLibs);
+
 // Build tasks.
 task("prepare app: main part", appBuilder.mainTask);
 task("prepare app: all parts", appBuilder.allTasks);
-task("prepare libs and assets", assetsBuilder.tasks);
+task("prepare assets", assetsBuilder.tasks);
 
 task("build: development", series(
 
-    "prepare libs and assets",
+    "prepare assets",
     "prepare app: main part"
 ));
 
 task("build: production", series(
 
-    "prepare libs and assets",
+    "prepare assets",
     "prepare app: all parts"
 ));
 
@@ -51,10 +54,13 @@ task("start", series(
     "watch window files"
 ));
 
-// Prepares build folder + app vendor libs.
-task("prepare", installAppLibs);
-
 task("default", series("start"));
 
 // Production build task.
-task("builder", series("clean", "build: production", appPackager[platform]));
+task("builder", series(
+
+    "clean",
+    "prepare",
+    "build: production",
+    appPackager[platform]
+));

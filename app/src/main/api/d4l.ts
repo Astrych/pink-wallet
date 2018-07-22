@@ -1,17 +1,16 @@
 
-import { apiCall } from "./utils";
+import axios from "axios";
+
+import { apiCall, D4LData } from "./common";
 import { d4lBaseURL } from "./config";
 
-import { D4LData } from "./utils";
 
+const instance = axios.create({
+    baseURL: d4lBaseURL,
+    url: `/accounts/`,
+    method: "GET",
+});
 
 export async function getD4LData() {
-
-    const reqData = {
-
-        baseURL: d4lBaseURL,
-        url: `/accounts/`,
-        method: "GET"
-    };
-    return <D4LData>(await apiCall(reqData));
+    return <D4LData>(await apiCall(instance));
 }

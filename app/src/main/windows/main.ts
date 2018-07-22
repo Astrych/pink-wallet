@@ -1,12 +1,11 @@
 
-import path from "path";
+import { join } from "path";
 import { BrowserWindow, shell } from "electron";
 import Store from "electron-store";
 import R from "ramda";
 import debounce from "lodash.debounce";
 
-import { initAutoUpdater } from "../auto-updater";
-import { getCenterPosition } from "../utils";
+import { getCenterPosition } from "./utils";
 
 
 const store = new Store();
@@ -62,7 +61,7 @@ export function createMainWindow() {
         frame: false,
         useContentSize: true,
         titleBarStyle: "hiddenInset",
-        icon: path.join(__dirname, `img/icon.${process.platform === "win32" ? "ico" : "png"}`),
+        icon: join(__dirname, `img/icon.${process.platform === "win32" ? "ico" : "png"}`),
     });
 
     mainWindow.setMenu(null);
@@ -76,7 +75,6 @@ export function createMainWindow() {
     });
 
     mainWindow.once("ready-to-show", () => {
-        initAutoUpdater();
         if (R.isEmpty(state.position) && !state.isMaximized) {
             // Workaround for issue:
             // https://github.com/electron/electron/issues/3490

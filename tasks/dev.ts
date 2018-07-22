@@ -55,7 +55,7 @@ function runElectronApp(path: string, env: object={}) {
     let command = "electron";
     if (process.platform === "win32") command += ".cmd";
 
-    return spawn(command, [path], {
+    return spawn(command, [path, "--testnet"], {
         cwd: path,
         env: extend({ NODE_ENV: "development" }, env, process.env),
         stdio: "inherit"

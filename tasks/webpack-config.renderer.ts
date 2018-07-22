@@ -1,5 +1,5 @@
 
-import path from "path";
+import { join } from "path";
 import webpack from "webpack";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -31,8 +31,9 @@ export const rendererConfig: webpack.Configuration = {
         extensions: [".tsx", ".ts", ".js", ".json"],
         alias: {
             "@assets": config.dirs.app.assets,
-            "@logic": path.resolve(config.dirs.app.src, "renderer", "logic"),
-            "@components": path.resolve(config.dirs.app.src, "renderer", "components")
+            "@logic": join(config.dirs.app.src, "renderer/logic"),
+            "@components": join(config.dirs.app.src, "renderer/components"),
+            "@common": join(config.dirs.app.src, "common"),
         }
     },
     module: {

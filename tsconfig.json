@@ -18,14 +18,17 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
+            "@assets/*": [
+                "app/assets/*"
+            ],
+            "@common/*": [
+                "app/src/common/*"
+            ],
             "@logic/*": [
                 "app/src/renderer/logic/*"
             ],
             "@components/*": [
                 "app/src/renderer/components/*"
-            ],
-            "@assets/*": [
-                "app/assets/*"
             ],
             "*": ["build/node_modules/*"]
         }

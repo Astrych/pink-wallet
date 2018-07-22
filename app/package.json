@@ -29,6 +29,7 @@
     "electron-updater": "2.23.3",
     "ramda": "0.25.0",
     "lodash.debounce": "4.0.8",
-    "axios": "0.18.0"
+    "axios": "0.18.0",
+    "commander": "2.16.0"
   }
 }

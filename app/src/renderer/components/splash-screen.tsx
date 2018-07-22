@@ -6,10 +6,8 @@ import { hot } from "react-hot-loader";
 import SplashImg from "./splash/image";
 import SplashProgress from "./splash/progress";
 
+import { sleep } from "@common/utils";
 
-function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 interface ProgresStepArgs {
     step: number;

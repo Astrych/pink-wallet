@@ -13,6 +13,6 @@ export function initAutoUpdater() {
 
     if (process.env.NODE_ENV !== "production") return;
 
-    autoUpdater.logger = logger;
-    autoUpdater.checkForUpdatesAndNotify();
+    // autoUpdater.logger = logger;
+    // autoUpdater.checkForUpdatesAndNotify();
 }

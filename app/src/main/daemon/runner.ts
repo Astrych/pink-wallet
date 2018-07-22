@@ -19,8 +19,10 @@ import {
 } from "../api/blockchain";
 import config, { initAuth } from "./config";
 import { chunksToLines } from "./utils";
-import { sleep } from "../utils";
 import logger from "../logger";
+import { testnet } from "../params";
+
+import { sleep } from "@common/utils";
 
 
 // Interesting feature: https://bitcointalk.org/index.php?topic=448565.0
@@ -41,18 +43,27 @@ export async function startDaemon(window: BrowserWindow | null) {
 
     logger.log("Starting wallet daemon...");
 
+    logger.debug(`Daemon main directory: ${config.mainDir}`);
+    logger.debug(`Daemon data directory: ${config.dataDir}`);
+
     const startTime = process.hrtime();
 
-    try { await downloadDaemon(); } catch (err) {
-        if (err.code === 404) {
-            throw Error("Daemon binary not available!");
-        }
-        throw err;
-    }
+    // Checks daemon main directory.
+    await checkDir({
+        path: config.mainDir,
+        warnMessage: "Daemon main directory does not exist! Recreating it...",
+        failMessage: "App main directory does not exist!"
+    });
 
     try { await fs.access(config.command); } catch {
-        // TODO: Download daemon or exit??
         logger.warn("Daemon binary does not exist!");
+
+        try { await downloadDaemon(); } catch (err) {
+            if (err.code === 404) {
+                throw Error("Daemon binary not available!");
+            }
+            throw err;
+        }
     }
 
     // Checks binary executable permission for non-Windows
@@ -64,33 +75,26 @@ export async function startDaemon(window: BrowserWindow | null) {
         }
     }
 
-    try { await fs.access(config.dataDir); } catch {
+    // Checks blockchain data directory.
+    await checkDir({
+        path: config.dataDir,
+        warnMessage: "Blockchain data directory does not exist! Recreating it...",
+        failMessage: `Main daemon directory does not exist: ${config.mainDir}`
+    });
 
-        logger.warn("Daemon data directory does not exist! Recreating it...");
+    // Generates random auth data.
+    const auth = await initAuth();
 
-        try { await fs.mkdir(config.dataDir); } catch (err) {
-            if (err.message.includes("ENOENT")) {
-                const pathSep = process.platform !== "win32" ? "/" : "\\";
-                const daemonDir = config.dataDir.substring(0, config.dataDir.lastIndexOf(pathSep));
-                throw Error(`Main daemon directory does not exist: ${daemonDir}`);
-            }
-            throw err;
-        }
-    }
+    const spawnParams = [
+        "-printtoconsole",
+        `-datadir=${config.dataDir}`,
+        `-rpcuser=${auth.username}`,
+        `-rpcpassword=${auth.password}`,
+        "-rpcallowip=127.0.0.1"
+    ];
+    if (testnet) spawnParams.unshift("-testnet");
 
-    const newAuth = await initAuth();
-
-    pink2d = spawn(
-        config.command,
-        [
-            "-testnet",
-            "-printtoconsole",
-            `-datadir=${config.dataDir}`,
-            `-rpcuser=${newAuth.username}`,
-            `-rpcpassword=${newAuth.password}`,
-            "-rpcallowip=127.0.0.1"
-        ],
-    );
+    pink2d = spawn(config.command, spawnParams);
 
     pink2d.on("error", err => {
         logger.error("Daemon Process", err);
@@ -99,7 +103,6 @@ export async function startDaemon(window: BrowserWindow | null) {
         }
         if (err.message.includes("ENOENT")) {
             logger.error("Daemon binary probably does not exist!");
-            // TODO: Set some kind of flag for futher usage?
         }
     });
 
@@ -129,6 +132,29 @@ export async function startDaemon(window: BrowserWindow | null) {
             throw new Error("Daemon has not started!");
         }
         throw err;
+    }
+}
+
+interface CheckDirparams {
+    path: string;
+    warnMessage: string;
+    failMessage: string;
+}
+
+/**
+ * Checks directory existance and recreates it if necessary.
+ */
+async function checkDir({ path, warnMessage, failMessage }: CheckDirparams) {
+
+    try { await fs.access(path); } catch {
+        logger.warn(warnMessage);
+
+        try { await fs.mkdir(path); } catch (err) {
+            if (err.message.includes("ENOENT")) {
+                throw Error(failMessage);
+            }
+            throw err;
+        }
     }
 }
 
@@ -170,6 +196,7 @@ async function handleLogStream({
 
         if (stagePassed) {
 
+            // Sends progress info to window.
             if (window && !window.isDestroyed()){
                 window.webContents.send("daemon-start-progress", {
                     step: progressStep,

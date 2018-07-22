@@ -1,13 +1,12 @@
 
-import axios from "axios";
+import { AxiosInstance, AxiosRequestConfig } from "axios";
 
-import { Auth } from "../daemon/config";
 import logger from "../logger";
 
 
 export interface D4LData {
-    success?: string;
-    accounts?: Array<any>;
+    success: string;
+    accounts: Array<any>;
 }
 
 export interface RPCData {
@@ -23,29 +22,18 @@ export interface GithubData {
     assets: Array<any>;
 }
 
-type Data = D4LData | RPCData | GithubData;
+type Data = D4LData | RPCData | GithubData | undefined;
 
-interface Request {
-    baseURL: string;
-    url?: string;
-    method: string;
-    data?;
-    auth?: Auth;
-}
 
-export async function apiCall(reqData: Request): Promise<Data> {
+export async function apiCall(
+    instance: AxiosInstance,
+    reqData: AxiosRequestConfig={}
+
+): Promise<Data> {
 
     try {
-        const resData = await axios(reqData);
-
-        if (resData.status === 200) {
-            return resData.data;
-        } else {
-            throw {
-                code: resData.status,
-                message: resData.statusText
-            };
-        }
+        const resData = await instance.request(reqData);
+        return resData.data;
 
     } catch (err) {
         if (err.response) {

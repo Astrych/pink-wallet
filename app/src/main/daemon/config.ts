@@ -44,6 +44,7 @@ if (process.platform === "win32") binary += ".exe";
 
 export default {
     auth,
+    mainDir: path.join(__dirname, "..", "daemon"),
+    dataDir: path.join(__dirname, "..", "daemon", "data"),
     command: path.join(__dirname, "..", "daemon", binary),
-    dataDir: path.join(__dirname, "..", "daemon", "data")
 };

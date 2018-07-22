@@ -2,7 +2,7 @@
 import path from "path";
 import { BrowserWindow, app } from "electron";
 
-import { getCenterPosition } from "../utils";
+import { getCenterPosition } from "./utils";
 import logger from "../logger";
 
 

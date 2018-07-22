@@ -1,10 +1,18 @@
 
-import { apiCall } from "./utils";
+import axios from "axios";
+
+import { apiCall, RPCData } from "./common";
 import { daemonBaseURL } from "./config";
 import { Auth } from "../daemon/config";
 
-import { RPCData } from "./utils";
 
+const instance = axios.create({
+    baseURL: daemonBaseURL,
+    method: "POST",
+    headers: {
+        "content-type": "application/json"
+    },
+});
 
 type Params = string | number | null;
 
@@ -20,15 +28,10 @@ async function getBlockchainData(auth: Auth, method: string, params:Params=null)
     };
 
     const reqData = {
-        baseURL: daemonBaseURL,
-        method: "POST",
         data: payload,
-        headers: {
-            "content-type": "application/json"
-        },
         auth,
     };
-    return <RPCData>(await apiCall(reqData));
+    return <RPCData>(await apiCall(instance, reqData));
 }
 
 /**

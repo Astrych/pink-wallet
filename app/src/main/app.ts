@@ -8,6 +8,8 @@ import {
 
 } from "electron";
 
+
+import { initAutoUpdater } from "./auto-updater";
 import { createSplashWindow } from "./windows/splash";
 import {
 
@@ -18,7 +20,8 @@ import {
 import { createTray } from "./windows/tray";
 import { startDaemon } from "./daemon/runner";
 import logger from "./logger";
-import { sleep } from "./utils";
+
+import { sleep } from "@common/utils";
 
 
 if (process.env.NODE_ENV !== "production") {
@@ -72,6 +75,8 @@ app.on("ready", async () => {
 
     logger.info("App is starting...");
 
+    initAutoUpdater();
+
     // Sleep as a workaround for transparency issue
     // https://github.com/electron/electron/issues/2170
     // https://bugs.chromium.org/p/chromium/issues/detail?id=854601
@@ -81,15 +86,15 @@ app.on("ready", async () => {
     splashWindow = createSplashWindow(startDaemon);
 
     // Sets CSP headers.
-        // if (session.defaultSession) {
-        //     session.defaultSession.webRequest.onHeadersReceived((details, cb) => {
-        //         cb({
-        //             responseHeaders: {
-        //                 "Content-Security-Policy": "default-src 'none'; script-src 'self'"
-        //             }
-        //         });
-        //     });
-        // }
+    // if (session.defaultSession) {
+    //     session.defaultSession.webRequest.onHeadersReceived((details, cb) => {
+    //         cb({
+    //             responseHeaders: {
+    //                 "Content-Security-Policy": "default-src 'none'; script-src 'self'"
+    //             }
+    //         });
+    //     });
+    // }
 });
 
 app.on("activate", () => {

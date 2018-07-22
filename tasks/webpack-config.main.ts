@@ -1,12 +1,12 @@
 
-import path from "path";
+import { join } from "path";
 import webpack from "webpack";
 import nodeExternals from "webpack-node-externals";
 
 import { config, isDev as dev } from "./config";
 
 
-const appNodeModules = path.join(config.dirs.build as string, "node_modules");
+const appNodeModules = join(config.dirs.build as string, "node_modules");
 
 export const mainConfig: webpack.Configuration = {
 
@@ -15,7 +15,7 @@ export const mainConfig: webpack.Configuration = {
     context: config.dirs.app.src,
     entry: {
 
-        app: "./main/index.ts"
+        app: "./main/app.ts"
     },
     output: {
 
@@ -26,9 +26,10 @@ export const mainConfig: webpack.Configuration = {
     resolve: {
 
         extensions: [".ts", ".js", ".json", ".node"],
-        modules: [appNodeModules],
+        modules: [dev ? appNodeModules : ""].filter(paths => paths !== ""),
         alias: {
-            "package.json": path.join(config.dirs.app.main, "package.json")
+            "package.json": join(config.dirs.app.main, "package.json"),
+            "@common": join(config.dirs.app.src, "common"),
         }
     },
     module: {

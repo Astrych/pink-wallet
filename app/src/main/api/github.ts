@@ -1,23 +1,25 @@
 
+import axios from "axios";
 
-import { apiCall } from "./utils";
+import { apiCall, GithubData } from "./common";
 import { githubBaseURL } from "./config";
 
-import { GithubData } from "./utils";
 
+const instance = axios.create({
+    baseURL: githubBaseURL,
+    method: "GET",
+    headers: {
+        "accept": "application/vnd.github.v3+json"
+    },
+});
 
 export async function getLatestRelease(repoURL) {
 
     const reqData = {
 
-        baseURL: githubBaseURL,
         url: `/repos/${repoURL}/releases/latest`,
-        method: "GET",
-        headers: {
-            "accept": "application/vnd.github.v3+json"
-        }
     };
-    return <GithubData>(await apiCall(reqData));
+    return <GithubData>(await apiCall(instance, reqData));
 }
 
 export async function downloadDaemon(path: string) {

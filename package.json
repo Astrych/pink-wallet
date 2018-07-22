@@ -19,9 +19,8 @@
     "Blockchain"
   ],
   "scripts": {
-    "postinstall": "gulp prepare",
-    "start": "gulp start",
-    "analyzer": "gulp start -a",
+    "start": "gulp clean & gulp prepare & gulp start",
+    "analyzer": "gulp clean & gulp prepare & gulp start -a",
     "clean": "gulp clean",
     "clean-all": "gulp clean-all",
     "builder": "gulp builder --env=production --platform=all",
@@ -149,6 +148,7 @@
     ],
     "moduleNameMapper": {
       "^@assets/(.*)": "<rootDir>/app/src/renderer/__mocks__/file-mock.ts",
+      "^@common/(.*)": "<rootDir>/app/src/common/$1",
       "^@logic/(.*)": "renderer/logic/$1",
       "^@components/(.*)": "renderer/components/$1"
     }
@@ -158,7 +158,7 @@
     "productName": "Pinkcoin Wallet UI",
     "directories": {
       "app": "build",
-      "output": "build"
+      "output": "dist"
     },
     "publish": {
       "provider": "github"
