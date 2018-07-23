@@ -1,12 +1,50 @@
 
-POST http://127.0.0.1:9135 HTTP/1.1
+POST http://127.0.0.1:19135 HTTP/1.1
 Content-Type: application/json
-Content-Length: 54
 Authorization: Basic QUE6QkI=
 Connection: close
 
 {
     "method": "getblockcount",
-    "params": "[]",
+    "params": [],
+    "jsonrpc": "2.0"
+}
+
+###############################################
+
+POST http://127.0.0.1:19135 HTTP/1.1
+Content-Type: application/json
+Authorization: Basic QUE6QkI=
+Connection: close
+
+{
+    "method": "getblockhash",
+    "params": [0],
+    "jsonrpc": "2.0"
+}
+
+###############################################
+
+POST http://127.0.0.1:19135 HTTP/1.1
+Content-Type: application/json
+Authorization: Basic QUE6QkI=
+Connection: close
+
+{
+    "method": "getblock",
+    "params": ["000076a007b949e5f8cdee6c18817d26bc224bfde575ce3f2ecb0dd000f7ec19"],
+    "jsonrpc": "2.0"
+}
+
+###############################################
+
+POST http://127.0.0.1:19135 HTTP/1.1
+Content-Type: application/json
+Authorization: Basic QUE6QkI=
+Connection: close
+
+{
+    "method": "getconnectioncount",
+    "params": [],
     "jsonrpc": "2.0"
 }

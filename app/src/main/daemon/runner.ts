@@ -232,30 +232,30 @@ onDaemonStarted(async () => {
         console.log("Number of blocks:");
         console.log(util.inspect(countData, {showHidden: false, depth: null}));
 
-        await sleep(15000);
+        // await sleep(15000);
 
-        const hashData = await getBlockHash(config.auth, 2);
-        console.log("Block 2 hash:");
-        console.log(util.inspect(hashData, {showHidden: false, depth: null}));
+        // const hashData = await getBlockHash(config.auth, 2);
+        // console.log("Block 2 hash:");
+        // console.log(util.inspect(hashData, {showHidden: false, depth: null}));
 
-        const blockData = await getBlockData(config.auth, hashData.result as string);
-        console.log(`Block ${hashData.result} data:`);
-        console.log(util.inspect(blockData, {showHidden: false, depth: null}));
+        // const blockData = await getBlockData(config.auth, hashData.result as string);
+        // console.log(`Block ${hashData.result} data:`);
+        // console.log(util.inspect(blockData, {showHidden: false, depth: null}));
 
-        const connectionCountData = await getConnectionCount(config.auth);
-        console.log("Connection count:");
-        console.log(util.inspect(connectionCountData, {showHidden: false, depth: null}));
+        // const connectionCountData = await getConnectionCount(config.auth);
+        // console.log("Connection count:");
+        // console.log(util.inspect(connectionCountData, {showHidden: false, depth: null}));
 
-        await sleep(10000);
+        // await sleep(10000);
 
-        const stopData = await stop(config.auth);
-        console.log(stopData);
+        // const stopData = await stop(config.auth);
+        // console.log(stopData);
 
-        await sleep(10000);
+        // await sleep(10000);
 
-        const countData2 = await getBlockCount(config.auth);
-        console.log("Number of blocks 2:");
-        console.log(util.inspect(countData2, {showHidden: false, depth: null}));
+        // const countData2 = await getBlockCount(config.auth);
+        // console.log("Number of blocks 2:");
+        // console.log(util.inspect(countData2, {showHidden: false, depth: null}));
 
     } catch (err) {
         console.error(err);
