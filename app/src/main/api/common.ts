@@ -3,6 +3,8 @@ import { AxiosInstance, AxiosRequestConfig } from "axios";
 
 import logger from "../logger";
 
+import { wholeObject } from "@common/utils";
+
 
 export interface D4LData {
     success: string;
@@ -37,19 +39,38 @@ export async function apiCall(
 
     } catch (err) {
         if (err.response) {
-            throw {
+            const error = {
                 code: err.response.status,
-                message: err.response.statusText
-            };
+                message: err.response.statusText,
+                request: {
+                    headers: err.response.config.headers,
+                    data: err.response.config.data
+                }
+            }
+            const data = err.response.data;
+            if (data && data.error) error["data"] = data;
+
+            throw error;
+
         } else {
-            logger.error(err);
+            logger.error("apiCall():", err.code, err.message);
+            let code = 1;
+            let message = "Unknown connection error!";
+
             if (err.message.includes("ECONNREFUSED")) {
-                const message = "Wrong URL specified or server is not running!";
-                logger.error(message);
-                throw {  code: 110, message };
+                code = 110;
+                message = "Wrong URL specified or server is not running!";
+
+            } else if (err.message.includes("ECONNRESET")) {
+                code = 111;
+                message = "Connection with daemon was abruptly closed!";
+
             } else {
                 throw {  code: 1, message: "Unknown connection error!" };
             }
+
+            logger.error(message);
+            throw { code, message };
         }
     }
 }

@@ -42,28 +42,28 @@ export async function stop(auth: Auth) {
 }
 
 /**
- * Get total number of blocks.
+ * Returns total number of blocks.
  */
 export async function getBlockCount(auth: Auth) {
     return await getBlockchainData(auth, "getblockcount");
 }
 
 /**
- * Get hash for specified block.
+ * Returns hash for specified block.
  */
 export async function getBlockHash(auth: Auth, blockNumber=1) {
     return await getBlockchainData(auth, "getblockhash", blockNumber);
 }
 
 /**
- * Get data for specified block.
+ * Returns data for specified block.
  */
 export async function getBlockData(auth: Auth, blockHash: string) {
     return await getBlockchainData(auth, "getblock", blockHash);
 }
 
 /**
- * Get the number of connections to other nodes.
+ * Returns the number of connections to other nodes.
  */
 export async function getConnectionCount(auth: Auth) {
     return await getBlockchainData(auth, "getconnectioncount");

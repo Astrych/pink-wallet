@@ -18,13 +18,23 @@ import { config } from "./config";
 /**
  * Removes build and release folders.
  */
+export function removeBuildCode() {
+
+    return del([`${config.dirs.build}/*.{js,map,html}`], { force: true });
+}
+
+/**
+ * Removes build and release folders.
+ */
 export function clean() {
 
-    return del([
-        `${config.dirs.build}`, `${config.dirs.release}`], { force: true });
+    return del([`${config.dirs.build}`, `${config.dirs.release}`], { force: true });
 }
 
 
+/**
+ * Removes all dev and build folders.
+ */
 export function cleanAll() {
 
     return del([

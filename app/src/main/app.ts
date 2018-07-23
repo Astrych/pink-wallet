@@ -86,15 +86,21 @@ app.on("ready", async () => {
     splashWindow = createSplashWindow(startDaemon);
 
     // Sets CSP headers.
-    // if (session.defaultSession) {
-    //     session.defaultSession.webRequest.onHeadersReceived((details, cb) => {
-    //         cb({
-    //             responseHeaders: {
-    //                 "Content-Security-Policy": "default-src 'none'; script-src 'self'"
-    //             }
-    //         });
-    //     });
-    // }
+    if (session.defaultSession) {
+        session.defaultSession.webRequest.onHeadersReceived((details, cb) => {
+            const allowedHosts = [
+                "https://at.alicdn.com"
+            ];
+            const allowed = allowedHosts.some(host => {
+                return details.url.includes(host);
+            });
+
+            if (!allowed) {
+                details.responseHeaders["Content-Security-Policy"] = "default-src 'none'; script-src 'self'";
+            }
+            cb({ responseHeaders: details.responseHeaders });
+        });
+    }
 });
 
 app.on("activate", () => {

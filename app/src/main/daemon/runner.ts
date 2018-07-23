@@ -22,7 +22,7 @@ import { chunksToLines } from "./utils";
 import logger from "../logger";
 import { testnet } from "../params";
 
-import { sleep } from "@common/utils";
+import { sleep, wholeObject } from "@common/utils";
 
 
 // Interesting feature: https://bitcointalk.org/index.php?topic=448565.0
@@ -97,7 +97,7 @@ export async function startDaemon(window: BrowserWindow | null) {
     pink2d = spawn(config.command, spawnParams);
 
     pink2d.on("error", err => {
-        logger.error("Daemon Process", err);
+        logger.error("Daemon Process", wholeObject(err));
         if (process.platform !== "win32" && err.message.includes("EACCES")) {
             logger.error("Daemon binary is not executable or has wrong owner!");
         }
@@ -197,7 +197,7 @@ async function handleLogStream({
         if (stagePassed) {
 
             // Sends progress info to window.
-            if (window && !window.isDestroyed()){
+            if (window && !window.isDestroyed()) {
                 window.webContents.send("daemon-start-progress", {
                     step: progressStep,
                     total: startStages.length
@@ -231,6 +231,8 @@ onDaemonStarted(async () => {
         const countData = await getBlockCount(config.auth);
         console.log("Number of blocks:");
         console.log(util.inspect(countData, {showHidden: false, depth: null}));
+
+        await sleep(15000);
 
         const hashData = await getBlockHash(config.auth, 2);
         console.log("Block 2 hash:");

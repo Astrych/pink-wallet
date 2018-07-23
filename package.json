@@ -19,8 +19,8 @@
     "Blockchain"
   ],
   "scripts": {
-    "start": "gulp clean & gulp prepare & gulp start",
-    "analyzer": "gulp clean & gulp prepare & gulp start -a",
+    "start": "gulp start",
+    "analyzer": "gulp start -a",
     "clean": "gulp clean",
     "clean-all": "gulp clean-all",
     "builder": "gulp builder --env=production --platform=all",

@@ -3,6 +3,7 @@ import { join } from "path";
 import webpack from "webpack";
 import nodeExternals from "webpack-node-externals";
 
+import { getExtenrals } from "./utils";
 import { config, isDev as dev } from "./config";
 
 
@@ -26,7 +27,7 @@ export const mainConfig: webpack.Configuration = {
     resolve: {
 
         extensions: [".ts", ".js", ".json", ".node"],
-        modules: [dev ? appNodeModules : ""].filter(paths => paths !== ""),
+        modules: dev ? [appNodeModules] : [],
         alias: {
             "package.json": join(config.dirs.app.main, "package.json"),
             "@common": join(config.dirs.app.src, "common"),
@@ -47,8 +48,8 @@ export const mainConfig: webpack.Configuration = {
         __filename: false
     },
     externals: [
-        nodeExternals(),
-        nodeExternals({ modulesDir: appNodeModules })
+        nodeExternals({ modulesFromFile: true }),
+        getExtenrals(config.dirs.app.main)
     ],
     plugins: dev ? [
 

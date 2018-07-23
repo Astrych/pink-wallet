@@ -6,6 +6,7 @@ import R from "ramda";
 import debounce from "lodash.debounce";
 
 import { getCenterPosition } from "./utils";
+import logger from "../logger";
 
 
 const store = new Store();
@@ -72,6 +73,11 @@ export function createMainWindow() {
     mainWindow.webContents.on("new-window", (event, url) => {
         event.preventDefault();
         if (url.match(/^https?:\/\//)) shell.openExternal(url);
+    });
+
+    mainWindow.webContents.on("crashed", event => {
+        logger.error("Main window web content crashed!");
+        logger.error("mainWindow:", event);
     });
 
     mainWindow.once("ready-to-show", () => {

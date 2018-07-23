@@ -27,13 +27,16 @@ export const auth: Auth = {
 
 export async function initAuth(): Promise<Auth> {
 
-    const [ username, password ] = await Promise.all([
-        randomizeAuth(),
-        randomizeAuth()
-    ]);
+    // const [ username, password ] = await Promise.all([
+    //     randomizeAuth(),
+    //     randomizeAuth()
+    // ]);
 
-    auth.username = username;
-    auth.password = password;
+    // auth.username = username;
+    // auth.password = password;
+
+    auth.username = "AA";
+    auth.password = "BB";
 
     return auth;
 }

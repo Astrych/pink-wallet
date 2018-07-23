@@ -24,7 +24,7 @@ export const rendererConfig: webpack.Configuration = {
         filename: "[name].js",
         libraryTarget: "commonjs2",
         path: config.dirs.build,
-        publicPath: "/"
+        publicPath: "./"
     },
     resolve: {
 

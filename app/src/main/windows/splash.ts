@@ -5,6 +5,8 @@ import { BrowserWindow, app } from "electron";
 import { getCenterPosition } from "./utils";
 import logger from "../logger";
 
+import { wholeObject } from "@common/utils";
+
 
 interface RunOnStart {
     (window: BrowserWindow): Promise<void>;
@@ -32,8 +34,12 @@ export function createSplashWindow(runOnStart: RunOnStart) {
         splashWindow.loadFile(process.env.SPLASH_VIEW as string);
     }
 
-
     splashWindow.on("closed", () => splashWindow = null);
+
+    splashWindow.webContents.on("crashed", event => {
+        logger.error("Splash window web content crashed!");
+        logger.error("splashWindow:", event);
+    });
 
     splashWindow.once("ready-to-show", () => {
         if (!splashWindow) return;
@@ -49,7 +55,7 @@ export function createSplashWindow(runOnStart: RunOnStart) {
 
         runOnStart(splashWindow)
         .catch(err => {
-            logger.error(err);
+            logger.error(wholeObject(err));
             // TODO: Show notification with error message.
             app.exit(1);
         });
