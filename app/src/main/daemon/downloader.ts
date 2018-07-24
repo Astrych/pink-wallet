@@ -6,51 +6,97 @@
 // "package.json": [
 //    "app/package.json"
 // ],
+import { join } from "path";
+import { promises as fs } from "fs";
+import { BrowserWindow } from "electron";
+
 import settings from "package.json";
-import { getLatestRelease } from "../api/github";
+import {
+
+    getLatestRelease,
+    downloadRelease
+
+} from "../api/github";
 import logger from "../logger";
+import config from "./config";
+import { calcChecksum } from "./utils";
 
 
-let platform: string | null = null;
+const platformMaper = {
+    "win32": "Win64",
+    "linux": "Linux",
+    "darwin": "OSX"
+};
 
-if (process.platform === "win32") platform = "Win64";
-else if (process.platform === "linux") platform = "Linux";
-else if (process.platform === "darwin") platform = "OSX";
+const platform = platformMaper[process.platform];
 
 
-export async function downloadDaemon() {
+export async function downloadDaemon(window: BrowserWindow | null) {
 
-    logger.info("Downloading daemon wallet...");
+    logger.debug("Downloading daemon wallet...");
 
     const repoData = settings["daemon-repository"];
     const repoURL = `${repoData.user}/${repoData.name}`;
 
     const releaseData = await getLatestRelease(repoURL);
 
-    // TODO: Add checksum for files in body
-    // Parse it and compare with downloaded file.
-    // Or use something like that:
-    // https://github.com/bitcoin-core/gitian.sigs
-    // https://github.com/particl/gitian.sigs
-    // https://github.com/bitcoin-core/docs/blob/master/gitian-building.md
-    // Code using it:
-    // https://github.com/particl/particl-desktop/blob/90bca83777985e8d48043a4eb6bff54ed490a1bb/modules/clientBinaries/generateVersions.js
-
-    console.log("--------------------------------------");
-    console.log(releaseData.tag_name);
-    console.log(releaseData.name);
-    console.log(releaseData.body);
-    console.log("--------------------------------------");
+    // Release description.
+    const description = {
+        name: releaseData.name,
+        version: releaseData.tag_name
+    };
 
     for (const asset of releaseData.assets) {
         if (asset.name.includes(platform)) {
-            const donwloadURL = asset.browser_download_url;
-            // TODO: Download and extract daemon binary.
+            const checksum = getChecksum(releaseData.body, asset.name);
+            if (checksum) {
+
+                const donwloadURL = asset.browser_download_url;
+                const relasePath = join(config.mainDir, asset.name);
+
+                for await (const progress of downloadRelease(donwloadURL, relasePath)) {
+                    if (window && !window.isDestroyed()) {
+                        window.webContents.send("daemon-download-progress", {
+                            progress
+                        });
+                    }
+                }
+
+                logger.debug("Daemon wallet downloaded.");
+
+                description["checksum"] = checksum;
+                description["url"] = donwloadURL;
+
+                const descriptionJSON = JSON.stringify(description);
+
+                await fs.writeFile(
+                    join(config.mainDir, "description.json"),
+                    descriptionJSON
+                );
+
+                logger.debug("Comparing file hash and checksum...");
+
+                const hash = await calcChecksum(relasePath);
+                if (hash === checksum) {
+                    logger.debug(`Unziping ${relasePath} to ${config.mainDir}`);
+                    // TODO: Unzip / untar file.
+                } else {
+                    throw Error(`checksum mismatch ${checksum}`);
+                }
+            }
         }
     }
 
-    // TODO: Return object with data:
-    // tagName, name, body, version.
-
-    logger.info("Daemon wallet downloaded.");
+    logger.debug("Daemon binary is ready!");
 };
+
+
+function getChecksum(data: string, name: string) {
+
+    const filter = new RegExp(`.*${name}`);
+    const match = data.match(filter);
+    let checksum: string | null = null;
+    if (match) checksum = match[0].trim().split(" ")[0];
+
+    return checksum;
+}

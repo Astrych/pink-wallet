@@ -1,4 +1,11 @@
 
+
+# For usage with REST Client (vscode plugin).
+# 'Authorization: Basic' has to be updated
+# acording to true username and password.
+
+###############################################
+
 POST http://127.0.0.1:19135 HTTP/1.1
 Content-Type: application/json
 Authorization: Basic QUE6QkI=

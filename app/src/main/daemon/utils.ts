@@ -1,5 +1,7 @@
 
+import fs from "fs";
 import { Readable } from "stream";
+import crypto from "crypto";
 
 
 export async function* chunksToLines(chunks: Readable): AsyncIterable<string> {
@@ -32,4 +34,16 @@ export function stripEndOfLine(line: string): string {
     const match = RE_NEWLINE.exec(line);
     if (! match) return line;
     return line.slice(0, match.index);
+}
+
+export async function calcChecksum(filePath: string) {
+
+    const hash = crypto.createHash("sha256");
+    const stream = fs.createReadStream(filePath);
+
+    for await (const chunk of stream) {
+        hash.update(chunk);
+    }
+
+    return hash.digest("hex");
 }

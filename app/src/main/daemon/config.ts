@@ -1,6 +1,7 @@
 
 import path from "path";
 import crypto from "crypto";
+import { app } from "electron";
 
 
 function randomizeAuth(): Promise<string> {
@@ -27,16 +28,13 @@ export const auth: Auth = {
 
 export async function initAuth(): Promise<Auth> {
 
-    // const [ username, password ] = await Promise.all([
-    //     randomizeAuth(),
-    //     randomizeAuth()
-    // ]);
+    const [ username, password ] = await Promise.all([
+        randomizeAuth(),
+        randomizeAuth()
+    ]);
 
-    // auth.username = username;
-    // auth.password = password;
-
-    auth.username = "AA";
-    auth.password = "BB";
+    auth.username = username;
+    auth.password = password;
 
     return auth;
 }
@@ -47,7 +45,7 @@ if (process.platform === "win32") binary += ".exe";
 
 export default {
     auth,
-    mainDir: path.join(__dirname, "..", "daemon"),
-    dataDir: path.join(__dirname, "..", "daemon", "data"),
-    command: path.join(__dirname, "..", "daemon", binary),
+    mainDir: path.join(app.getAppPath(), "../daemon"),
+    dataDir: path.join(app.getAppPath(), "../daemon/data"),
+    command: path.join(app.getAppPath(), `../daemon/${binary}`),
 };

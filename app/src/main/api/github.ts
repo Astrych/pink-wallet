@@ -1,4 +1,5 @@
 
+import fs from "fs";
 import axios from "axios";
 
 import { apiCall, GithubData } from "./common";
@@ -16,12 +17,43 @@ const instance = axios.create({
 export async function getLatestRelease(repoURL) {
 
     const reqData = {
-
         url: `/repos/${repoURL}/releases/latest`,
     };
     return <GithubData>(await apiCall(instance, reqData));
 }
 
-export async function downloadDaemon(path: string) {
+/**
+ * Downloads file and stream progress in percents.
+ */
+export async function* downloadRelease(url: string, path: string) {
+    const response = await axios({
+        method: "GET",
+        url,
+        responseType: "stream"
+    });
 
+    if (!response.data) throw new Error("Download stream is undefined!");
+    if (!(Symbol.asyncIterator in response.data)) {
+        throw new Error("Download stream is not an asynchronous iterable");
+    }
+
+    const newFile = fs.createWriteStream(path);
+
+    const totalSize = response.headers["content-length"];
+    let downloadedSize = 0;
+    let progress = 0;
+
+    for await (const chunk of response.data) {
+        newFile.write(chunk);
+
+        // Progress calculations.
+        downloadedSize += chunk.length;
+        const newProgress = Math.floor(100*downloadedSize/totalSize);
+        if (newProgress > progress) {
+            progress = newProgress;
+            yield progress;
+        }
+    }
+
+    newFile.close();
 }

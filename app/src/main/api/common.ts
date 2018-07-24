@@ -3,8 +3,6 @@ import { AxiosInstance, AxiosRequestConfig } from "axios";
 
 import logger from "../logger";
 
-import { wholeObject } from "@common/utils";
-
 
 export interface D4LData {
     success: string;
@@ -39,18 +37,15 @@ export async function apiCall(
 
     } catch (err) {
         if (err.response) {
-            const error = {
+            throw {
                 code: err.response.status,
                 message: err.response.statusText,
+                data: err.response.data,
                 request: {
                     headers: err.response.config.headers,
                     data: err.response.config.data
                 }
             }
-            const data = err.response.data;
-            if (data && data.error) error["data"] = data;
-
-            throw error;
 
         } else {
             logger.error("apiCall():", err.code, err.message);

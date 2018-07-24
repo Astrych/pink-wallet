@@ -58,7 +58,7 @@ export async function startDaemon(window: BrowserWindow | null) {
     try { await fs.access(config.command); } catch {
         logger.warn("Daemon binary does not exist!");
 
-        try { await downloadDaemon(); } catch (err) {
+        try { await downloadDaemon(window); } catch (err) {
             if (err.code === 404) {
                 throw Error("Daemon binary not available!");
             }
