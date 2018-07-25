@@ -21,11 +21,11 @@ import config, { initAuth } from "./config";
 import { chunksToLines } from "./utils";
 import logger from "../logger";
 import { testnet } from "../params";
-
 import { sleep, wholeObject } from "@common/utils";
 
 
-// Interesting feature: https://bitcointalk.org/index.php?topic=448565.0
+// TODO: Check that daemon feature:
+// https://bitcointalk.org/index.php?topic=448565.0
 
 const emitter = new EventEmitter();
 
@@ -48,13 +48,14 @@ export async function startDaemon(window: BrowserWindow | null) {
 
     const startTime = process.hrtime();
 
-    // Checks daemon main directory.
+    // Checks for daemon main directory existance.
     await checkDir({
         path: config.mainDir,
         warnMessage: "Daemon main directory does not exist! Recreating it...",
         failMessage: "App main directory does not exist!"
     });
 
+    // Checks for daemon binary existance.
     try { await fs.access(config.command); } catch {
         logger.warn("Daemon binary does not exist!");
 
@@ -75,7 +76,7 @@ export async function startDaemon(window: BrowserWindow | null) {
         }
     }
 
-    // Checks blockchain data directory.
+    // Checks blockchain data directory existance.
     await checkDir({
         path: config.dataDir,
         warnMessage: "Blockchain data directory does not exist! Recreating it...",
@@ -94,6 +95,7 @@ export async function startDaemon(window: BrowserWindow | null) {
     ];
     if (testnet) spawnParams.unshift("-testnet");
 
+    // Spawns daemon process.
     pink2d = spawn(config.command, spawnParams);
 
     pink2d.on("error", err => {
@@ -165,6 +167,13 @@ interface LogHandlerParams {
     startTime: [number, number];
 }
 
+/**
+ * Handles daemon log stream:
+ * - parses it
+ * - interprates it
+ * - sends messages to the window handler
+ * - saves it to log file
+ */
 async function handleLogStream({
     stdout,
     window,
@@ -172,7 +181,8 @@ async function handleLogStream({
     startTime,
 }: LogHandlerParams) {
 
-    const logFile = await fs.open(path.join(config.dataDir, "daemon.log"), "a");
+    const logFilePath = path.join(config.dataDir, testnet ? "testnet/daemon.log" : "daemon.log");
+    const logFile = await fs.open(logFilePath, "a");
 
     // TODO: Parse error logs and send error in daemon-start-progress message.
     for await (const line of chunksToLines(stdout)) {

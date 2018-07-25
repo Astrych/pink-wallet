@@ -19,16 +19,23 @@ import {
 } from "../api/github";
 import logger from "../logger";
 import config from "./config";
-import { calcChecksum } from "./utils";
+import {
+
+    calcChecksum,
+    unzip,
+    untar,
+    isBussy
+
+} from "./utils";
 
 
-const platformMaper = {
-    "win32": "Win64",
+const platformMapper = {
+    "win32": "Win",
     "linux": "Linux",
-    "darwin": "OSX"
+    "darwin": "OSX",
 };
 
-const platform = platformMaper[process.platform];
+const platform = platformMapper[process.platform];
 
 
 export async function downloadDaemon(window: BrowserWindow | null) {
@@ -46,6 +53,7 @@ export async function downloadDaemon(window: BrowserWindow | null) {
         version: releaseData.tag_name
     };
 
+    // Iterates over list of release assets (for different platforms).
     for (const asset of releaseData.assets) {
         if (asset.name.includes(platform)) {
             const checksum = getChecksum(releaseData.body, asset.name);
@@ -54,6 +62,7 @@ export async function downloadDaemon(window: BrowserWindow | null) {
                 const donwloadURL = asset.browser_download_url;
                 const relasePath = join(config.mainDir, asset.name);
 
+                // Downloads packaged daemon file and reports progress to window handler.
                 for await (const progress of downloadRelease(donwloadURL, relasePath)) {
                     if (window && !window.isDestroyed()) {
                         window.webContents.send("daemon-download-progress", {
@@ -79,10 +88,21 @@ export async function downloadDaemon(window: BrowserWindow | null) {
                 const hash = await calcChecksum(relasePath);
                 if (hash === checksum) {
                     logger.debug(`Unziping ${relasePath} to ${config.mainDir}`);
-                    // TODO: Unzip / untar file.
+
+                    if (process.platform === "win32") {
+                        await unzip(relasePath, config.command);
+
+                    } else {
+                        await untar(relasePath, config.mainDir);
+                    }
+
+                    await isBussy(config.command);
+
                 } else {
-                    throw Error(`checksum mismatch ${checksum}`);
+                    throw Error(`Checksum mismatch! checksum: ${checksum}, hash: ${hash}`);
                 }
+            } else {
+                throw Error("Lack of checksum in description! Daemon will not be downloaded!");
             }
         }
     }
@@ -91,6 +111,9 @@ export async function downloadDaemon(window: BrowserWindow | null) {
 };
 
 
+/**
+ * Extracts checksum value from release description for specified file.
+ */
 function getChecksum(data: string, name: string) {
 
     const filter = new RegExp(`.*${name}`);
