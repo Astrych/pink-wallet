@@ -99,10 +99,10 @@ export async function downloadDaemon(window: BrowserWindow | null) {
                     await isBussy(config.command);
 
                 } else {
-                    throw Error(`Checksum mismatch! checksum: ${checksum}, hash: ${hash}`);
+                    throw new Error(`Checksum mismatch! checksum: ${checksum}, hash: ${hash}`);
                 }
             } else {
-                throw Error("Lack of checksum in description! Daemon will not be downloaded!");
+                throw new Error("Lack of checksum in description! Daemon will not be downloaded!");
             }
         }
     }

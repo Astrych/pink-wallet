@@ -22,6 +22,7 @@ type Params = string | number | null;
 async function getBlockchainData(auth: Auth, method: string, params:Params=null) {
 
     const payload = {
+        id: new Date().getTime(),
         method,
         params: params ? [params] : [],
         jsonrpc: "2.0",
@@ -31,7 +32,12 @@ async function getBlockchainData(auth: Auth, method: string, params:Params=null)
         data: payload,
         auth,
     };
-    return <RPCData>(await apiCall(instance, reqData));
+    const response = <RPCData>(await apiCall(instance, reqData));
+
+    if (response.id !== payload.id) {
+        throw new Error("Possible Man-in-the-middle Attack!!");
+    }
+    return response;
 }
 
 /**

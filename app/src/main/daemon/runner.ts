@@ -65,7 +65,7 @@ export async function startDaemon(window: BrowserWindow | null) {
 
         try { await downloadDaemon(window); } catch (err) {
             if (err.code === 404) {
-                throw Error("Daemon binary not available!");
+                throw new Error("Daemon binary not available!");
             }
             throw err;
         }
@@ -167,7 +167,7 @@ async function checkDir({ path, warnMessage, failMessage }: CheckDirparams) {
 
         try { await fs.mkdir(path); } catch (err) {
             if (err.message.includes("ENOENT")) {
-                throw Error(failMessage);
+                throw new Error(failMessage);
             }
             throw err;
         }
@@ -207,7 +207,7 @@ async function handleLogStream({
 
         for (const error of logErrors) {
             if (line.includes(error)) {
-                throw Error(`Fatal error! Check ${logFilePath}.`);
+                throw new Error(`Fatal error! Check ${logFilePath}.`);
             }
         }
 
@@ -264,19 +264,19 @@ onDaemonStarted(async () => {
         console.log("Number of blocks:");
         console.log(util.inspect(countData, {showHidden: false, depth: null}));
 
-        // await sleep(15000);
+        await sleep(15000);
 
-        // const hashData = await getBlockHash(config.auth, 2);
-        // console.log("Block 2 hash:");
-        // console.log(util.inspect(hashData, {showHidden: false, depth: null}));
+        const hashData = await getBlockHash(config.auth, 2);
+        console.log("Block 2 hash:");
+        console.log(util.inspect(hashData, {showHidden: false, depth: null}));
 
-        // const blockData = await getBlockData(config.auth, hashData.result as string);
-        // console.log(`Block ${hashData.result} data:`);
-        // console.log(util.inspect(blockData, {showHidden: false, depth: null}));
+        const blockData = await getBlockData(config.auth, hashData.result as string);
+        console.log(`Block ${hashData.result} data:`);
+        console.log(util.inspect(blockData, {showHidden: false, depth: null}));
 
-        // const connectionCountData = await getConnectionCount(config.auth);
-        // console.log("Connection count:");
-        // console.log(util.inspect(connectionCountData, {showHidden: false, depth: null}));
+        const connectionCountData = await getConnectionCount(config.auth);
+        console.log("Connection count:");
+        console.log(util.inspect(connectionCountData, {showHidden: false, depth: null}));
 
         // await sleep(10000);
 

@@ -64,6 +64,7 @@ class AppHeader extends Component<{}, AppBarState> {
     private onMaximize = () => {
         this.window.maximize();
 
+        // TODO: Remove it! ;)
         Notification.requestPermission().then(status => {
             if ((Notification as any).permission !== status) {
                 (Notification as any).permission = status;
