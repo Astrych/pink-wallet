@@ -47,6 +47,10 @@ export function createMainWindow() {
     state.position = store.get("window.position", state.position);
     state.size = store.get("window.size", state.size);
 
+
+    // TODO: Sandbox mode with white-listed IPC calls:
+    // https://github.com/lightninglabs/lightning-app/blob/master/public/preload.js
+
     /**
      * Workaround for gug with Frameless window and minWidth / minHeight on Linux.
      * minHeight > 526: window is not responding on drag to upper edge and win + up/down.
