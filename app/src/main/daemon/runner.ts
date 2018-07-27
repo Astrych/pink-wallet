@@ -37,6 +37,10 @@ const startStages = [
     "ThreadRPCServer started"
 ];
 
+const logErrors = [
+    "ERROR: CDB() : error DB_RUNRECOVERY: Fatal error"
+];
+
 export let pink2d: ChildProcess | null = null;
 
 export async function startDaemon(window: BrowserWindow | null) {
@@ -83,6 +87,15 @@ export async function startDaemon(window: BrowserWindow | null) {
         failMessage: `Main daemon directory does not exist: ${config.mainDir}`
     });
 
+    if (testnet) {
+        // Checks testnet blockchain data directory existance.
+        await checkDir({
+            path: path.join(config.dataDir, "testnet"),
+            warnMessage: "Daemon main directory does not exist! Recreating it...",
+            failMessage: "App main directory does not exist!"
+        });
+    }
+
     // Generates random auth data.
     const auth = await initAuth();
 
@@ -122,18 +135,19 @@ export async function startDaemon(window: BrowserWindow | null) {
     // Handles daemon log stream.
     try { await handleLogStream(params); } catch (err) {
 
-        if (window && !window.isDestroyed()) {
-            window.webContents.send("daemon-start-progress", {
-                step: params.progressStep,
-                total: startStages.length,
-                error: true
-            });
-        }
+        let message = err.message;
 
         if (err.message === "Parameter is undefined!") {
-            throw new Error("Daemon has not started!");
+            message = "Daemon has not started!";
         }
-        throw err;
+
+        if (window && !window.isDestroyed()) {
+            window.webContents.send("daemon-error", message);
+        }
+
+        emitter.emit("daemon-stopped");
+
+        throw new Error(message);
     }
 }
 
@@ -184,40 +198,48 @@ async function handleLogStream({
     const logFilePath = path.join(config.dataDir, testnet ? "testnet/daemon.log" : "daemon.log");
     const logFile = await fs.open(logFilePath, "a");
 
-    // TODO: Parse error logs and send error in daemon-start-progress message.
+    // Is daemon started successfully?
+    let hasStarted = false;
+
     for await (const line of chunksToLines(stdout)) {
 
         logFile.appendFile(line);
 
-        const stagePassed = startStages.some(stage => {
+        for (const error of logErrors) {
+            if (line.includes(error)) {
+                throw Error(`Fatal error! Check ${logFilePath}.`);
+            }
+        }
 
-            const onTheList = line.includes(stage);
-            if(onTheList) {
+        // Skips checking start progress (daemon is already running).
+        if (hasStarted) continue;
+
+        for (const stage of startStages) {
+            if (line.includes(stage)) {
 
                 // Is stage the last entry on the startStages list?
                 if (startStages.indexOf(stage) === startStages.length - 1) {
                     const totalTime = process.hrtime(startTime);
-                    logger.log(`Daemon started in ${totalTime[0]}s and ${totalTime[1]/1e6}ms.`);
+                    logger.log(
+                        `Daemon started in ${totalTime[0]}s and ${totalTime[1]/1e6}ms.`
+                    );
                 }
-            }
 
-            return onTheList;
-        });
+                // Sends progress info to window handler.
+                if (window && !window.isDestroyed()) {
+                    window.webContents.send("daemon-start-progress", {
+                        step: progressStep,
+                        total: startStages.length
+                    });
+                }
 
-        if (stagePassed) {
+                progressStep += 1;
+                if (progressStep === startStages.length) {
+                    emitter.emit("daemon-started");
+                    hasStarted =true;
+                }
 
-            // Sends progress info to window.
-            if (window && !window.isDestroyed()) {
-                window.webContents.send("daemon-start-progress", {
-                    step: progressStep,
-                    total: startStages.length
-                });
-            }
-
-            progressStep += 1;
-
-            if (progressStep === startStages.length) {
-                emitter.emit("daemon-started");
+                break;
             }
         }
     }

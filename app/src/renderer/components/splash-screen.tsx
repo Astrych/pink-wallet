@@ -52,11 +52,6 @@ class SplashScreen extends React.Component {
         };
 
         ipcRenderer.on("daemon-start-progress", (event, data) => {
-            if (data.error) {
-                this.setState({ error: true });
-                return;
-            }
-
             const subSteps = 100/data.total;
             progressQueue.push(...calcProgressSteps({
                 step: data.step,
@@ -65,6 +60,11 @@ class SplashScreen extends React.Component {
             }));
 
             if (data.step === 0) updateProgressState(event, 100);
+        });
+
+        ipcRenderer.on("daemon-error", (_, message) => {
+            console.error(message);
+            this.setState({ error: true });
         });
     }
 

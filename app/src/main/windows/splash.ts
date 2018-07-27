@@ -57,7 +57,7 @@ export function createSplashWindow(runOnStart: RunOnStart) {
         .catch(err => {
             logger.error(wholeObject(err));
             // TODO: Show notification with error message.
-            app.exit(1);
+            // app.exit(1);
         });
     });
 

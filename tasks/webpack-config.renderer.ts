@@ -98,12 +98,18 @@ export const rendererConfig: webpack.Configuration = {
                 ]
             },
             {
-                test: /\.(png|svg)$/i,
+                test: /\.png$/i,
                 use: [
                     "url-loader",
                     "img-loader"
                 ]
-            }
+            },
+            {
+                test: /\.svg$/i,
+                use: [
+                    "svg-sprite-loader"
+                ]
+            },
         ]
     },
     target: "electron-renderer",

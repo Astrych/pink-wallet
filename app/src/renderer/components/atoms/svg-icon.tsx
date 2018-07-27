@@ -2,6 +2,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import "@assets/svg/icons.svg";
+
 
 interface SvgProps {
     size: number;
@@ -24,7 +26,7 @@ function SvgIcon(props: SvgIconProps) {
 
     return (
         <Svg size={props.size}>
-            <use xlinkHref={`svg/icons.svg#${props.name}`} />
+            <use xlinkHref={`#icons_${props.name}`} />
         </Svg>
     );
 }
