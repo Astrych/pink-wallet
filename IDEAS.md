@@ -26,7 +26,7 @@
 8. Use TestCafe for e2e testing (??):
     - https://devexpress.github.io/testcafe/
 
-9. Implement Storybook
+9. Implement Storybook - done.
 
 10. Use electron-osx-sign to sign mas packages:
     - https://github.com/electron-userland/electron-osx-sign

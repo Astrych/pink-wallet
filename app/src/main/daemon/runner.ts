@@ -16,7 +16,7 @@ import {
     getBlockData,
     getConnectionCount,
 
-} from "../api/blockchain";
+} from "../api/rpc";
 import config, { initAuth } from "./config";
 import { chunksToLines } from "./utils";
 import logger from "../logger";
