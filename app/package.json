@@ -28,7 +28,7 @@
     "commander": "2.16.0",
     "electron-log": "2.2.16",
     "electron-store": "2.0.0",
-    "electron-updater": "2.23.3",
+    "electron-updater": "3.0.3",
     "lodash.debounce": "4.0.8",
     "ramda": "0.25.0",
     "tar-fs": "1.16.3",
