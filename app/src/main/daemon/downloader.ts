@@ -67,7 +67,7 @@ export async function downloadDaemon(window: BrowserWindow | null) {
 
                 // Downloads packaged daemon file and reports progress to window handler.
                 for await (const progress of downloadRelease(donwloadURL, relasePath)) {
-                    if (window && !window!.isDestroyed()) {
+                    if (window && !window.isDestroyed()) {
                         window.webContents.send("daemon-download-progress", {
                             progress
                         });
