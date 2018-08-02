@@ -7,7 +7,7 @@ import { d4lBaseURL } from "./config";
 
 const instance = axios.create({
     baseURL: d4lBaseURL,
-    url: `/accounts/`,
+    url: "/accounts/",
     method: "GET",
 });
 
