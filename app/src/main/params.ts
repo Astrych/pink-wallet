@@ -2,6 +2,7 @@
 import args from "commander";
 
 
+// For production version.
 if (process.defaultApp != true) process.argv.unshift("");
 
 args

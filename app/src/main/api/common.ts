@@ -1,19 +1,9 @@
 
 import { AxiosInstance, AxiosRequestConfig } from "axios";
 
+import { RPCData } from "./rpc-data-types";
 import logger from "../logger";
 
-
-export interface D4LData {
-    success: string;
-    accounts: Array<any>;
-}
-
-export interface RPCData {
-    result: string | number | object | null;
-    error;
-    id;
-}
 
 export interface GithubData {
     tag_name: string;
@@ -22,7 +12,12 @@ export interface GithubData {
     assets: Array<any>;
 }
 
-type Data = D4LData | RPCData | GithubData | undefined;
+export interface D4LData {
+    success: string;
+    accounts: Array<any>;
+}
+
+type Data = D4LData | GithubData | RPCData | undefined;
 
 
 export async function apiCall(
@@ -49,6 +44,7 @@ export async function apiCall(
 
         } else {
             logger.error("apiCall():", err.code, err.message);
+
             let code = 1;
             let message = "Unknown connection error!";
 
@@ -59,9 +55,6 @@ export async function apiCall(
             } else if (err.message.includes("ECONNRESET")) {
                 code = 111;
                 message = "Connection with daemon was abruptly closed!";
-
-            } else {
-                throw {  code: 1, message: "Unknown connection error!" };
             }
 
             logger.error(message);

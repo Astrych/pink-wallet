@@ -37,8 +37,8 @@
     "i18next": "11.5.0",
     "i18next-xhr-backend": "1.5.1",
     "immer": "1.5.0",
-    "react": "16.4.1",
-    "react-dom": "16.4.1",
+    "react": "16.4.2",
+    "react-dom": "16.4.2",
     "react-i18next": "7.10.1",
     "react-redux": "5.0.7",
     "react-router": "4.3.1",
@@ -78,7 +78,7 @@
     "@types/storybook__react": "3.0.8",
     "@types/tapable": "1.0.4",
     "@types/tar-fs": "1.16.1",
-    "@types/webpack": "4.4.8",
+    "@types/webpack": "4.4.9",
     "@types/webpack-env": "1.13.6",
     "@types/xtend": "4.0.2",
     "@types/yauzl": "2.9.0",
@@ -159,8 +159,8 @@
     "moduleNameMapper": {
       "^@assets/(.*)": "<rootDir>/app/src/renderer/__mocks__/file-mock.ts",
       "^@common/(.*)": "<rootDir>/app/src/common/$1",
-      "^@logic/(.*)": "renderer/logic/$1",
-      "^@components/(.*)": "renderer/components/$1"
+      "^@logic/(.*)": "<rootDir>/app/src/renderer/logic/$1",
+      "^@components/(.*)": "<rootDir>/app/src/renderer/components/$1"
     }
   },
   "build": {

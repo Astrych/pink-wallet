@@ -53,6 +53,9 @@ export async function downloadDaemon(window: BrowserWindow | null) {
         version: releaseData.tag_name
     };
 
+    // Is daemon binary ready to use?
+    let isReady = false;
+
     // Iterates over list of release assets (for different platforms).
     for (const asset of releaseData.assets) {
         if (asset.name.includes(platform)) {
@@ -64,7 +67,7 @@ export async function downloadDaemon(window: BrowserWindow | null) {
 
                 // Downloads packaged daemon file and reports progress to window handler.
                 for await (const progress of downloadRelease(donwloadURL, relasePath)) {
-                    if (window && !window.isDestroyed()) {
+                    if (window && !window!.isDestroyed()) {
                         window.webContents.send("daemon-download-progress", {
                             progress
                         });
@@ -98,16 +101,21 @@ export async function downloadDaemon(window: BrowserWindow | null) {
 
                     await isBussy(config.command);
 
+                    isReady = true;
+
                 } else {
                     throw new Error(`Checksum mismatch! checksum: ${checksum}, hash: ${hash}`);
                 }
             } else {
                 throw new Error("Lack of checksum in description! Daemon will not be downloaded!");
             }
+
+            break;
         }
     }
 
-    logger.debug("Daemon binary is ready!");
+    if (isReady) logger.debug("Daemon binary is ready!");
+    else throw new Error(`No matching file to download for ${platform} platform!`);
 };
 
 

@@ -13,8 +13,11 @@ import {
     stop,
     getBlockCount,
     getBlockHash,
-    getBlockData,
+    getBlock,
     getConnectionCount,
+    getPeerInfo,
+    getListOfTransactions,
+    getWalletInfo,
 
 } from "../api/rpc";
 import config, { initAuth } from "./config";
@@ -65,7 +68,7 @@ export async function startDaemon(window: BrowserWindow | null) {
 
         try { await downloadDaemon(window); } catch (err) {
             if (err.code === 404) {
-                throw new Error("Daemon binary not available!");
+                throw new Error("Daemon binary is not available!");
             }
             throw err;
         }
@@ -260,23 +263,40 @@ export function onDaemonStopped(cb) {
 onDaemonStarted(async () => {
     try {
 
-        const countData = await getBlockCount(config.auth);
-        console.log("Number of blocks:");
-        console.log(util.inspect(countData, {showHidden: false, depth: null}));
+        const blocksCount = await getBlockCount(config.auth);
+        console.log("Number of blocks:", blocksCount);
 
         await sleep(15000);
 
-        const hashData = await getBlockHash(config.auth, 2);
-        console.log("Block 2 hash:");
-        console.log(util.inspect(hashData, {showHidden: false, depth: null}));
+        const blockHash = await getBlockHash(config.auth, 10000);
+        console.log("Block 2 hash:", blockHash);
 
-        const blockData = await getBlockData(config.auth, hashData.result as string);
-        console.log(`Block ${hashData.result} data:`);
-        console.log(util.inspect(blockData, {showHidden: false, depth: null}));
+        console.log("======================================================");
+        const block = await getBlock(config.auth, blockHash);
+        console.log(`Block ${blockHash} data:`);
+        console.log(util.inspect(block, {showHidden: false, depth: null}));
+        console.log("======================================================");
 
-        const connectionCountData = await getConnectionCount(config.auth);
-        console.log("Connection count:");
-        console.log(util.inspect(connectionCountData, {showHidden: false, depth: null}));
+        const connectionCount = await getConnectionCount(config.auth);
+        console.log("Connection count:", connectionCount);
+
+        console.log("======================================================");
+        const peers = await getPeerInfo(config.auth);
+        console.log(`Peers:`);
+        console.log(util.inspect(peers, {showHidden: false, depth: null}));
+        console.log("======================================================");
+
+        console.log("======================================================");
+        const transactions = await getListOfTransactions(config.auth);
+        console.log(`Transactions:`);
+        console.log(util.inspect(transactions, {showHidden: false, depth: null}));
+        console.log("======================================================");
+
+        console.log("======================================================");
+        const walletInfo = await getWalletInfo(config.auth);
+        console.log(`Wallet info:`);
+        console.log(util.inspect(walletInfo, {showHidden: false, depth: null}));
+        console.log("======================================================");
 
         // await sleep(10000);
 
