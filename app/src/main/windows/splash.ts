@@ -9,14 +9,14 @@ import { wholeObject } from "@common/utils";
 
 
 interface RunOnStart {
-    (window: BrowserWindow): Promise<void>;
+    (window: BrowserWindow | null): Promise<void>;
 }
 
-export let splashWindow: BrowserWindow | null;
+export let window: BrowserWindow | null;
 
 export function createSplashWindow(runOnStart: RunOnStart) {
 
-    splashWindow = new BrowserWindow({
+    window = new BrowserWindow({
         width: 810,
         height: 610,
         center: true,
@@ -29,31 +29,30 @@ export function createSplashWindow(runOnStart: RunOnStart) {
     });
 
     if (process.env.NODE_ENV !== "production") {
-        splashWindow.loadURL(process.env.SPLASH_VIEW as string);
+        window.loadURL(process.env.SPLASH_VIEW as string);
     } else {
-        splashWindow.loadFile(process.env.SPLASH_VIEW as string);
+        window.loadFile(process.env.SPLASH_VIEW as string);
     }
 
-    splashWindow.on("closed", () => splashWindow = null);
+    window.on("closed", () => window = null);
 
-    splashWindow.webContents.on("crashed", event => {
+    window.webContents.on("crashed", event => {
         logger.error("Splash window web content crashed!");
         logger.error("splashWindow:", event);
     });
 
-    splashWindow.once("ready-to-show", () => {
-        if (!splashWindow) return;
+    window.once("ready-to-show", () => {
         // Workaround for issue:
         // https://github.com/electron/electron/issues/3490
         if (process.platform === "linux") {
-            const pos = getCenterPosition(splashWindow);
-            splashWindow.setPosition(pos.x, pos.y);
+            const pos = getCenterPosition(window!);
+            window!.setPosition(pos.x, pos.y);
         }
 
-        splashWindow.show();
-        splashWindow.webContents.openDevTools({ mode : "detach" });
+        window!.show();
+        window!.webContents.openDevTools({ mode : "detach" });
 
-        runOnStart(splashWindow)
+        runOnStart(window)
         .catch(err => {
             logger.error(wholeObject(err));
             // TODO: Show notification with error message.
@@ -61,5 +60,5 @@ export function createSplashWindow(runOnStart: RunOnStart) {
         });
     });
 
-    return splashWindow;
+    return window;
 }

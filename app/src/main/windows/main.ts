@@ -11,7 +11,7 @@ import logger from "../logger";
 
 const store = new Store();
 
-export let mainWindow: BrowserWindow | null;
+export let window: BrowserWindow | null;
 
 interface WindowState {
     position: {
@@ -57,7 +57,7 @@ export function createMainWindow() {
      * minWidth > 960: window is not responding on drag to left or right edge and win + left/right.
      * https://github.com/electron/electron/issues/13118
      */
-    mainWindow = new BrowserWindow({
+    window = new BrowserWindow({
         width: state.size.width,
         height: state.size.height,
         minWidth: 960,
@@ -69,28 +69,28 @@ export function createMainWindow() {
         icon: join(__dirname, `img/icon.${process.platform === "win32" ? "ico" : "png"}`),
     });
 
-    mainWindow.setMenu(null);
+    window.setMenu(null);
 
-    mainWindow.on("closed", () => mainWindow = null);
+    window.on("closed", () => window = null);
 
     // Handles external URLs.
-    mainWindow.webContents.on("new-window", (event, url) => {
+    window.webContents.on("new-window", (event, url) => {
         event.preventDefault();
         if (url.match(/^https?:\/\//)) shell.openExternal(url);
     });
 
-    mainWindow.webContents.on("crashed", event => {
+    window.webContents.on("crashed", event => {
         logger.error("Main window web content crashed!");
         logger.error("mainWindow:", event);
     });
 
-    mainWindow.once("ready-to-show", () => {
+    window.once("ready-to-show", () => {
         if (R.isEmpty(state.position) && !state.isMaximized) {
             // Workaround for issue:
             // https://github.com/electron/electron/issues/3490
-            if (mainWindow && process.platform === "linux") {
-                state.position = getCenterPosition(mainWindow);
-                mainWindow.setPosition(state.position.x, state.position.y);
+            if (process.platform === "linux") {
+                state.position = getCenterPosition(window!);
+                window!.setPosition(state.position.x, state.position.y);
             }
 
         } else {
@@ -101,42 +101,42 @@ export function createMainWindow() {
                 state.position.y -= state.position.y;
                 state.size.width -= 2*state.position.x;
             }
-            mainWindow && mainWindow.setPosition(state.position.x, state.position.y);
+            window!.setPosition(state.position.x, state.position.y);
         }
     });
 
     function updateBounds() {
-        if (!mainWindow || state.isMaximized) return;
+        if (!window || state.isMaximized) return;
 
-        const { x, y, width, height } = mainWindow.getBounds();
+        const { x, y, width, height } = window.getBounds();
         state.position = { x, y };
         state.size = { width, height };
     }
 
     function updateState() {
-        if (mainWindow) state.isMaximized = mainWindow.isMaximized();
+        if (window) state.isMaximized = window.isMaximized();
     }
 
-    mainWindow.on("maximize", updateState);
-    mainWindow.on("unmaximize", () => {
+    window.on("maximize", updateState);
+    window.on("unmaximize", () => {
         updateState();
         // Workaround: partial fix for issue with maximization and restoring
         // https://github.com/electron/electron/issues/12971
         if (process.platform === "win32") {
             setTimeout(() => {
-                if (!mainWindow) return;
-                const bounds = mainWindow.getBounds();
+                if (!window) return;
+                const bounds = window.getBounds();
                 bounds.width += 1;
-                mainWindow.setBounds(bounds);
+                window.setBounds(bounds);
                 bounds.width -= 1;
-                mainWindow.setBounds(bounds);
+                window.setBounds(bounds);
             }, 2);
         }
     });
-    mainWindow.on("resize", debounce(updateBounds, 100));
-    mainWindow.on("move", debounce(updateBounds, 100));
+    window.on("resize", debounce(updateBounds, 100));
+    window.on("move", debounce(updateBounds, 100));
 
-    mainWindow.on("close", () => {
+    window.on("close", () => {
         updateState();
 
         const statesToSave = {
@@ -153,10 +153,10 @@ export function createMainWindow() {
     });
 
     // Undocumented function allowing for dynamic color change.
-    (mainWindow as any).setBackgroundColor(state.color);
+    (window as any).setBackgroundColor(state.color);
 
     if (process.env.NODE_ENV !== "production") {
-        mainWindow.loadURL(process.env.MAIN_VIEW as string);
+        window.loadURL(process.env.MAIN_VIEW as string);
 
         import("electron-devtools-installer")
         .then(module => {
@@ -178,8 +178,8 @@ export function createMainWindow() {
         });
 
     } else {
-        mainWindow.loadFile(process.env.MAIN_VIEW as string);
+        window.loadFile(process.env.MAIN_VIEW as string);
     }
 
-    return mainWindow;
+    return window;
 }

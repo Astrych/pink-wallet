@@ -1,5 +1,4 @@
 
-import util from "util";
 import path from "path";
 import { promises as fs } from "fs";
 import { Readable } from "stream";
@@ -8,18 +7,6 @@ import { BrowserWindow } from "electron";
 import EventEmitter from "events";
 
 import { downloadDaemon } from "./downloader";
-import {
-
-    stop,
-    getBlockCount,
-    getBlockHash,
-    getBlock,
-    getConnectionCount,
-    getPeerInfo,
-    getListOfTransactions,
-    getWalletInfo,
-
-} from "../api/rpc";
 import config, { initAuth } from "./config";
 import { chunksToLines } from "./utils";
 import logger from "../logger";
@@ -50,15 +37,15 @@ export async function startDaemon(window: BrowserWindow | null) {
 
     logger.log("Starting wallet daemon...");
 
-    logger.debug(`Daemon main directory: ${config.mainDir}`);
-    logger.debug(`Daemon data directory: ${config.dataDir}`);
+    logger.debug(`Daemon directory: ${config.mainDir}`);
+    logger.debug(`Blockchain data directory: ${config.dataDir}`);
 
     const startTime = process.hrtime();
 
     // Checks for daemon main directory existance.
     await checkDir({
         path: config.mainDir,
-        warnMessage: "Daemon main directory does not exist! Recreating it...",
+        warnMessage: "Daemon directory does not exist! Recreating it...",
         failMessage: "App main directory does not exist!"
     });
 
@@ -68,7 +55,7 @@ export async function startDaemon(window: BrowserWindow | null) {
 
         try { await downloadDaemon(window); } catch (err) {
             if (err.code === 404) {
-                throw new Error("Daemon binary is not available!");
+                throw new Error("Daemon release is not available!");
             }
             throw err;
         }
@@ -83,19 +70,19 @@ export async function startDaemon(window: BrowserWindow | null) {
         }
     }
 
-    // Checks blockchain data directory existance.
+    // Checks mainnet data directory existance.
     await checkDir({
         path: config.dataDir,
-        warnMessage: "Blockchain data directory does not exist! Recreating it...",
-        failMessage: `Main daemon directory does not exist: ${config.mainDir}`
+        warnMessage: "Mainnet data directory does not exist! Recreating it...",
+        failMessage: `Daemon directory does not exist: ${config.mainDir}`
     });
 
     if (testnet) {
-        // Checks testnet blockchain data directory existance.
+        // Checks testnet data directory existance.
         await checkDir({
             path: path.join(config.dataDir, "testnet"),
-            warnMessage: "Daemon main directory does not exist! Recreating it...",
-            failMessage: "App main directory does not exist!"
+            warnMessage: "Testnet data directory does not exist! Recreating it...",
+            failMessage: `Mainnet data directory does not exist: ${config.dataDir}`
         });
     }
 
@@ -109,7 +96,7 @@ export async function startDaemon(window: BrowserWindow | null) {
         `-rpcpassword=${auth.password}`,
         "-rpcallowip=127.0.0.1"
     ];
-    if (testnet) spawnParams.unshift("-testnet");
+    if (testnet) spawnParams.push("-testnet");
 
     // Spawns daemon process.
     pink2d = spawn(config.command, spawnParams);
@@ -118,8 +105,8 @@ export async function startDaemon(window: BrowserWindow | null) {
         logger.error("Daemon Process", wholeObject(err));
         if (process.platform !== "win32" && err.message.includes("EACCES")) {
             logger.error("Daemon binary is not executable or has wrong owner!");
-        }
-        if (err.message.includes("ENOENT")) {
+
+        } else if (err.message.includes("ENOENT")) {
             logger.error("Daemon binary probably does not exist!");
         }
     });
@@ -154,7 +141,7 @@ export async function startDaemon(window: BrowserWindow | null) {
     }
 }
 
-interface CheckDirparams {
+interface CheckDirParams {
     path: string;
     warnMessage: string;
     failMessage: string;
@@ -163,7 +150,7 @@ interface CheckDirparams {
 /**
  * Checks directory existance and recreates it if necessary.
  */
-async function checkDir({ path, warnMessage, failMessage }: CheckDirparams) {
+async function checkDir({ path, warnMessage, failMessage }: CheckDirParams) {
 
     try { await fs.access(path); } catch {
         logger.warn(warnMessage);
@@ -260,60 +247,10 @@ export function onDaemonStopped(cb) {
     emitter.on("daemon-stopped", cb);
 }
 
-onDaemonStarted(async () => {
-    try {
-
-        const blocksCount = await getBlockCount(config.auth);
-        console.log("Number of blocks:", blocksCount);
-
-        await sleep(15000);
-
-        const blockHash = await getBlockHash(config.auth, 10000);
-        console.log("Block 2 hash:", blockHash);
-
-        console.log("======================================================");
-        const block = await getBlock(config.auth, blockHash);
-        console.log(`Block ${blockHash} data:`);
-        console.log(util.inspect(block, {showHidden: false, depth: null}));
-        console.log("======================================================");
-
-        const connectionCount = await getConnectionCount(config.auth);
-        console.log("Connection count:", connectionCount);
-
-        console.log("======================================================");
-        const peers = await getPeerInfo(config.auth);
-        console.log(`Peers:`);
-        console.log(util.inspect(peers, {showHidden: false, depth: null}));
-        console.log("======================================================");
-
-        console.log("======================================================");
-        const transactions = await getListOfTransactions(config.auth);
-        console.log(`Transactions:`);
-        console.log(util.inspect(transactions, {showHidden: false, depth: null}));
-        console.log("======================================================");
-
-        console.log("======================================================");
-        const walletInfo = await getWalletInfo(config.auth);
-        console.log(`Wallet info:`);
-        console.log(util.inspect(walletInfo, {showHidden: false, depth: null}));
-        console.log("======================================================");
-
-        // await sleep(10000);
-
-        // const stopData = await stop(config.auth);
-        // console.log(stopData);
-
-        // await sleep(10000);
-
-        // const countData2 = await getBlockCount(config.auth);
-        // console.log("Number of blocks 2:");
-        // console.log(util.inspect(countData2, {showHidden: false, depth: null}));
-
-    } catch (err) {
-        console.error(err);
-    }
+onDaemonStarted(() => {
+    logger.debug("DAEMON HAS STARTED!");
 });
 
 onDaemonStopped(() => {
-    logger.warn("DAEMON HAS STOPPED!");
+    logger.debug("DAEMON HAS STOPPED!");
 });

@@ -10,7 +10,6 @@ import { join } from "path";
 import { promises as fs } from "fs";
 import { BrowserWindow } from "electron";
 
-import settings from "package.json";
 import {
 
     getLatestRelease,
@@ -28,6 +27,8 @@ import {
 
 } from "./utils";
 
+import packageJSON from "package.json";
+
 
 const platformMapper = {
     "win32": "Win",
@@ -42,7 +43,7 @@ export async function downloadDaemon(window: BrowserWindow | null) {
 
     logger.debug("Downloading daemon wallet...");
 
-    const repoData = settings["daemon-repository"];
+    const repoData = packageJSON["daemon-repository"];
     const repoURL = `${repoData.user}/${repoData.name}`;
 
     const releaseData = await getLatestRelease(repoURL);

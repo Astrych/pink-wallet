@@ -2,7 +2,6 @@
 import {
 
     app,
-    ipcMain,
     session,
     BrowserWindow
 
@@ -11,15 +10,11 @@ import {
 
 import { initAutoUpdater } from "./auto-updater";
 import { createSplashWindow } from "./windows/splash";
-import {
-
-    createMainWindow,
-    state as mainWindowState
-
-} from "./windows/main";
+import { createMainWindow } from "./windows/main";
 import { createTray } from "./windows/tray";
 import { startDaemon } from "./daemon/runner";
 import logger from "./logger";
+import "./ipc-channels";
 
 import { sleep } from "@common/utils";
 
@@ -37,11 +32,12 @@ if (process.env.NODE_ENV !== "production") {
     .catch(err => {
         console.error("Failed to load electron-debug", err);
     });
+}
 
-    if (process.platform === "win32") {
-        // any as a workaround for lack of typings for that function.
-        (app as any).setAppUserModelId("com.electron.pinkcoin");
-    }
+// TODO: Remove it from production??
+if (process.platform === "win32") {
+    // any as a workaround for lack of typings for that function.
+    (app as any).setAppUserModelId("com.electron.pinkcoin");
 }
 
 // Required on Linux platorm (bug workaround).
@@ -85,6 +81,8 @@ app.on("ready", async () => {
     mainWindow = createMainWindow();
     splashWindow = createSplashWindow(startDaemon);
 
+    createTray(mainWindow, splashWindow);
+
     // Sets CSP headers.
     if (session.defaultSession) {
         session.defaultSession.webRequest.onHeadersReceived((details, cb) => {
@@ -116,23 +114,5 @@ app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
         logger.info("App is quitting...");
         app.quit();
-    }
-});
-
-ipcMain.on("splash-finished", () => {
-
-    splashWindow && splashWindow.destroy();
-    if (mainWindow) {
-
-        createTray(mainWindow);
-        mainWindow.show();
-
-        if (mainWindowState.isMaximized) {
-            mainWindow.maximize();
-        }
-
-        if (process.env.NODE_ENV !== "production") {
-            mainWindow.webContents.openDevTools({ mode : "detach" });
-        }
     }
 });

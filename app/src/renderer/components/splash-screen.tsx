@@ -46,7 +46,7 @@ class SplashScreen extends React.Component {
                 // On progress successful finish.
                 if (!steps) {
                     await sleep(500);
-                    event.sender.send("splash-finished");
+                    event.sender.send("splash-loading-finished");
                 }
             }
         };

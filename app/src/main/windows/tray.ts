@@ -5,15 +5,15 @@ import {
     app,
     Tray,
     Menu,
+    shell,
     BrowserWindow,
-    shell
 
 } from "electron";
 
 
 export let tray: Tray;
 
-export function createTray(mainWindow: BrowserWindow) {
+export function createTray(mainWindow: BrowserWindow, splashWindow: BrowserWindow) {
 
     let icon = "icon-tray.png";
     if (process.platform === "win32") icon = "icon.ico";
@@ -24,9 +24,20 @@ export function createTray(mainWindow: BrowserWindow) {
 
     function toggleWindowVisibility() {
 
-        if (mainWindow && !mainWindow.isDestroyed()) {
-            mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+        if (!splashWindow || splashWindow.isDestroyed()) {
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+            }
         }
+    }
+
+    function shouldBeEnabled() {
+        if (!splashWindow || splashWindow.isDestroyed()) {
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function updateMenu() {
@@ -34,6 +45,7 @@ export function createTray(mainWindow: BrowserWindow) {
         const menuTemplate: Electron.MenuItemConstructorOptions[] = [
             {
                 label: `${mainWindow.isVisible() ? "Hide" : "Show"} ${process.env.APP_TITLE}`,
+                enabled: shouldBeEnabled(),
                 click() {
                     toggleWindowVisibility();
                 }

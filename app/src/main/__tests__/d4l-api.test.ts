@@ -16,10 +16,3 @@ describe("D4L API", () => {
         }
     });
 });
-
-describe("Blockchain API", () => {
-    it("should do something ;)", async () => {
-
-        expect(1).toBe(1);
-    });
-});
