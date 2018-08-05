@@ -94,13 +94,7 @@ export function createMainWindow() {
             }
 
         } else {
-            // Workaround for strage bounds in maximized state.
-            // Related to issue https://github.com/electron/electron/issues/12971
-            if (process.platform === "win32" && state.position.x < 0) {
-                state.position.x -= state.position.x;
-                state.position.y -= state.position.y;
-                state.size.width -= 2*state.position.x;
-            }
+
             window!.setPosition(state.position.x, state.position.y);
         }
     });
@@ -120,7 +114,8 @@ export function createMainWindow() {
     window.on("maximize", updateState);
     window.on("unmaximize", () => {
         updateState();
-        // Workaround: partial fix for issue with maximization and restoring
+        // Workaround: fix for issue with maximization and restoring
+        // Title bar issue was resolved by Windows update but posstion issue not yet.
         // https://github.com/electron/electron/issues/12971
         if (process.platform === "win32") {
             setTimeout(() => {

@@ -20,13 +20,17 @@
     - Main app layout
     - Side vertical tabs
 
-7. Create libs aliasing in app build folder (for lib-like part of the code) - done:
+7. ~~Create libs aliasing in app build folder (for lib-like part of the code) - done~~:
     - https://medium.com/@martin_hotell/type-safe-es2015-module-import-path-aliasing-with-webpack-typescript-and-jest-fe461347e010
 
 8. Use TestCafe for e2e testing (??):
     - https://devexpress.github.io/testcafe/
 
-9. Implement Storybook - done.
+9. ~~Implement Storybook - done~~.
 
 10. Use electron-osx-sign to sign mas packages:
     - https://github.com/electron-userland/electron-osx-sign
+
+11. Implement Warpwallet generation schema (if it's possible):
+    - https://github.com/keybase/warpwallet
+    - https://youtu.be/foil0hzl4Pg?t=29m29s
