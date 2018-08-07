@@ -4,7 +4,7 @@ import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { ThemeProvider } from "styled-components";
 
-import { AppLayout } from "./content/layout";
+import { AppLayout } from "./app-layout";
 import AppHeader from "./header";
 import AppContent from "./content";
 import themes from "../themes";

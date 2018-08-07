@@ -13,7 +13,7 @@ export default (_, __, defaultConfig) => {
                 loader: "ts-loader",
                 options: {
                     compilerOptions: {
-                        rootDir: "../app/src/renderer"
+                        rootDir: join(config.dirs.app.src, "renderer")
                     }
                 }
             }]

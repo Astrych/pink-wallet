@@ -95,7 +95,7 @@ class AppHeader extends Component<{}, AppBarState> {
 
         return (
             <Header>
-                <DragBar type="flex" justify="end">
+                <DragBar>
                     {
                         process.platform !== "darwin" &&
                         [

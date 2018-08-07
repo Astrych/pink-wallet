@@ -1,18 +1,19 @@
 
 import styled from "styled-components";
-import { Layout, Row } from "antd";
 
 
-export const Header = styled(Layout.Header)`
+export const Header = styled.div`
     max-height: var(--title-bar-height);
     background-color: ${props => props.theme.header.bar};
     padding: 0;
 `;
 
-export const DragBar = styled(Row)`
-    --bar-row-margin: 5px;
+export const DragBar = styled.div`
+    display: flex;
+    justify-content: flex-end;
     -webkit-app-region: drag;
     user-select: none;
+    --bar-row-margin: 5px;
     margin: var(--bar-row-margin) var(--bar-row-margin) 0px var(--bar-row-margin);
     height: calc(var(--title-bar-height) - var(--bar-row-margin));
     line-height: 11px;

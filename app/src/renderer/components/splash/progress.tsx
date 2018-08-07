@@ -21,16 +21,17 @@ const fadeIn = keyframes`
     }
 `;
 
-const LoadProgress = styled(Progress)`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    animation: ${fadeIn} 0.5s ease-in;
+const LoadProgress = () => <div />;
+// const LoadProgress = styled(Progress)`
+//     position: absolute;
+//     top: 50%;
+//     left: 50%;
+//     animation: ${fadeIn} 0.5s ease-in;
 
-    .ant-progress-circle-trail {
-        stroke: rgba(255, 255, 255, 0.31);
-    }
-`;
+//     .ant-progress-circle-trail {
+//         stroke: rgba(255, 255, 255, 0.31);
+//     }
+// `;
 
 interface SplashProgressProps {
     progress: number;
@@ -51,9 +52,9 @@ function SplashProgress(props: SplashProgressProps) {
 
     return(
         <LoadProgress
-            type="circle"
-            width={80}
-            {...variadicProps}
+            // type="circle"
+            // width={80}
+            // {...variadicProps}
         />
     );
 }

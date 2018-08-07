@@ -1,13 +1,9 @@
 
 import styled from "styled-components";
-import { Layout, Tabs } from "antd";
+import { Tabs } from "antd";
 
 
-export const AppLayout = styled(Layout)`
-    height: 100vh;
-`;
-
-export const Content = styled(Layout.Content)`
+export const Content = styled.div`
     background-color: ${props => props.theme.content.primary};
 `;
 
