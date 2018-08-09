@@ -22,6 +22,16 @@ export default (_, __, defaultConfig) => {
             test: /\.svg$/,
             use: [ "svg-sprite-loader" ]
         },
+        {
+            test: /\.(ttf|eot|woff)$/,
+            use: {
+                loader: "url-loader",
+                options: {
+                    limit: 50000,
+                    name: "fonts/[name].[ext]",
+                }
+            },
+        },
     ];
     defaultConfig.resolve.extensions.push(".ts", ".tsx", ".jsx");
     defaultConfig.resolve.alias = {

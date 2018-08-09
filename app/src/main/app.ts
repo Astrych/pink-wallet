@@ -99,6 +99,27 @@ app.on("ready", async () => {
             cb({ responseHeaders: details.responseHeaders });
         });
     }
+
+    if (process.env.NODE_ENV !== "production") {
+        import("electron-devtools-installer")
+        .then(module => {
+
+            const extensions = [
+                "REACT_DEVELOPER_TOOLS",
+                "REDUX_DEVTOOLS",
+            ];
+
+            // Downloads and/or installs devtools extensions.
+            extensions.map(name => {
+                module.default(module[name], !!process.env.UPGRADE_EXTENSIONS)
+                .then(name => console.log(`Added Extension: ${name}`))
+                .catch(err => console.error("An error occurred:", err));
+            });
+        })
+        .catch(err => {
+            console.error("Failed to load electron-devtools-installer", err);
+        });
+    }
 });
 
 app.on("activate", () => {

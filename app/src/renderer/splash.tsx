@@ -12,11 +12,15 @@ import SplashScreen from "@components/splash-screen";
 process.env = remote.process.env;
 
 injectGlobal`
-
+    @font-face {
+        font-family: "Roboto";
+        src: url("fonts/Roboto-Regular.ttf");
+    }
     html, body {
         user-select: none;
         height: 100%;
         box-sizing: border-box;
+        font-family: "Roboto";
     }
     body {
         margin: 0;

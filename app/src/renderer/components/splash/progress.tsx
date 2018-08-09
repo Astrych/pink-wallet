@@ -1,7 +1,8 @@
 
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import { Progress } from "antd";
+
+import { CircleProgress } from "../atoms/circle-progress";
 
 
 const fadeIn = keyframes`
@@ -21,41 +22,31 @@ const fadeIn = keyframes`
     }
 `;
 
-const LoadProgress = () => <div />;
-// const LoadProgress = styled(Progress)`
-//     position: absolute;
-//     top: 50%;
-//     left: 50%;
-//     animation: ${fadeIn} 0.5s ease-in;
-
-//     .ant-progress-circle-trail {
-//         stroke: rgba(255, 255, 255, 0.31);
-//     }
-// `;
+const Center = styled.div`
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    will-change: opacity;
+    will-change: transform;
+    animation: ${fadeIn} 0.5s ease-in;
+`;
 
 interface SplashProgressProps {
     progress: number;
     error: boolean;
+    stages?: number;
 }
 
 function SplashProgress(props: SplashProgressProps) {
 
-    interface VariadicProps {
-        percent: number;
-        status?: "exception";
-    }
-
-    const variadicProps: VariadicProps = {
-        percent: props.progress
-    };
-    if (props.error) variadicProps.status = "exception";
-
     return(
-        <LoadProgress
-            // type="circle"
-            // width={80}
-            // {...variadicProps}
-        />
+        <Center>
+            <CircleProgress
+                progress={props.progress}
+                error={props.error}
+                stages={4}
+            />
+        </Center>
     );
 }
 

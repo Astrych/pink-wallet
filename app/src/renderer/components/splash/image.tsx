@@ -25,6 +25,7 @@ const Img = styled.img`
     margin: auto;
     -webkit-user-drag: none;
     filter: drop-shadow(16px 16px 16px #000);
+    will-change: opacity;
     ${(props: SplashImgProps) => props.animate ? anim : "visibility: hidden;"}
 `;
 

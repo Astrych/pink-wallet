@@ -50,7 +50,7 @@ export function createSplashWindow(runOnStart: RunOnStart) {
         }
 
         window!.show();
-        window!.webContents.openDevTools({ mode : "detach" });
+        // window!.webContents.openDevTools({ mode : "detach" });
 
         runOnStart(window)
         .catch(err => {
