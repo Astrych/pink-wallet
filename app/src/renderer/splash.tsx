@@ -5,6 +5,7 @@ import ReactDOM from "react-dom";
 import { injectGlobal } from "styled-components";
 
 import SplashScreen from "@components/splash-screen";
+import FontRoboto from "@assets/fonts/Roboto-Regular.ttf";
 
 
 // Inherits env vars from main process
@@ -14,7 +15,7 @@ process.env = remote.process.env;
 injectGlobal`
     @font-face {
         font-family: "Roboto";
-        src: url("fonts/Roboto-Regular.ttf");
+        src: url(${FontRoboto});
     }
     html, body {
         user-select: none;

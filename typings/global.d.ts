@@ -17,6 +17,7 @@ declare function cancelIdleCallback(handle: RequestIdleCallbackHandle): void;
 
 declare module "*.png";
 declare module "*.svg";
+declare module "*.ttf";
 
 declare module "*.json" {
     const value: any;

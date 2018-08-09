@@ -92,10 +92,7 @@ export const rendererConfig: webpack.Configuration = {
                         loader: "less-loader",
                         options: {
                             sourceMap: true,
-                            javascriptEnabled: true,
-                            // modifyVars: {
-                            //     "icon-url": `"${join(config.dirs.build, "iconfont/iconfont")}"`
-                            // }
+                            javascriptEnabled: true
                         }
                     }
                 ]
@@ -105,8 +102,7 @@ export const rendererConfig: webpack.Configuration = {
                 use: {
                     loader: "url-loader",
                     options: {
-                        limit: 50000,
-                        name: "./fonts/[name].[ext]",
+                        limit: 500000
                     }
                 },
             },
