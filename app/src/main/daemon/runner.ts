@@ -29,7 +29,7 @@ const startStages = [
 
 const logErrors = [
     "ERROR: CDB() : error DB_RUNRECOVERY: Fatal error",
-    `Unable to bind to 0.0.0.0:${testnet ? 19135 : 9135} on this computer.`
+    `Unable to bind to 0.0.0.0:${testnet ? 19134 : 9134} on this computer.`
 ];
 
 export let pink2d: ChildProcess | null = null;
