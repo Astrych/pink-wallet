@@ -29,7 +29,7 @@ const startStages = [
 
 const logErrors = [
     "ERROR: CDB() : error DB_RUNRECOVERY: Fatal error",
-    "Unable to bind to 0.0.0.0:9134 on this computer. Pinkcoin is probably already running."
+    `Unable to bind to 0.0.0.0:${testnet ? 19135 : 9135} on this computer.`
 ];
 
 export let pink2d: ChildProcess | null = null;

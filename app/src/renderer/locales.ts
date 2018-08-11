@@ -6,7 +6,11 @@ import { reactI18nextModule } from "react-i18next";
 
 function loadLocales(url, _, cb) {
 
-    import(`../../assets/locales/${url}.json`)
+    import(
+        /* webpackChunkName: "languages" */
+        /* webpackMode: "eager" */
+        `../../assets/locales/${url}.json`
+    )
     .then(locale => {
         cb(locale, { status: "200" });
     })
@@ -20,8 +24,8 @@ i18n
 .use(reactI18nextModule)
 .init({
     fallbackLng: "en",
-    ns: ["translations"],
-    defaultNS: "translations",
+    ns: ["main", "splash"],
+    defaultNS: "main",
     debug: true,
     interpolation: {
       escapeValue: false,
@@ -30,7 +34,7 @@ i18n
       wait: true
     },
     backend: {
-      loadPath: "{{lng}}",
+      loadPath: "{{ns}}/{{lng}}",
       parse: data => data,
       ajax: loadLocales
     }

@@ -1,0 +1,7 @@
+{
+    "init": "Initialisation...",
+    "download": "Downloading daemon...",
+    "unpack": "Unpacking daemon...",
+    "start": "Starting daemon...",
+    "done": "Done"
+}

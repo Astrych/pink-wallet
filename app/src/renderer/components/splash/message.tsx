@@ -15,14 +15,15 @@ const Message = styled.span`
     min-width: 200px;
     max-width: 615px;
     word-wrap: break-word;
-    padding: 8px;
+    padding: 6px;
     color: black;
-    background: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.58);
     border: 2px solid #fff;
     border-radius: 20px/50px;
     background-clip: padding-box;
     text-align: center;
     animation: ${fadeIn} 0.5s ease-in;
+    font-size: 18px;
 `;
 
 export default Message;

@@ -38,7 +38,7 @@ class Dashboard extends Component<DashboardProps> {
 
         return (
             <View>
-                <I18n ns="translations">
+                <I18n ns="main">
                     {(_, { i18n }) => <>
                         <Switch
                             checkedChildren="Light"

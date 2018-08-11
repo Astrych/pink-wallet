@@ -31,7 +31,7 @@ class AppContent extends Component {
         return (
             <Content>
                 <MemoryRouter>
-                    <I18n ns="translations">
+                    <I18n ns="main">
                         {t => (
                             <TabsBar
                                 tabPosition="left"

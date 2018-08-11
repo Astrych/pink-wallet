@@ -1,0 +1,7 @@
+{
+    "init": "Inicjalizacja...",
+    "download": "Pobieraie demona...",
+    "unpack": "Wypakowaywanie demona...",
+    "start": "Uruchamianie demona...",
+    "done": "Gotowe"
+}

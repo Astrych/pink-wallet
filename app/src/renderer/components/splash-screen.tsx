@@ -2,6 +2,7 @@
 import { ipcRenderer } from "electron";
 import React from "react";
 import { hot } from "react-hot-loader";
+import { I18n } from "react-i18next";
 
 import SplashImg from "./splash/image";
 import SplashProgress from "./splash/progress";
@@ -36,7 +37,7 @@ class SplashScreen extends React.Component {
         progress: 0,
         error: false,
         stages: undefined,
-        description: "Initialisation..."
+        description: "init"
     };
 
     componentDidMount() {
@@ -52,6 +53,7 @@ class SplashScreen extends React.Component {
 
                 // On progress successful finish.
                 if (!steps) {
+                    this.setState({ description: "done" });
                     await sleep(500);
                     event.sender.send("splash-loading-finished");
                 }
@@ -59,7 +61,7 @@ class SplashScreen extends React.Component {
         };
 
         ipcRenderer.on("daemon-download-start", () => {
-            this.setState({ description: "Downloading daemon..." });
+            this.setState({ description: "download" });
         });
 
         ipcRenderer.on("daemon-download-progress", (_, data) => {
@@ -68,7 +70,7 @@ class SplashScreen extends React.Component {
 
         ipcRenderer.on("daemon-download-end", () => {
             this.setState({ progress: 0 });
-            this.setState({ description: "Unpacking daemon..." });
+            this.setState({ description: "unpack" });
         });
 
         ipcRenderer.on("daemon-start-progress", (event, data) => {
@@ -81,7 +83,7 @@ class SplashScreen extends React.Component {
             }));
 
             if (data.step === 0) {
-                this.setState({ description: "Starting daemon..." });
+                this.setState({ description: "start" });
                 this.setState({ stages: data.total });
                 updateProgressState(event, 100);
             }
@@ -91,6 +93,7 @@ class SplashScreen extends React.Component {
             console.error(message);
             this.setState({ error: true });
             // TODO: Show popup...
+            // ... or center message box + add close button...
             // TODO: Start shutdown...
         });
     }
@@ -102,21 +105,23 @@ class SplashScreen extends React.Component {
     render() {
         const { show, progress, stages, description, error } = this.state;
 
-        return <>
-            <SplashImg onLoad={this.onImgLoad} animate={show} />
-            {
-                show &&
-                <SplashProgress
-                    progress={progress}
-                    error={error}
-                    stages={stages}
-                />
-            }
-            {
-                show &&
-                <Message>{description}</Message>
-            }
-        </>;
+        return (
+            <I18n ns="splash">
+                {t => <>
+                    <SplashImg onLoad={this.onImgLoad} animate={show} />
+                    {
+                        show && <>
+                            <SplashProgress
+                                progress={progress}
+                                error={error}
+                                stages={stages}
+                            />
+                            <Message>{t(description)}</Message>
+                        </>
+                    }
+                </>}
+            </I18n>
+        );
     }
 }
 
