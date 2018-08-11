@@ -19,10 +19,6 @@ export default (_, __, defaultConfig) => {
             }]
         },
         {
-            test: /\.svg$/,
-            use: [ "svg-sprite-loader" ]
-        },
-        {
             test: /\.(ttf|eot|woff)$/,
             use: {
                 loader: "url-loader",
@@ -31,6 +27,19 @@ export default (_, __, defaultConfig) => {
                     name: "fonts/[name].[ext]",
                 }
             },
+        },
+        {
+            test: /\.png$/i,
+            use: [
+                "url-loader",
+                "img-loader"
+            ]
+        },
+        {
+            test: /\.svg$/i,
+            use: [
+                "svg-sprite-loader"
+            ]
         },
     ];
     defaultConfig.resolve.extensions.push(".ts", ".tsx", ".jsx");

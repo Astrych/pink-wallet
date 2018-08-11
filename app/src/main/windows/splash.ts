@@ -17,8 +17,8 @@ export let window: BrowserWindow | null;
 export function createSplashWindow(runOnStart: RunOnStart) {
 
     window = new BrowserWindow({
-        width: 810,
-        height: 610,
+        width: 615,
+        height: 656,
         center: true,
         resizable: false,
         transparent: true,

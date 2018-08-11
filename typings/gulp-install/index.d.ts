@@ -1,6 +1,3 @@
-/**
- * Dummy type definitions for gulp-install as an example.
- */
 /// <reference types="node"/>
 
 

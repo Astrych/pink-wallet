@@ -32,6 +32,7 @@ injectGlobal`
     }
     div#app {
         height: 100%;
+        position: relative;
         display: flex;
         overflow: hidden;
     }

@@ -57,7 +57,8 @@ export const rendererConfig: webpack.Configuration = {
                         options: {
                             transpileOnly: true,
                             compilerOptions: {
-                                module: "esnext"
+                                module: "esnext",
+                                resolveJsonModule: false
                             },
                             getCustomTransformers: () => ({
                                 before: [

@@ -2,6 +2,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import Color from "color";
+import { Check } from "styled-icons/octicons/Check";
+import { X } from "styled-icons/octicons/X";
 
 
 const Progress = styled.div`
@@ -21,8 +23,18 @@ const Label = styled.span`
     transform: translateY(-50%);
     left: 0;
     margin: 0;
-    font-size: 24px;
+    font-size: 22px;
     color: rgba(0, 0, 0, 0.75);
+`;
+
+const Loaded = styled(Check)<{  size: number }>`
+    height: 45px;
+    color: green;
+`;
+
+const Error = styled(X)<{  size: number }>`
+    height: 45px;
+    color: red;
 `;
 
 const Svg = styled.svg<{  size: number }>`
@@ -37,31 +49,35 @@ const Circle = styled.circle`
     stroke-linecap: round;
 `;
 
-const AnimatedCircle = Circle.extend`
-    transition: stroke-dashoffset 0.15s;
-`;
-
 interface CircleProgressProps {
     progress: number;
     error: boolean;
     stages?: number;
     circleSize: number;
+    iconSize: number;
     strokeSize: number;
     startColor: string;
+    middleColor: string;
     endColor: string;
 }
 
 export class CircleProgress extends Component<CircleProgressProps> {
 
     static defaultProps = {
-        circleSize: 100,
-        strokeSize: 10,
-        startColor: "rgb(255, 195, 15)",
-        endColor: "rgb(77, 176, 79)"
+        circleSize: 80,
+        strokeSize: 8,
+        iconSize: 45,
+        startColor: "pink",
+        middleColor: "#1E90FF",
+        endColor: "green"
     }
 
     get circleSize() {
         return this.props.circleSize;
+    }
+
+    get iconSize() {
+        return this.props.iconSize;
     }
 
     get strokeSize() {
@@ -94,10 +110,12 @@ export class CircleProgress extends Component<CircleProgressProps> {
 
     get progressColor() {
         const start = Color(this.props.startColor);
+        const middle = Color(this.props.middleColor);
         const end = Color(this.props.endColor);
 
         if (this.props.error) return "red";
-        else return start.mix(end, this.normProgress).string();
+        if (this.progress < 50) return start.mix(middle, this.normProgress*2).string();
+        else return middle.mix(end, (this.normProgress - 0.5)*2).string();
     }
 
     get normStage() {
@@ -112,7 +130,15 @@ export class CircleProgress extends Component<CircleProgressProps> {
 
         return(
             <Progress>
-                <Label>{this.progress}%</Label>
+                <Label>
+                    {
+                        this.props.error ?
+                        <Error size={this.iconSize} /> :
+                        this.progress >= 100 ?
+                        <Loaded size={this.iconSize} /> :
+                        `${this.progress}%`
+                    }
+                </Label>
                 <Svg size={this.circleSize}>
                     {/* Background Circle */}
                     <Circle
@@ -126,7 +152,7 @@ export class CircleProgress extends Component<CircleProgressProps> {
                     {/* Stages Circle */}
                     ${
                         this.props.stages &&
-                        <AnimatedCircle
+                        <Circle
                             stroke="rgb(135,206,235, 0.35)"
                             strokeWidth={this.strokeSize}
                             strokeDasharray={this.strokeDasharray}
@@ -137,7 +163,7 @@ export class CircleProgress extends Component<CircleProgressProps> {
                         />
                     }
                     {/* Progress Circle */}
-                    <AnimatedCircle
+                    <Circle
                         stroke={this.progressColor}
                         strokeWidth={this.strokeSize}
                         strokeDasharray={this.strokeDasharray}

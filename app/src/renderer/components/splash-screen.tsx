@@ -5,6 +5,7 @@ import { hot } from "react-hot-loader";
 
 import SplashImg from "./splash/image";
 import SplashProgress from "./splash/progress";
+import Message from "./splash/message";
 
 import { sleep } from "@common/utils";
 
@@ -30,7 +31,13 @@ const progressQueue: Array<number> = [];
 
 class SplashScreen extends React.Component {
 
-    state = { show: false, progress: 0, error: false };
+    state = {
+        show: false,
+        progress: 0,
+        error: false,
+        stages: undefined,
+        description: "Initialisation..."
+    };
 
     componentDidMount() {
 
@@ -51,7 +58,21 @@ class SplashScreen extends React.Component {
             }
         };
 
+        ipcRenderer.on("daemon-download-start", () => {
+            this.setState({ description: "Downloading daemon..." });
+        });
+
+        ipcRenderer.on("daemon-download-progress", (_, data) => {
+            this.setState({ progress: data.progress });
+        });
+
+        ipcRenderer.on("daemon-download-end", () => {
+            this.setState({ progress: 0 });
+            this.setState({ description: "Unpacking daemon..." });
+        });
+
         ipcRenderer.on("daemon-start-progress", (event, data) => {
+            // if (data.step > 1) return;
             const subSteps = 100/data.total;
             progressQueue.push(...calcProgressSteps({
                 step: data.step,
@@ -59,12 +80,18 @@ class SplashScreen extends React.Component {
                 subSteps
             }));
 
-            if (data.step === 0) updateProgressState(event, 100);
+            if (data.step === 0) {
+                this.setState({ description: "Starting daemon..." });
+                this.setState({ stages: data.total });
+                updateProgressState(event, 100);
+            }
         });
 
         ipcRenderer.on("daemon-error", (_, message) => {
             console.error(message);
             this.setState({ error: true });
+            // TODO: Show popup...
+            // TODO: Start shutdown...
         });
     }
 
@@ -73,11 +100,22 @@ class SplashScreen extends React.Component {
     }
 
     render() {
-        const { show, progress, error } = this.state;
+        const { show, progress, stages, description, error } = this.state;
 
         return <>
             <SplashImg onLoad={this.onImgLoad} animate={show} />
-            {show && <SplashProgress progress={progress} error={error} />}
+            {
+                show &&
+                <SplashProgress
+                    progress={progress}
+                    error={error}
+                    stages={stages}
+                />
+            }
+            {
+                show &&
+                <Message>{description}</Message>
+            }
         </>;
     }
 }

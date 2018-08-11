@@ -1,11 +1,4 @@
 
-// TODO: Chenge it when this is shipped:
-// https://github.com/Microsoft/TypeScript/pull/24959
-// Add to ts.config:
-// "resolveJsonModule": true
-// "package.json": [
-//    "app/package.json"
-// ],
 import { join } from "path";
 import { promises as fs } from "fs";
 import { BrowserWindow } from "electron";
@@ -43,6 +36,10 @@ export async function downloadDaemon(window: BrowserWindow | null) {
 
     logger.debug("Downloading daemon wallet...");
 
+    if (window && !window.isDestroyed()) {
+        window.webContents.send("daemon-download-start");
+    }
+
     const repoData = packageJSON["daemon-repository"];
     const repoURL = `${repoData.user}/${repoData.name}`;
 
@@ -76,6 +73,10 @@ export async function downloadDaemon(window: BrowserWindow | null) {
                 }
 
                 logger.debug("Daemon wallet downloaded.");
+
+                if (window && !window.isDestroyed()) {
+                    window.webContents.send("daemon-download-end");
+                }
 
                 description["checksum"] = checksum;
                 description["url"] = donwloadURL;

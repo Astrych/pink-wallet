@@ -45,13 +45,11 @@ class Dashboard extends Component<DashboardProps> {
                             unCheckedChildren="Dark"
                             defaultChecked={currentTheme === "dark" ? false : true}
                             onChange={this.onThemeSwitch}
-                            key="themeSwitcher"
                         />
                         <Switch
                             checkedChildren="PL"
                             unCheckedChildren="EN"
                             onChange={(isEN: boolean) => i18n.changeLanguage(isEN ? "pl": "en")}
-                            key="langSwitcher"
                         />
                     </>}
                 </I18n>

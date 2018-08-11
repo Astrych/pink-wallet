@@ -28,7 +28,8 @@ const startStages = [
 ];
 
 const logErrors = [
-    "ERROR: CDB() : error DB_RUNRECOVERY: Fatal error"
+    "ERROR: CDB() : error DB_RUNRECOVERY: Fatal error",
+    "Unable to bind to 0.0.0.0:9134 on this computer. Pinkcoin is probably already running."
 ];
 
 export let pink2d: ChildProcess | null = null;
@@ -197,7 +198,10 @@ async function handleLogStream({
 
         for (const error of logErrors) {
             if (line.includes(error)) {
-                throw new Error(`Fatal error! Check ${logFilePath}.`);
+                if (window && !window.isDestroyed()) {
+                    window.webContents.send("daemon-error", error);
+                }
+                throw new Error(`Check ${logFilePath}.`);
             }
         }
 
