@@ -11,7 +11,6 @@ import config, { initAuth } from "./config";
 import { chunksToLines } from "./utils";
 import logger from "../logger";
 import { testnet } from "../params";
-import { sleep, wholeObject } from "@common/utils";
 
 
 // TODO: Check that daemon feature:
@@ -103,7 +102,7 @@ export async function startDaemon(window: BrowserWindow | null) {
     pink2d = spawn(config.command, spawnParams);
 
     pink2d.on("error", err => {
-        logger.error("Daemon Process", wholeObject(err));
+        logger.error("Daemon Process", err);
         if (process.platform !== "win32" && err.message.includes("EACCES")) {
             logger.error("Daemon binary is not executable or has wrong owner!");
 

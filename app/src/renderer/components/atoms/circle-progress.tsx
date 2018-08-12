@@ -27,13 +27,13 @@ const Label = styled.span`
     color: rgba(0, 0, 0, 0.75);
 `;
 
-const Loaded = styled(Check)<{  size: number }>`
-    height: 45px;
+const DoneIcon = styled(Check)<{  size: number }>`
+    height: ${props => props.size}px;
     color: green;
 `;
 
-const Error = styled(X)<{  size: number }>`
-    height: 45px;
+const ErrorIcon = styled(X)<{  size: number }>`
+    height: ${props => props.size}px;
     color: red;
 `;
 
@@ -133,10 +133,10 @@ export class CircleProgress extends Component<CircleProgressProps> {
                 <Label>
                     {
                         this.props.error ?
-                        <Error size={this.iconSize} /> :
-                        this.progress >= 100 ?
-                        <Loaded size={this.iconSize} /> :
-                        `${this.progress}%`
+                            <ErrorIcon size={this.iconSize} /> :
+                            this.progress >= 100 ?
+                                <DoneIcon size={this.iconSize} /> :
+                                `${this.progress}%`
                     }
                 </Label>
                 <Svg size={this.circleSize}>

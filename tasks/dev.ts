@@ -130,6 +130,7 @@ export function monitorWindowFiles(done: Function) {
     });
 
     // Notice: backslash absolute paths are not working outside cwd param.
+    // There is an issue: https://github.com/paulmillr/chokidar/issues/750
     watch("main/**/*.ts", { cwd: config.dirs.app.src, delay: 40000 }, series("stop app"))
     .on("raw", (event, path, details) => {
       console.log("[Main watch] Info:", event, path, details);

@@ -1,5 +1,36 @@
 
-const dark = {
+import { ThemedStyledProps } from "styled-components";
+
+
+export interface Theme {
+    header: {
+        bar: string;
+        buttons: {
+            default: string;
+            hover: string;
+            active: {
+                minimize: string;
+                maximizeRetore: string;
+                close: string;
+            }
+        };
+    };
+    content: {
+        primary: string;
+        secondary: string;
+    };
+    text: {
+        primary: string;
+    };
+    tabs: {
+        icons: string;
+        border: string;
+        scrolls: string;
+    };
+    menu: string;
+}
+
+const dark: Theme = {
 
     header: {
         bar: "darkgrey",
@@ -11,7 +42,6 @@ const dark = {
                 maximizeRetore: "green",
                 close: "red",
             },
-
         }
     },
     content: {
@@ -29,7 +59,7 @@ const dark = {
     menu: "#434343",
 };
 
-const light = {
+const light: Theme = {
 
     header: {
         bar: "darkgrey",
@@ -58,8 +88,18 @@ const light = {
     menu: "#434343",
 };
 
-export default {
+const themes = {
     dark,
     light,
     default: dark
 };
+
+// export interface ThemeProps {
+//     theme: {
+//         name: keyof typeof themes;
+//     };
+// }
+
+export type ThemedProps<P={}> = ThemedStyledProps<P, Theme>;
+
+export default themes;
