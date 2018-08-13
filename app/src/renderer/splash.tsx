@@ -7,7 +7,7 @@ import { injectGlobal } from "styled-components";
 import SplashScreen from "@components/splash-screen";
 import FontRoboto from "@assets/fonts/Roboto-Regular.ttf";
 
-import "./locales";
+import "@view-utils/locales";
 
 // Inherits env vars from main process
 // (fix bad Linux behaviour in that regard).

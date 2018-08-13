@@ -1,7 +1,4 @@
 
-import { ThemedStyledProps } from "styled-components";
-
-
 export interface Theme {
     header: {
         bar: string;
@@ -94,12 +91,6 @@ const themes = {
     default: dark
 };
 
-// export interface ThemeProps {
-//     theme: {
-//         name: keyof typeof themes;
-//     };
-// }
-
-export type ThemedProps<P={}> = ThemedStyledProps<P, Theme>;
+export type ThemeName = keyof typeof themes;
 
 export default themes;

@@ -28,6 +28,12 @@
             "@common/*": [
                 "app/src/common/*"
             ],
+            "@app-utils/*": [
+                "app/src/main/utils/*"
+            ],
+            "@view-utils/*": [
+                "app/src/renderer/utils/*"
+            ],
             "@logic/*": [
                 "app/src/renderer/logic/*"
             ],

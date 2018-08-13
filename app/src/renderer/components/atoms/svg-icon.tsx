@@ -5,13 +5,9 @@ import styled from "styled-components";
 import "@assets/svg/icons.svg";
 
 
-interface SvgProps {
-    size: number;
-}
-
-const Svg = styled.svg`
-    width: ${(props: SvgProps) => props.size}px;
-    height: ${(props: SvgProps) => props.size}px;
+const Svg = styled.svg<{ size: number }>`
+    width: ${props => props.size}px;
+    height: ${props => props.size}px;
     margin: auto;
     fill: currentColor;
     stroke-width: 20px;

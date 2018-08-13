@@ -122,7 +122,7 @@
     "ts-import-plugin": "1.5.4",
     "ts-jest": "23.1.3",
     "ts-loader": "4.4.2",
-    "ts-node": "7.0.0",
+    "ts-node": "7.0.1",
     "tslint": "5.11.0",
     "tslint-loader": "3.6.0",
     "typescript": "3.0.1",
@@ -163,6 +163,8 @@
     "moduleNameMapper": {
       "^@assets/(.*)": "<rootDir>/app/src/renderer/__mocks__/file-mock.ts",
       "^@common/(.*)": "<rootDir>/app/src/common/$1",
+      "^@app-utils/(.*)": "<rootDir>/app/src/main/utils/$1",
+      "^@view-utils/(.*)": "<rootDir>/app/src/renderer/utils/$1",
       "^@logic/(.*)": "<rootDir>/app/src/renderer/logic/$1",
       "^@components/(.*)": "<rootDir>/app/src/renderer/components/$1"
     }

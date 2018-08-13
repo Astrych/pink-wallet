@@ -4,9 +4,9 @@ import { storiesOf } from "@storybook/react";
 import { boolean, number, text } from "@storybook/addon-knobs";
 import styled, { injectGlobal } from "styled-components";
 
-import SplashImg from "../components/splash/image";
-import SplashProgress from "../components/splash/progress";
-import Message from "../components/splash/message";
+import SplashImg from "@components/splash/image";
+import SplashProgress from "@components/splash/progress";
+import Message from "@components/splash/message";
 
 
 const stories = storiesOf("Splash Screen", module);

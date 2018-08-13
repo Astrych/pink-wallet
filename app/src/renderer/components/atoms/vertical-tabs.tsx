@@ -1,21 +1,16 @@
 
 import React, { Component, ReactNode } from "react";
-import styled from "styled-components";
 
-import theme, { Theme, ThemedProps } from "../../themes";
+import { styled } from "@view-utils/styles";
 
-interface Test {
-    blabla: string;
-}
 
-const TabsBar = styled.div<ThemedProps>`
+const TabsBar = styled.div`
     color: ${props => props.theme.tabs.icons};
 `;
 
 interface VerticalTabsProps {
     width: number;
     children: ReactNode;
-    ...ThemedProps;
 }
 
 export class VerticalTabs extends Component<VerticalTabsProps> {

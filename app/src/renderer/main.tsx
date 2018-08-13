@@ -9,7 +9,7 @@ import configureStore from "@logic/store";
 import PinkApp from "@components/pink-app";
 import FontRoboto from "@assets/fonts/Roboto-Regular.ttf";
 
-import "./locales";
+import "@view-utils/locales";
 
 
 // Inherits env vars from main process

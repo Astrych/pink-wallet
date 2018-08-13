@@ -4,7 +4,7 @@ import { storiesOf } from "@storybook/react";
 import { boolean, number } from "@storybook/addon-knobs";
 import styled from "styled-components";
 
-import { CircleProgress } from "../components/atoms/circle-progress";
+import { CircleProgress } from "@components/atoms/circle-progress";
 
 
 const stories = storiesOf("Progress components", module);

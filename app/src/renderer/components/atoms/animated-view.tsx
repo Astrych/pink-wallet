@@ -1,6 +1,7 @@
 
 import React, { Component } from "react";
-import styled from "styled-components";
+
+import { styled } from "@view-utils/styles";
 
 
 interface AnimatedViewProps {

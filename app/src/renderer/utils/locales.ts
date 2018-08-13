@@ -4,19 +4,19 @@ import xhr from "i18next-xhr-backend";
 import { reactI18nextModule } from "react-i18next";
 
 
-function loadLocales(url, _, cb) {
+async function loadLocales(url, _, cb) {
 
-    import(
-        /* webpackChunkName: "languages" */
-        /* webpackMode: "eager" */
-        `../../assets/locales/${url}.json`
-    )
-    .then(locale => {
+    try {
+        const locale = await import(
+            /* webpackChunkName: "languages", webpackMode: "eager" */
+            `@assets/locales/${url}.json`
+        );
+
         cb(locale, { status: "200" });
-    })
-    .catch(() => {
+
+    } catch (err) {
         cb(null, { status: "404" });
-    });
+    }
 }
 
 i18n

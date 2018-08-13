@@ -7,12 +7,13 @@ import { ThemeProvider } from "styled-components";
 import { AppLayout } from "./app-layout";
 import AppHeader from "./header";
 import AppContent from "./content";
-import themes from "../themes";
+
+import themes, { ThemeName } from "@logic/theme";
 import { AppState } from "@logic/root-reducer";
 
 
 interface PinkAppProps {
-    currentTheme
+    currentTheme: ThemeName;
 }
 
 class PinkApp extends Component<PinkAppProps> {
@@ -20,7 +21,7 @@ class PinkApp extends Component<PinkAppProps> {
     render() {
         const theme = themes[this.props.currentTheme];
         return (
-            <ThemeProvider theme={theme ? theme : themes["default"]}>
+            <ThemeProvider theme={theme ? theme : themes.default}>
                 <AppLayout>
                     <AppHeader />
                     <AppContent />

@@ -31,6 +31,7 @@ export const mainConfig: webpack.Configuration = {
         alias: {
             "package.json": join(config.dirs.app.main, "package.json"),
             "@common": join(config.dirs.app.src, "common"),
+            "@app-utils": join(config.dirs.app.src, "main/utils"),
         }
     },
     module: {
