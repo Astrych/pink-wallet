@@ -2,7 +2,7 @@
 import * as styledComponents from "styled-components";
 import { ThemedStyledComponentsModule } from "styled-components";
 
-import { Theme } from "@logic/theme";
+import { Theme } from "@view-logic/theme";
 
 
 const {

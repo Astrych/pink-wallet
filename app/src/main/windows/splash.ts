@@ -1,6 +1,6 @@
 
 import path from "path";
-import { BrowserWindow, app } from "electron";
+import { BrowserWindow, shell } from "electron";
 
 import { getCenterPosition } from "./utils";
 import logger from "../logger";
@@ -50,7 +50,6 @@ export function createSplashWindow(runOnStart: RunOnStart) {
         }
 
         window!.show();
-        // window!.webContents.openDevTools({ mode : "detach" });
 
         runOnStart(window)
         .catch(err => {

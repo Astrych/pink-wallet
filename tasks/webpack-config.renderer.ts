@@ -32,7 +32,7 @@ export const rendererConfig: webpack.Configuration = {
         alias: {
             "@assets": config.dirs.app.assets,
             "@view-utils": join(config.dirs.app.src, "renderer/utils"),
-            "@logic": join(config.dirs.app.src, "renderer/logic"),
+            "@view-logic": join(config.dirs.app.src, "renderer/logic"),
             "@components": join(config.dirs.app.src, "renderer/components"),
             "@common": join(config.dirs.app.src, "common"),
         }

@@ -8,8 +8,8 @@ import { AppLayout } from "./app-layout";
 import AppHeader from "./header";
 import AppContent from "./content";
 
-import themes, { ThemeName } from "@logic/theme";
-import { AppState } from "@logic/root-reducer";
+import themes, { ThemeName } from "@view-logic/theme";
+import { AppState } from "@view-logic/root-reducer";
 
 
 interface PinkAppProps {

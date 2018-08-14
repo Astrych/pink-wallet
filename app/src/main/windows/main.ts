@@ -73,12 +73,6 @@ export function createMainWindow() {
 
     window.on("closed", () => window = null);
 
-    // Handles external URLs.
-    window.webContents.on("new-window", (event, url) => {
-        event.preventDefault();
-        if (url.match(/^https?:\/\//)) shell.openExternal(url);
-    });
-
     window.webContents.on("crashed", event => {
         logger.error("Main window web content crashed!");
         logger.error("mainWindow:", event);

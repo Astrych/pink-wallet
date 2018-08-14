@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import { injectGlobal } from "styled-components";
 import { Provider } from "react-redux";
 
-import configureStore from "@logic/store";
+import configureStore from "@view-logic/store";
 import PinkApp from "@components/pink-app";
 import FontRoboto from "@assets/fonts/Roboto-Regular.ttf";
 

@@ -34,7 +34,7 @@
             "@view-utils/*": [
                 "app/src/renderer/utils/*"
             ],
-            "@logic/*": [
+            "@view-logic/*": [
                 "app/src/renderer/logic/*"
             ],
             "@components/*": [

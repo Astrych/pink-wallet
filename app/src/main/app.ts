@@ -137,3 +137,15 @@ app.on("window-all-closed", () => {
         app.quit();
     }
 });
+
+// Security stuff.
+app.on("web-contents-created", (_, contents) => {
+    // Disables navigation to external pages.
+    contents.on("will-navigate", (event, _) => {
+        event.preventDefault();
+    });
+    // Disables creation of new windows.
+    contents.on("new-window", (event, _) => {
+        event.preventDefault();
+    });
+});
