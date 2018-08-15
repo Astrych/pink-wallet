@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 
 import configureStore from "@view-logic/store";
 import PinkApp from "@components/pink-app";
-import FontRoboto from "@assets/fonts/Roboto-Regular.ttf";
+import FontRoboto from "@assets/fonts/Roboto-Regular.woff2";
 
 import "@view-utils/locales";
 

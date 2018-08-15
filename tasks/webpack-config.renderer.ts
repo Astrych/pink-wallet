@@ -4,6 +4,7 @@ import webpack from "webpack";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import tsImportPluginFactory from "ts-import-plugin";
+import imageminPngquant from "imagemin-pngquant";
 import { BundleAnalyzerPlugin }  from "webpack-bundle-analyzer";
 
 import { config, isDev as dev, analyze } from "./config";
@@ -15,19 +16,16 @@ export const rendererConfig: webpack.Configuration = {
     devtool: dev ? "eval-source-map" : "source-map",
     context: config.dirs.app.src,
     entry: {
-
         "main-bundle": [`./renderer/main.tsx`],
         "splash-bundle": ["./renderer/splash.tsx"],
     },
     output: {
-
         filename: "[name].js",
         libraryTarget: "commonjs2",
         path: config.dirs.build,
         publicPath: "./"
     },
     resolve: {
-
         extensions: [".tsx", ".ts", ".js", ".json"],
         alias: {
             "@assets": config.dirs.app.assets,
@@ -100,11 +98,11 @@ export const rendererConfig: webpack.Configuration = {
                 ]
             },
             {
-                test: /\.(ttf|eot|woff)$/,
+                test: /\.(woff|woff2)$/,
                 use: {
                     loader: "url-loader",
                     options: {
-                        limit: 500000
+                        limit: 200000
                     }
                 },
             },
@@ -112,7 +110,14 @@ export const rendererConfig: webpack.Configuration = {
                 test: /\.png$/i,
                 use: [
                     "url-loader",
-                    "img-loader"
+                    {
+                        loader: "img-loader",
+                        options: {
+                            plugins: [
+                                imageminPngquant()
+                            ]
+                        }
+                    }
                 ]
             },
             {
@@ -125,20 +130,17 @@ export const rendererConfig: webpack.Configuration = {
     },
     target: "electron-renderer",
     node: {
-
         __dirname: false,
         __filename: false
     },
     plugins: [
         new ForkTsCheckerWebpackPlugin({
-
             tsconfig: "../../tsconfig.json",
             tslint: "../../tslint.json",
             watch: ["./renderer"],
             workers: ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE
         }),
         new HtmlWebpackPlugin({
-
             title: config.appTitle,
             template: "./template.html",
             filename: "splash.html",
@@ -146,7 +148,6 @@ export const rendererConfig: webpack.Configuration = {
             dev
         }),
         new HtmlWebpackPlugin({
-
             title: config.appTitle,
             template: "./template.html",
             filename: "main.html",

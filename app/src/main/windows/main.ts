@@ -1,6 +1,6 @@
 
 import { join } from "path";
-import { BrowserWindow, shell } from "electron";
+import { BrowserWindow } from "electron";
 import Store from "electron-store";
 import R from "ramda";
 import debounce from "lodash.debounce";
@@ -66,7 +66,7 @@ export function createMainWindow() {
         frame: false,
         useContentSize: true,
         titleBarStyle: "hiddenInset",
-        icon: join(__dirname, `img/icon.${process.platform === "win32" ? "ico" : "png"}`),
+        icon: join(__dirname, `icons/icon.${process.platform === "win32" ? "ico" : "png"}`),
     });
 
     window.setMenu(null);

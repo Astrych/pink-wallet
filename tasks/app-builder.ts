@@ -27,8 +27,8 @@ function runWebpack(config) {
 }
 
 
-const taskName1 = "prepare main part -> compile and pack";
-const taskName2 = "prepare renderer part -> compile and pack";
+const taskName1 = "prepare main part -> copy/compile and pack";
+const taskName2 = "prepare renderer part -> copy/compile and pack";
 
 task(taskName1, runWebpack(mainConfig));
 task(taskName2, runWebpack(rendererConfig));

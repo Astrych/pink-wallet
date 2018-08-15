@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import { injectGlobal } from "styled-components";
 
 import SplashScreen from "@components/splash-screen";
-import FontRoboto from "@assets/fonts/Roboto-Regular.ttf";
+import FontRoboto from "@assets/fonts/Roboto-Regular.woff2";
 
 import "@view-utils/locales";
 

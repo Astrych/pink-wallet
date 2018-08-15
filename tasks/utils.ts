@@ -14,7 +14,7 @@ export function getExtenrals(jsonDir: string) {
         const packageJsonString = fs.readFileSync(resolve(jsonDir, "package.json"), "utf8");
         packageJson = JSON.parse(packageJsonString);
 
-    } catch (e){
+    } catch {
         return [];
     }
 

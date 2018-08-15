@@ -41,7 +41,7 @@ function release(platform: string) {
             overwrite: true,
             asar: true,
             prune: true,
-            icon : path.join(config.dirs.app.assets, "img/icon")
+            icon : path.join(config.dirs.app.assets, "icons/icon")
         };
 
         if (platform === "win32") {

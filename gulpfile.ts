@@ -4,7 +4,6 @@ import { task, series } from "gulp";
 
 // Imports build tasks definitions.
 import appBuilder from "./tasks/app-builder";
-import assetsBuilder from "./tasks/assets-builder";
 import appPackager from "./tasks/app-packager";
 
 // Imports development tasks.
@@ -29,21 +28,8 @@ task("remove build code", removeBuildCode);
 task("install app vendor libs", installAppLibs);
 
 // Build tasks.
-task("prepare app: main part", appBuilder.mainTask);
-task("prepare app: all parts", appBuilder.allTasks);
-task("prepare assets", assetsBuilder.tasks);
-
-task("build: development", series(
-
-    "prepare assets",
-    "prepare app: main part"
-));
-
-task("build: production", series(
-
-    "prepare assets",
-    "prepare app: all parts"
-));
+task("build: development", appBuilder.mainTask);
+task("build: production", appBuilder.allTasks);
 
 task("serve and watch UI", serveRendererView);
 task("watch window files", monitorWindowFiles);

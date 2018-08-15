@@ -1,6 +1,6 @@
 
 import path from "path";
-import { BrowserWindow, shell } from "electron";
+import { BrowserWindow } from "electron";
 
 import { getCenterPosition } from "./utils";
 import logger from "../logger";
@@ -25,7 +25,7 @@ export function createSplashWindow(runOnStart: RunOnStart) {
         frame: false,
         show: false,
         skipTaskbar: true,
-        icon: path.join(__dirname, "img/icon.png")
+        icon: path.join(__dirname, "icons/icon.png")
     });
 
     if (process.env.NODE_ENV !== "production") {
