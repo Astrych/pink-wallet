@@ -24,7 +24,7 @@ injectGlobal`
     html, body {
         height: 100%;
         box-sizing: border-box;
-        font-family: "Roboto";
+        font-family: "Roboto", sans-serif;
     }
     body {
         margin: 0;

@@ -1,11 +1,13 @@
 
 import { join } from "path";
 import webpack from "webpack";
+import HappyPack from "happypack";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import tsImportPluginFactory from "ts-import-plugin";
 import imageminPngquant from "imagemin-pngquant";
 import { BundleAnalyzerPlugin }  from "webpack-bundle-analyzer";
+import FriendlyErrorsWebpackPlugin from "friendly-errors-webpack-plugin";
 
 import { config, isDev as dev, analyze } from "./config";
 
@@ -16,14 +18,14 @@ export const rendererConfig: webpack.Configuration = {
     devtool: dev ? "eval-source-map" : "source-map",
     context: config.dirs.app.src,
     entry: {
-        "main-bundle": [`./renderer/main.tsx`],
+        "main-bundle":   [`./renderer/main.tsx`],
         "splash-bundle": ["./renderer/splash.tsx"],
     },
     output: {
-        filename: "[name].js",
+        filename:      "[name].js",
         libraryTarget: "commonjs2",
-        path: config.dirs.build,
-        publicPath: "./"
+        path:          config.dirs.build,
+        publicPath:    "./",
     },
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".json"],
@@ -32,18 +34,18 @@ export const rendererConfig: webpack.Configuration = {
             "@view-utils": join(config.dirs.app.src, "renderer/utils"),
             "@view-logic": join(config.dirs.app.src, "renderer/logic"),
             "@components": join(config.dirs.app.src, "renderer/components"),
-            "@common": join(config.dirs.app.src, "common"),
+            "@common":     join(config.dirs.app.src, "common"),
         }
     },
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
+                // use: "happypack/loader?id=tsx",
                 use: [
                     {
                         loader: "babel-loader",
                         options: {
-
                             babelrc: false,
                             plugins: [
                                 "syntax-dynamic-import",
@@ -55,9 +57,10 @@ export const rendererConfig: webpack.Configuration = {
                         loader: "ts-loader",
                         options: {
                             transpileOnly: true,
+                            experimentalWatchApi: true,
                             compilerOptions: {
                                 module: "esnext",
-                                resolveJsonModule: false
+                                resolveJsonModule: false,
                             },
                             getCustomTransformers: () => ({
                                 before: [
@@ -134,6 +137,29 @@ export const rendererConfig: webpack.Configuration = {
         __filename: false
     },
     plugins: [
+        new FriendlyErrorsWebpackPlugin(),
+        // new HappyPack({
+        //     id: "tsx",
+        //     threads: 2,
+        //     loaders: [
+        //         {
+        //             path: "babel-loader",
+        //             options: {
+        //                 babelrc: false,
+        //                 plugins: [
+        //                     "syntax-dynamic-import",
+        //                     "react-hot-loader/babel"
+        //                 ],
+        //             },
+        //         },
+        //         {
+        //             path: "ts-loader",
+        //             options: {
+        //                 happyPackMode: true,
+        //             },
+        //         },
+        //     ],
+        // }),
         new ForkTsCheckerWebpackPlugin({
             tsconfig: "../../tsconfig.json",
             tslint: "../../tslint.json",
