@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig",
+    "exclude": [
+        "node_modules",
+        "build/node_modules",
+        "**/__tests__/*.ts",
+        "tasks",
+        "app/src/main"
+    ]
+}

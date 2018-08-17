@@ -1,5 +1,6 @@
 
 import { join } from "path";
+import FriendlyErrorsWebpackPlugin from "friendly-errors-webpack-plugin";
 
 import { config } from "../tasks/config";
 
@@ -12,19 +13,16 @@ export default (_, __, defaultConfig) => {
             use: [{
                 loader: "ts-loader",
                 options: {
-                    compilerOptions: {
-                        rootDir: join(config.dirs.app.src, "renderer")
-                    }
+                    configFile: "tsconfig-storybook.json",
                 }
             }]
         },
         {
-            test: /\.(ttf|eot|woff)$/,
+            test: /\.(woff|woff2)$/,
             use: {
                 loader: "url-loader",
                 options: {
-                    limit: 50000,
-                    name: "fonts/[name].[ext]",
+                    limit: 200000
                 }
             },
         },
@@ -46,10 +44,14 @@ export default (_, __, defaultConfig) => {
     defaultConfig.resolve.alias = {
         ...defaultConfig.resolve.alias,
         "@assets": config.dirs.app.assets,
-        "@logic": join(config.dirs.app.src, "renderer/logic"),
+        "@view-utils": join(config.dirs.app.src, "renderer/utils"),
+        "@view-logic": join(config.dirs.app.src, "renderer/logic"),
         "@components": join(config.dirs.app.src, "renderer/components"),
         "@common": join(config.dirs.app.src, "common"),
     };
+    defaultConfig.plugins.push(
+        new FriendlyErrorsWebpackPlugin()
+    );
 
     return defaultConfig;
 };

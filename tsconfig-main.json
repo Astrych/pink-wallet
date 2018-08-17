@@ -1,0 +1,14 @@
+{
+    "extends": "./tsconfig",
+    "include": [
+        "app/src/main",
+        "app/src/common"
+    ],
+    "exclude": [
+        "node_modules",
+        "build/node_modules",
+        "tasks",
+        "**/__tests__/*.ts",
+        "**/stories"
+    ]
+}

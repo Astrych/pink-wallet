@@ -14,7 +14,7 @@ const stories = storiesOf("Splash Screen", module);
 injectGlobal`
     @font-face {
         font-family: "Roboto";
-        src: url("fonts/Roboto-Regular.ttf");
+        src: url("fonts/Roboto-Regular.woff2");
     }
     html, body {
         user-select: none;

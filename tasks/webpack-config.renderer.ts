@@ -1,13 +1,13 @@
 
 import { join } from "path";
 import webpack from "webpack";
-import HappyPack from "happypack";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import tsImportPluginFactory from "ts-import-plugin";
 import imageminPngquant from "imagemin-pngquant";
 import { BundleAnalyzerPlugin }  from "webpack-bundle-analyzer";
 import FriendlyErrorsWebpackPlugin from "friendly-errors-webpack-plugin";
+import HardSourceWebpackPlugin from "hard-source-webpack-plugin";
 
 import { config, isDev as dev, analyze } from "./config";
 
@@ -15,7 +15,7 @@ import { config, isDev as dev, analyze } from "./config";
 export const rendererConfig: webpack.Configuration = {
 
     mode: config.releaseType,
-    devtool: dev ? "eval-source-map" : "source-map",
+    devtool: dev ? "cheap-module-eval-source-map" : "source-map",
     context: config.dirs.app.src,
     entry: {
         "main-bundle":   [`./renderer/main.tsx`],
@@ -30,7 +30,7 @@ export const rendererConfig: webpack.Configuration = {
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".json"],
         alias: {
-            "@assets": config.dirs.app.assets,
+            "@assets":     config.dirs.app.assets,
             "@view-utils": join(config.dirs.app.src, "renderer/utils"),
             "@view-logic": join(config.dirs.app.src, "renderer/logic"),
             "@components": join(config.dirs.app.src, "renderer/components"),
@@ -41,7 +41,6 @@ export const rendererConfig: webpack.Configuration = {
         rules: [
             {
                 test: /\.tsx?$/,
-                // use: "happypack/loader?id=tsx",
                 use: [
                     {
                         loader: "babel-loader",
@@ -57,11 +56,7 @@ export const rendererConfig: webpack.Configuration = {
                         loader: "ts-loader",
                         options: {
                             transpileOnly: true,
-                            experimentalWatchApi: true,
-                            compilerOptions: {
-                                module: "esnext",
-                                resolveJsonModule: false,
-                            },
+                            configFile: "tsconfig-renderer.json",
                             getCustomTransformers: () => ({
                                 before: [
                                     tsImportPluginFactory({
@@ -138,29 +133,14 @@ export const rendererConfig: webpack.Configuration = {
     },
     plugins: [
         new FriendlyErrorsWebpackPlugin(),
-        // new HappyPack({
-        //     id: "tsx",
-        //     threads: 2,
-        //     loaders: [
-        //         {
-        //             path: "babel-loader",
-        //             options: {
-        //                 babelrc: false,
-        //                 plugins: [
-        //                     "syntax-dynamic-import",
-        //                     "react-hot-loader/babel"
-        //                 ],
-        //             },
-        //         },
-        //         {
-        //             path: "ts-loader",
-        //             options: {
-        //                 happyPackMode: true,
-        //             },
-        //         },
-        //     ],
-        // }),
+        dev && new HardSourceWebpackPlugin({
+            info: {
+                mode: "none",
+                level: "warn"
+            }
+        }),
         new ForkTsCheckerWebpackPlugin({
+            silent: true,
             tsconfig: "../../tsconfig.json",
             tslint: "../../tslint.json",
             watch: ["./renderer"],
@@ -171,18 +151,16 @@ export const rendererConfig: webpack.Configuration = {
             template: "./template.html",
             filename: "splash.html",
             chunks: ["splash-bundle"],
-            dev
         }),
         new HtmlWebpackPlugin({
             title: config.appTitle,
             template: "./template.html",
             filename: "main.html",
             chunks: ["main-bundle"],
-            dev
         }),
         analyze && new BundleAnalyzerPlugin(),
 
     // Removes non-plugin boolean
     // values from conditional checks.
-    ].filter(plugin => plugin != null)
+    ].filter(plugin => (plugin && plugin != null))
 }

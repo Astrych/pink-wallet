@@ -12,7 +12,7 @@ const stories = storiesOf("Progress components", module);
 const Font = styled.div`
     @font-face {
         font-family: "Roboto";
-        src: url("fonts/Roboto-Regular.ttf");
+        src: url("fonts/Roboto-Regular.woff2");
     }
     font-family: "Roboto";
 `;
