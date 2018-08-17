@@ -9,22 +9,23 @@ import { CircleProgress } from "@components/atoms/circle-progress";
 
 const stories = storiesOf("Progress components", module);
 
-const Font = styled.div`
+const Container = styled.div`
     @font-face {
         font-family: "Roboto";
         src: url("fonts/Roboto-Regular.woff2");
     }
     font-family: "Roboto";
+    margin: auto;
 `;
 
 stories.add("CircleProgress", () => {
     return (
-        <Font>
+        <Container>
             <CircleProgress
                 progress={number("Progress", 10)}
                 error={boolean("Error", false)}
                 stages={4}
             />
-        </Font>
+        </Container>
     );
 });
