@@ -11,9 +11,9 @@ const Message = styled.span`
     will-change: opacity;
     animation: ${fadeIn} 0.5s ease-in;
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 15px;
+    left: 10px;
+    right: 10px;
     min-width: 200px;
     max-width: 615px;
     word-wrap: break-word;
