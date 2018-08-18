@@ -1,11 +1,13 @@
 
 // Base gulp modules.
+import { promises as fs } from "fs";
 import { task, parallel } from "gulp";
 import webpack from "webpack";
 
 // Builder configs.
 import { mainConfig } from "./webpack-config.main";
 import { rendererConfig } from "./webpack-config.renderer";
+import { profile } from "./config";
 
 
 function runWebpack(config) {
@@ -16,11 +18,11 @@ function runWebpack(config) {
             console.error(err.stack || err);
             reject();
         } else {
-            console.log(stats.toString({
-                assets: false,
-                chunks: false,
-                colors: true
-            }));
+            if (stats.hasErrors()) console.error(stats.toString("errors-only"));
+            if (profile) {
+                fs.writeFile("stats.json", JSON.stringify(stats.toJson(), null, 2), "utf8")
+                .catch(console.error);
+            }
             resolve();
         }
     }));

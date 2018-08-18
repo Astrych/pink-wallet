@@ -12,7 +12,8 @@ import {
     clean,
     cleanAll,
     removeBuildCode,
-    installAppLibs,
+    copyConfigFiles,
+    installVendorLibs,
     serveRendererView,
     monitorWindowFiles
 
@@ -25,7 +26,8 @@ task("clean-all", cleanAll);
 task("remove build code", removeBuildCode);
 
 // Prepares build folder + app vendor libs.
-task("install app vendor libs", installAppLibs);
+task("copy config files", copyConfigFiles);
+task("install vendor libs", installVendorLibs);
 
 // Build tasks.
 task("build: development", appBuilder.mainTask);
@@ -38,7 +40,8 @@ task("watch window files", monitorWindowFiles);
 task("start", series(
 
     "remove build code",
-    "install app vendor libs",
+    "copy config files",
+    "install vendor libs",
     "build: development",
     "serve and watch UI",
     "watch window files"
@@ -50,7 +53,8 @@ task("default", series("start"));
 task("builder", series(
 
     "clean",
-    "install app vendor libs",
+    "copy config files",
+    "install vendor libs",
     "build: production",
     appPackager[platform]
 ));

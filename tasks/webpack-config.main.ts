@@ -1,18 +1,17 @@
 
 import { join } from "path";
 import webpack from "webpack";
-import nodeExternals from "webpack-node-externals";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import FriendlyErrorsWebpackPlugin from "friendly-errors-webpack-plugin";
 
-import { getExtenrals } from "./utils";
-import { config, isDev as dev } from "./config";
+import { getExternals } from "./utils";
+import { config, isDev as dev, profile } from "./config";
 
 
 export const mainConfig: webpack.Configuration = {
 
-    stats: "none",
+    profile,
     mode: config.releaseType,
     devtool: dev ? "cheap-module-eval-source-map" : "source-map",
     context: config.dirs.app.src,
@@ -40,8 +39,18 @@ export const mainConfig: webpack.Configuration = {
                 options: {
                     silent: true,
                     transpileOnly: true,
-                    configFile: "tsconfig-main.json",
-                }
+                },
+                include: [
+                    join(config.dirs.app.src, "main"),
+                    join(config.dirs.app.src, "common")
+                ],
+                exclude: [
+                    "node_modules",
+                    "build/node_modules",
+                    "tasks",
+                    "**/__tests__/*.ts",
+                    "**/stories"
+                ],
             }
         ]
     },
@@ -50,10 +59,7 @@ export const mainConfig: webpack.Configuration = {
         __dirname: false,
         __filename: false
     },
-    externals: [
-        nodeExternals({ modulesFromFile: true }),
-        getExtenrals(config.dirs.app.main)
-    ],
+    externals: getExternals(config.dirs.app.main),
     plugins: [
         new FriendlyErrorsWebpackPlugin(),
         new ForkTsCheckerWebpackPlugin({

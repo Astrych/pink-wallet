@@ -6,6 +6,7 @@ import args from "commander";
 args
 .option("-e, --env <env>", "Environment", /^(development|production)$/i, "development")
 .option("-p, --platform <plt>", "Platform", /^(linux|windows|mac|all)$/i, "all")
+.option("-r, --profile", "Generate webpack profile data")
 .option("-a, --analyze", "Lunch Bundle Analyzer")
 .parse(process.argv);
 
@@ -72,6 +73,9 @@ type Platform = "linux" | "windows" | "mac " | "all";
 
 // Exports target platform (defaults to "all").
 export const platform: Platform = args.platform;
+
+// Should we lunch bundle analyzer.
+export const profile: boolean = args.profile;
 
 // Should we lunch bundle analyzer.
 export const analyze: boolean = args.analyze;

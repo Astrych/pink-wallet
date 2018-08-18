@@ -56,7 +56,10 @@ export const rendererConfig: webpack.Configuration = {
                         loader: "ts-loader",
                         options: {
                             transpileOnly: true,
-                            configFile: "tsconfig-renderer.json",
+                            compilerOptions: {
+                                module: "esnext",
+                                resolveJsonModule: false
+                            },
                             getCustomTransformers: () => ({
                                 before: [
                                     tsImportPluginFactory({
@@ -68,7 +71,18 @@ export const rendererConfig: webpack.Configuration = {
                             }),
                         }
                     }
-                ]
+                ],
+                include: [
+                    join(config.dirs.app.src, "renderer"),
+                    join(config.dirs.app.src, "common")
+                ],
+                exclude: [
+                    "node_modules",
+                    "build/node_modules",
+                    "tasks",
+                    "**/__tests__/*.ts",
+                    "**/stories"
+                ],
             },
             {
                 test: /\.less$/i,

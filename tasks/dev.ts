@@ -1,11 +1,10 @@
 
-import { spawn, ChildProcess } from "child_process";
+import { exec, spawn, ChildProcess } from "child_process";
 import kill from "tree-kill";
 import del from "del";
 import extend from "xtend";
 import { task, src, dest, watch, series } from "gulp";
 import changed from "gulp-changed";
-import install from "gulp-install";
 import { Server } from "http";
 import Koa from "koa";
 import serveStatic from "koa-static";
@@ -31,7 +30,6 @@ export function clean() {
     return del([`${config.dirs.build}`, `${config.dirs.release}`], { force: true });
 }
 
-
 /**
  * Removes all dev and build folders.
  */
@@ -46,14 +44,24 @@ export function cleanAll() {
 
 
 /**
- * Installs app vendor libs.
+ * Copies package.json, etc.
  */
-export function installAppLibs() {
+export function copyConfigFiles() {
 
-    return src("{*.json,.npmrc,LICENSE}", { cwd: config.dirs.app.main })
+    return src("*.json", { cwd: config.dirs.app.main })
               .pipe(changed(config.dirs.build))
-              .pipe(dest(config.dirs.build))
-              .pipe(install({}));
+              .pipe(dest(config.dirs.build));
+}
+
+export function installVendorLibs(cb) {
+    const command = "npm install --no-package-lock";
+    const options = { cwd: config.dirs.build };
+
+    exec(command, options, (err, stdout, stderr) => {
+        console.log(stdout);
+        console.log(stderr);
+        cb(err);
+    });
 }
 
 
@@ -72,7 +80,6 @@ function runElectronApp(path: string, env: object={}) {
     });
 }
 
-
 let appProccess: ChildProcess | null = null;
 let devServer: Server | null = null;
 
@@ -88,11 +95,13 @@ export async function serveRendererView() {
     const middleware = await koaWebpack({
         config: rendererConfig,
         devMiddleware: {
-            stats: "minimal",
+            logLevel: "warn",
+            stats: "errors-only",
             lazy: false,
             publicPath: "/"
         },
         hotClient: {
+            logLevel: "warn",
             validTargets: [
                 rendererConfig.target as string
             ],
@@ -117,6 +126,7 @@ export async function serveRendererView() {
         });
     }
 }
+
 
 /**
  * Watches for files changes - window process.

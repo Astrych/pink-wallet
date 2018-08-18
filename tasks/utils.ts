@@ -2,11 +2,12 @@
 import fs from "fs";
 import { resolve } from "path";
 
+import { isDev as dev } from "./config";
 
 /**
  * Returns list of packages based on package.json.
  */
-export function getExtenrals(jsonDir: string) {
+export function getExternals(jsonDir: string) {
 
     let packageJson = {};
 
@@ -23,6 +24,11 @@ export function getExtenrals(jsonDir: string) {
     Object.keys(packageJson["dependencies"] || {}).forEach(dep => {
         deps[dep] = true;
     });
+    if (dev) {
+        Object.keys(packageJson["devDependencies"] || {}).forEach(dep => {
+            deps[dep] = true;
+        });
+    }
 
     return Object.keys(deps);
 }

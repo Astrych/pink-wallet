@@ -4,3 +4,4 @@ node_modules
 /coverage
 /daemon
 .directory
+*stats.json
