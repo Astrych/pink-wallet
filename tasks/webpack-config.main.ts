@@ -13,7 +13,7 @@ export const mainConfig: webpack.Configuration = {
 
     profile,
     mode: config.releaseType,
-    devtool: dev ? "cheap-module-eval-source-map" : "source-map",
+    devtool: dev ? "inline-source-map" : "source-map",
     context: config.dirs.app.src,
     entry: {
         app: "./main/app.ts"
@@ -62,6 +62,11 @@ export const mainConfig: webpack.Configuration = {
     externals: getExternals(config.dirs.app.main),
     plugins: [
         new FriendlyErrorsWebpackPlugin(),
+        new webpack.SourceMapDevToolPlugin({
+            filename: null,
+            exclude: ["node_modules", "build/node_modules"],
+            test: /\.ts($|\?)/i
+        }),
         new ForkTsCheckerWebpackPlugin({
             silent: true,
             tsconfig: "../../tsconfig.json",

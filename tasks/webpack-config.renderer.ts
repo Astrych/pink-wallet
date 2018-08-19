@@ -15,7 +15,7 @@ import { config, isDev as dev, analyze } from "./config";
 export const rendererConfig: webpack.Configuration = {
 
     mode: config.releaseType,
-    devtool: dev ? "cheap-module-eval-source-map" : "source-map",
+    devtool: dev ? "inline-source-map" : "source-map",
     context: config.dirs.app.src,
     entry: {
         "main-bundle":   [`./renderer/main.tsx`],
@@ -147,6 +147,11 @@ export const rendererConfig: webpack.Configuration = {
     },
     plugins: [
         new FriendlyErrorsWebpackPlugin(),
+        new webpack.SourceMapDevToolPlugin({
+            filename: null,
+            exclude: ["node_modules", "build/node_modules"],
+            test: /\.tsx?($|\?)/i
+        }),
         dev && new HardSourceWebpackPlugin({
             info: {
                 mode: "none",
