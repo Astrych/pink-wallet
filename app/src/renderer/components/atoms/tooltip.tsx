@@ -41,7 +41,7 @@ const arrow = {
 type Position = "top" | "right" | "bottom" | "left";
 
 const TooltipText = styled.div<{ position: Position }>`
-    opacity: 0;
+    opacity: 1;
     transition: opacity 1s;
     width: 120px;
     background-color: black;

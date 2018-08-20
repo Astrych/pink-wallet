@@ -3,6 +3,7 @@ import React, { Component, ReactElement } from "react";
 
 import { styled } from "@view-utils/styles";
 import Tab, { TabContent, TabProps } from "./tab";
+import MenuButton from "./menu-button";
 
 
 const Underline = styled.div`
@@ -19,61 +20,94 @@ const Underline = styled.div`
     will-change: top, left, width, color;
 `;
 
-const TabsBar = styled.div<{ width: number, tabSize: number }>`
-    position: relative;
+const ContentBar = styled.div<{ width: number }>`
+    display: flex;
+    flex-direction: column;
     color: ${props => props.theme.tabs.icons};
     background-color: ${props => props.theme.content.secondary};
     width: ${props => props.width}px;
     height: 100%;
     margin-left: 0;
+`;
 
+const TabsBar = styled.div<{ tabSize: number }>`
+    position: relative;
+    height: 100%;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    overflow: hidden;
     ${TabContent}, ${Underline} {
         height: ${props => props.tabSize}px;
+    }
+`;
+
+const ExtraContent = styled.div`
+    text-align: center;
+    > button {
+        margin: auto;
+        display: flex;
+        align-items: center;
+        padding-top: 18px;
+        padding-bottom: 18px;
     }
 `;
 
 interface VerticalTabsProps {
     width: number;
     tabSize: number;
-    selected: number;
+    defaultTab: string;
     children: ReactElement<Tab>[];
+    extraButton: ReactElement<MenuButton>;
 }
 
 class VerticalTabs extends Component<VerticalTabsProps> {
 
-    state = { activeIndex: 0 };
-
     static defaultProps = {
         width: 125,
         tabSize: 45,
-        selected: 0,
     }
 
-    onClick = (index?: number) => {
-        if (index !== this.state.activeIndex) {
-            console.log("CLICK TAB!", index);
-            this.setState({ activeIndex: index });
+    state = {
+        activeTabName: this.props.defaultTab,
+        activeTabIndex: this.setInitialActiveIndex(),
+    };
+
+    setInitialActiveIndex() {
+        let initialIndex = 0;
+        React.Children.forEach(this.props.children, (child, index) => {
+            const { name } = (child as ReactElement<TabProps>).props;
+            if (name === this.props.defaultTab) initialIndex = index;
+        });
+        return initialIndex;
+    }
+
+    onTabClick = (name: string, index: number) => {
+        if (index !== this.state.activeTabIndex) {
+            this.setState({ activeTabName: name, activeTabIndex: index });
         }
     };
 
     render() {
-        const { width, tabSize, selected, children } = this.props;
-        let position = this.state.activeIndex*tabSize;
+        const { width, tabSize, children, extraButton } = this.props;
+        const underlinePosition = this.state.activeTabIndex*tabSize;
 
         return (
-            <TabsBar width={width} tabSize={tabSize}>
-                {
-                    React.Children.map(children, (child, index) => {
-                        const props = (child as ReactElement<TabProps>).props;
-                        return React.cloneElement(child as ReactElement<TabProps>, {
-                            onClick: this.onClick,
-                            tabIndex: index,
-                            isActive: index === this.state.activeIndex
-                        });
-                    })
-                }
-                <Underline style={{ top: position }} />
-            </TabsBar>
+            <ContentBar width={width}>
+                <TabsBar tabSize={tabSize}>
+                    <Underline style={{ top: underlinePosition }} />
+                    {
+                        React.Children.map(children, (child, index) => {
+                            const { description } = (child as ReactElement<TabProps>).props;
+                            return React.cloneElement(child as ReactElement<TabProps>, {
+                                onClick: this.onTabClick,
+                                active: index === this.state.activeTabIndex,
+                                index,
+                            });
+                        })
+                    }
+                </TabsBar>
+                <ExtraContent>{extraButton}</ExtraContent>
+            </ContentBar>
         );
     }
 }

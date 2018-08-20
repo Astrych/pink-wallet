@@ -18,35 +18,40 @@ export const TabContent = styled.div<{ active: boolean }>`
     &:hover, &:active {
         color: ${props => props.theme.text.primary};
     }
+
+    &:hover {
+        transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
 `;
 
 export interface TabProps {
     name: string;
+    index: number;
+    active: boolean;
     iconSize: number;
     description: string;
-    isActive: boolean;
-    onClick?: (index?: number) => void;
-    tabIndex?: number;
+    onClick?: (name: string, index: number) => void;
 }
 
 class Tab extends Component<TabProps> {
 
     static defaultProps = {
         iconSize: 31,
-        isActive: false,
+        index: 0,
+        active: false,
     }
 
-    onClick = e => {
+    onTabClick = e => {
         e.preventDefault();
-        const { tabIndex, onClick } = this.props;
-        onClick && onClick(tabIndex);
+        const { onClick, index, name } = this.props;
+        onClick && onClick(name, index);
     };
 
     render() {
-        const { name, description, iconSize, isActive } = this.props;
+        const { name, description, iconSize, active } = this.props;
 
         return (
-            <TabContent onClick={this.onClick} active={isActive}>
+            <TabContent onClick={this.onTabClick} active={active}>
                 <Tootlip text={description} position="right">
                     <SvgIcon name={name} size={iconSize} />
                 </Tootlip>

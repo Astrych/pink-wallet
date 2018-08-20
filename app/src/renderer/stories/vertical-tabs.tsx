@@ -7,6 +7,7 @@ import styled from "styled-components";
 
 import VerticalTabs from "@components/atoms/vertical-tabs";
 import Tab from "@components/atoms/tab";
+import MenuButton from "@components/atoms/menu-button";
 import themes from "@view-logic/theme";
 
 
@@ -27,13 +28,25 @@ stories.add("Tabs bar", () => {
     const selectedTheme = select("Themes", options, "default");
     const theme = themes[selectedTheme];
 
+    const tabOptions = [
+        "dashboad",
+        "send",
+        "receive",
+        "addressBook",
+        "sideStakes",
+        "transactions",
+        "messages",
+    ];
+    const selectedTab = select("Tabs", tabOptions, "dashboard");
+
     return(
         <ThemeProvider theme={theme ? theme : themes.default}>
             <Container>
                 <VerticalTabs
                     width={number("Bar width", 125)}
                     tabSize={number("Tab size", 65)}
-                    selected={number("Selected tab", 0)}
+                    defaultTab={selectedTab}
+                    extraButton={<MenuButton name="settings" />}
                 >
                     <Tab name="dashboard" description="Dasboard" />
                     <Tab name="send" description="Send" />

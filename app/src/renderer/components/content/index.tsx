@@ -11,7 +11,7 @@ import {
     TabsBar,
 
 } from "./layout";
-import MenuButton from "./menu-button";
+import MenuButton from "../atoms/menu-button";
 import TabLink from "./tab-link";
 import Dashboard from "./dashboard";
 import Send from "./send";
