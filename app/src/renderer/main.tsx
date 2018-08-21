@@ -7,7 +7,6 @@ import { Provider } from "react-redux";
 
 import configureStore from "@view-logic/store";
 import PinkApp from "@components/pink-app";
-import FontRoboto from "@assets/fonts/Roboto-Regular.woff2";
 
 import "@view-utils/locales";
 
@@ -17,14 +16,10 @@ import "@view-utils/locales";
 process.env = remote.process.env;
 
 injectGlobal`
-    @font-face {
-        font-family: "Roboto";
-        src: url(${FontRoboto});
-    }
     html, body {
         height: 100%;
         box-sizing: border-box;
-        font-family: "Roboto", sans-serif;
+        font-family: "Open Sans";
     }
     body {
         margin: 0;

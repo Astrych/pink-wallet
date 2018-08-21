@@ -12,15 +12,11 @@ import Message from "@components/splash/message";
 const stories = storiesOf("Splash Screen", module);
 
 injectGlobal`
-    @font-face {
-        font-family: "Roboto";
-        src: url("fonts/Roboto-Regular.woff2");
-    }
     html, body {
         user-select: none;
         height: 100%;
         box-sizing: border-box;
-        font-family: "Roboto";
+        font-family: "Open Sans";
     }
     body {
         margin: 0;

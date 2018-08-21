@@ -10,11 +10,7 @@ import { CircleProgress } from "@components/atoms/circle-progress";
 const stories = storiesOf("Progress components", module);
 
 const Container = styled.div`
-    @font-face {
-        font-family: "Roboto";
-        src: url("fonts/Roboto-Regular.woff2");
-    }
-    font-family: "Roboto";
+    font-family: "Open Sans";
     margin: auto;
 `;
 

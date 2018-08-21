@@ -33,7 +33,7 @@ const ContentBar = styled.div<{ width: number }>`
 const TabsBar = styled.div<{ tabSize: number }>`
     position: relative;
     height: 100%;
-    margin-top: 32px;
+    margin-top: 62px;
     margin-bottom: 32px;
     overflow: hidden;
     ${TabContent}, ${Underline} {

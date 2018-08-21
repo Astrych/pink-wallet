@@ -24,6 +24,10 @@ export const TabContent = styled.div<{ active: boolean }>`
     }
 `;
 
+const TabIcon = styled(SvgIcon)`
+    pointer-events: none;
+`;
+
 export interface TabProps {
     name: string;
     index: number;
@@ -51,11 +55,11 @@ class Tab extends Component<TabProps> {
         const { name, description, iconSize, active } = this.props;
 
         return (
-            <TabContent onClick={this.onTabClick} active={active}>
-                <Tootlip text={description} position="right">
-                    <SvgIcon name={name} size={iconSize} />
-                </Tootlip>
-            </TabContent>
+            <Tootlip text={description} position="right">
+                <TabContent onClick={this.onTabClick} active={active}>
+                    <TabIcon name={name} size={iconSize} />
+                </TabContent>
+            </Tootlip>
         );
     }
 }

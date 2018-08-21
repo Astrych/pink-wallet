@@ -14,11 +14,7 @@ import themes from "@view-logic/theme";
 const stories = storiesOf("Vertical Tabs", module);
 
 const Container = styled.div`
-    @font-face {
-        font-family: "Roboto";
-        src: url("fonts/Roboto-Regular.woff2");
-    }
-    font-family: "Roboto";
+    font-family: "Open Sans";
     width: 100%;
     height: 100%;
 `;

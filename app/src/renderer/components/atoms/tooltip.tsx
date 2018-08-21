@@ -1,14 +1,14 @@
 
-import React, { Component, ReactNode } from "react";
+import React, { Component, ReactNode, ReactElement } from "react";
 
 import { styled, css } from "@view-utils/styles";
 
 
 const text = {
-    top:    css`bottom: 110%; left: 50%; transform: translateX(-50%);`,
-    right:  css`left: 110%; top: 50%; transform: translateY(-50%);`,
-    bottom: css`top: 110%; left: 50%; transform: translateX(-50%);`,
-    left:   css`right: 110%; top: 50%; transform: translateY(-50%);`
+    top:    css`transform: translateX(-50%) translateY(-120%);`,
+    right:  css`transform: translateY(-50%) translateX(5%);`,
+    bottom: css`transform: translateX(-50%) translateY(20%);`,
+    left:   css`transform: translateY(-50%) translateX(-105%);`,
 }
 
 const arrow = {
@@ -16,32 +16,39 @@ const arrow = {
         top: 100%;
         left: 50%;
         transform: translateX(-50%);
-        border-color: black transparent transparent transparent;
+        border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
     `,
     right: css`
         top: 50%;
         right: 100%;
         transform: translateY(-50%);
-        border-color: transparent black transparent transparent;
+        border-color: transparent rgba(0, 0, 0, 0.8) transparent transparent;
     `,
     bottom: css`
         bottom: 100%;
         left: 50%;
-        border-color: transparent transparent black transparent;
+        border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent;
         transform: translateX(-50%);
     `,
     left: css`
         top: 50%;
         left: 100%;
         transform: translateY(-50%);
-        border-color: transparent transparent transparent black;
+        border-color: transparent transparent transparent rgba(0, 0, 0, 0.8);
     `
+}
+
+const tootltip = {
+    top: "",
+    right: "",
+    bottom: "",
+    left: "",
 }
 
 type Position = "top" | "right" | "bottom" | "left";
 
 const TooltipText = styled.div<{ position: Position }>`
-    opacity: 1;
+    position: fixed;
     transition: opacity 1s;
     width: 120px;
     background-color: black;
@@ -49,9 +56,9 @@ const TooltipText = styled.div<{ position: Position }>`
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-    position: absolute;
     z-index: 1;
     pointer-events: none;
+    box-shadow: 2px 2px 3px rgba(0 ,0, 0, 0.3);
     ${props => text[props.position]}
     &::after {
         content: "";
@@ -62,33 +69,66 @@ const TooltipText = styled.div<{ position: Position }>`
     }
 `;
 
-const TooltipContent = styled.div`
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    &:hover ${TooltipText} {
-        opacity: 1;
-    }
-`;
-
 interface TooltipProps {
     position: Position;
     text: string;
     children: ReactNode;
 }
 
-function Tooltip(props: TooltipProps) {
-    return(
-        <TooltipContent>
-            {React.Children.only(props.children)}
-            <TooltipText position={props.position}>
-                {props.text}
+class Tooltip extends Component<TooltipProps> {
+
+    static defaultProps = {
+        position: "right"
+    }
+
+    state = { opacity: 0, top: "", left: "" };
+
+    showTooltip = (e) => {
+        const elm = e.target;
+        const { x, y, width, height } = elm.getBoundingClientRect();
+
+        // Defaults to "right".
+        let top = `${y + height/2}px`;
+        let left = `${x + width}px`;
+
+        switch (this.props.position) {
+            case "top":
+                top = `${y}px`;
+                left = `${x + width/2}px`;
+                break;
+            case "bottom":
+                top = `${y + height}px`;
+                left = `${x + width/2}px`;
+                break;
+            case "left":
+                top = `${y + height/2}px`;
+                left = `${x}px`;
+        }
+
+        this.setState({ opacity: 1, top, left });
+    }
+
+    hideTooltip = (e) => {
+        this.setState({ opacity: 0 });
+    }
+
+    render() {
+        const { children, position, text } = this.props;
+        const child = React.Children.only(children);
+        const { opacity, top, left } = this.state;
+
+        return <>
+            {
+                React.cloneElement(child, {
+                    onMouseEnter: this.showTooltip,
+                    onMouseLeave: this.hideTooltip,
+                })
+            }
+            <TooltipText position={position} style={{ opacity, top, left }}>
+                {text}
             </TooltipText>
-        </TooltipContent>
-    );
+        </>;
+    }
 }
 
 export default Tooltip;

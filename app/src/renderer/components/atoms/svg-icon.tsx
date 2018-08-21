@@ -16,12 +16,13 @@ const Svg = styled.svg<{ size: number }>`
 interface SvgIconProps {
     name: string;
     size: number;
+    className?: string;
 }
 
 function SvgIcon(props: SvgIconProps) {
 
     return (
-        <Svg size={props.size}>
+        <Svg size={props.size} className={props.className}>
             <use xlinkHref={`#icons_${props.name}`} />
         </Svg>
     );
