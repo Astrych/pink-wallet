@@ -1,7 +1,7 @@
 
 import React, { Component } from "react";
 
-import { styled, css } from "@view-utils/styles";
+import { styled } from "@view-utils/styles";
 import Tootlip from "./tooltip";
 import SvgIcon from "./svg-icon";
 
@@ -13,7 +13,7 @@ export const TabContent = styled.div<{ active: boolean }>`
     align-items: center;
     cursor: pointer;
 
-    ${props => props.active ? css`color: ${props => props.theme.text.primary};` : ""}
+    color: ${props => props.active ? props.theme.text.primary : "inherit"};
 
     &:hover, &:active {
         color: ${props => props.theme.text.primary};

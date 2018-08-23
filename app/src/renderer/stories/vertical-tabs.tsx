@@ -1,7 +1,15 @@
 
-import React from "react";
+import React, { Component } from "react";
 import { storiesOf } from "@storybook/react";
 import { number, select } from "@storybook/addon-knobs";
+import {
+
+    MemoryRouter,
+    withRouter,
+    RouteComponentProps
+
+} from "react-router";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import styled from "styled-components";
 
@@ -17,23 +25,23 @@ const Container = styled.div`
     font-family: "Open Sans";
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: row;
 `;
 
-stories.add("Tabs bar", () => {
+const View = styled.div`
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: yellow;
+`;
+
+stories.add("Only tabs bar", () => {
     const options = ["dark", "light", "default"];
     const selectedTheme = select("Themes", options, "default");
     const theme = themes[selectedTheme];
-
-    const tabOptions = [
-        "dashboad",
-        "send",
-        "receive",
-        "addressBook",
-        "sideStakes",
-        "transactions",
-        "messages",
-    ];
-    const selectedTab = select("Tabs", tabOptions, "dashboard");
 
     return(
         <ThemeProvider theme={theme ? theme : themes.default}>
@@ -41,8 +49,13 @@ stories.add("Tabs bar", () => {
                 <VerticalTabs
                     width={number("Bar width", 125)}
                     tabSize={number("Tab size", 65)}
-                    defaultTab={selectedTab}
+                    defaultTab="dashboad"
                     extraButton={<MenuButton name="settings" />}
+                    action={
+                        selectedTab => {
+                            console.log("TAB CHANGED:", selectedTab);
+                        }
+                    }
                 >
                     <Tab name="dashboard" description="Dasboard" />
                     <Tab name="send" description="Send" />
@@ -52,6 +65,84 @@ stories.add("Tabs bar", () => {
                     <Tab name="transactions" description="Transactions" />
                     <Tab name="messages" description="Messages" />
                 </VerticalTabs>
+            </Container>
+        </ThemeProvider>
+    );
+});
+
+
+interface ViewSwitcherProps extends RouteComponentProps<ViewSwitcherProps> {
+}
+
+interface ViewSwitcherState {
+    route: string;
+}
+
+class ViewSwitcherTest extends Component<ViewSwitcherProps, ViewSwitcherState> {
+
+    private redirect = route => {
+        const { location, history } = this.props;
+
+        if (route !== location.pathname) {
+            console.log(route, location);
+            history.push(route);
+        }
+    };
+
+    render() {
+
+        return(
+            <VerticalTabs
+                width={number("Bar width", 125)}
+                tabSize={number("Tab size", 65)}
+                defaultTab="dashboad"
+                extraButton={<MenuButton name="settings" />}
+                action={
+                    selectedTab => {
+                        console.log("TAB CHANGED:", selectedTab);
+                        this.redirect(`/${selectedTab}`);
+                    }
+                }
+            >
+                <Tab name="dashboard" description="Dasboard" />
+                <Tab name="send" description="Send" />
+                <Tab name="receive" description="Receive" />
+                <Tab name="addressBook" description="Address Book" />
+                <Tab name="sideStakes" description="Side Stakes" />
+                <Tab name="transactions" description="Transactions" />
+                <Tab name="messages" description="Messages" />
+            </VerticalTabs>
+        );
+    }
+}
+
+const ViewSwitcher = withRouter(ViewSwitcherTest);
+
+stories.add("Tabs bar with chaning view", () => {
+    const options = ["dark", "light", "default"];
+    const selectedTheme = select("Themes", options, "default");
+    const theme = themes[selectedTheme];
+
+    return(
+        <ThemeProvider theme={theme ? theme : themes.default}>
+            <Container>
+                <MemoryRouter>
+                    <>
+                        <ViewSwitcher />
+                        <View>
+                            <Switch>
+                                <Route exact path="/dashboard" render={() => <h1>Dashboard</h1>} />
+                                <Route exact path="/send" render={() => <h1>Send</h1>} />
+                                <Route exact path="/receive" render={() => <h1>Receive</h1>} />
+                                <Route exact path="/addressBook" render={() => <h1>AddressBook</h1>} />
+                                <Route exact path="/sideStakes" render={() => <h1>SideStakes</h1>} />
+                                <Route exact path="/transactions" render={() => <h1>Transactions</h1>} />
+                                <Route exact path="/messages" render={() => <h1>Messages</h1>} />
+                                <Redirect from="/" exact to="/dashboard" />
+                            </Switch>
+                        </View>
+                    </>
+                </MemoryRouter>
             </Container>
         </ThemeProvider>
     );

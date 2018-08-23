@@ -23,11 +23,11 @@ const Underline = styled.div`
 const ContentBar = styled.div<{ width: number }>`
     display: flex;
     flex-direction: column;
+    margin-left: 0;
+    height: 100%;
+    width: ${props => props.width}px;
     color: ${props => props.theme.tabs.icons};
     background-color: ${props => props.theme.content.secondary};
-    width: ${props => props.width}px;
-    height: 100%;
-    margin-left: 0;
 `;
 
 const TabsBar = styled.div<{ tabSize: number }>`
@@ -58,17 +58,17 @@ interface VerticalTabsProps {
     defaultTab: string;
     children: ReactElement<Tab>[];
     extraButton: ReactElement<MenuButton>;
+    action: (selectedTab: string) => ReactElement<any> | void;
 }
 
 class VerticalTabs extends Component<VerticalTabsProps> {
 
     static defaultProps = {
         width: 125,
-        tabSize: 45,
+        tabSize: 65,
     }
 
     state = {
-        activeTabName: this.props.defaultTab,
         activeTabIndex: this.setInitialActiveIndex(),
     };
 
@@ -83,7 +83,8 @@ class VerticalTabs extends Component<VerticalTabsProps> {
 
     onTabClick = (name: string, index: number) => {
         if (index !== this.state.activeTabIndex) {
-            this.setState({ activeTabName: name, activeTabIndex: index });
+            this.setState({ activeTabIndex: index });
+            this.props.action(name);
         }
     };
 
@@ -97,7 +98,6 @@ class VerticalTabs extends Component<VerticalTabsProps> {
                     <Underline style={{ top: underlinePosition }} />
                     {
                         React.Children.map(children, (child, index) => {
-                            const { description } = (child as ReactElement<TabProps>).props;
                             return React.cloneElement(child as ReactElement<TabProps>, {
                                 onClick: this.onTabClick,
                                 active: index === this.state.activeTabIndex,

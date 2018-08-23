@@ -2,17 +2,11 @@
 import React, { Component } from "react";
 import { I18n } from "react-i18next";
 import { MemoryRouter } from "react-router";
-import { Route } from "react-router-dom";
-import { Tabs } from "antd";
+import { Route, Switch, Redirect } from "react-router-dom";
 
-import {
-
-    Content,
-    TabsBar,
-
-} from "./layout";
-import MenuButton from "../atoms/menu-button";
-import TabLink from "./tab-link";
+import { Content } from "./layout";
+import ViewSwitcher from "./view-switcher";
+import Tab from "../atoms/tab";
 import Dashboard from "./dashboard";
 import Send from "./send";
 import Receive from "./receive";
@@ -22,8 +16,6 @@ import Transactions from "./transactions";
 import Messages from "./messages";
 
 
-const TabPane = Tabs.TabPane;
-
 class AppContent extends Component {
 
     render() {
@@ -32,56 +24,27 @@ class AppContent extends Component {
             <Content>
                 <MemoryRouter>
                     <I18n ns="main">
-                        {t => (
-                            <TabsBar
-                                tabPosition="left"
-                                defaultActiveKey="dashboard"
-                                tabBarExtraContent={<MenuButton name="settings" />}
-                            >
-                                <TabPane
-                                    tab={<TabLink to="/" name="dashboard" title={t("tabs.dashboard")} />}
-                                    key="dashboard"
-                                >
-                                    <Route exact path="/" component={Dashboard} />
-                                </TabPane>
-                                <TabPane
-                                    tab={<TabLink to="/send" name="send" title={t("tabs.send")} />}
-                                    key="send"
-                                >
-                                    <Route exact path="/send" component={Send} />
-                                </TabPane>
-                                <TabPane
-                                    tab={<TabLink to="/receive" name="receive" title={t("tabs.receive")} />}
-                                    key="receive"
-                                >
-                                    <Route exact path="/receive" component={Receive} />
-                                </TabPane>
-                                <TabPane
-                                    tab={<TabLink to="/addressBook" name="addressBook" title={t("tabs.addressBook")} />}
-                                    key="addressBook"
-                                >
-                                    <Route exact path="/addressBook" component={AddressBook} />
-                                </TabPane>
-                                <TabPane
-                                    tab={<TabLink to="/sideStakes" name="sideStakes" title={t("tabs.sideStakes")} />}
-                                    key="sideStakes"
-                                >
-                                    <Route exact path="/sideStakes" component={SideStakes} />
-                                </TabPane>
-                                <TabPane
-                                    tab={<TabLink to="/transactions" name="transactions" title={t("tabs.transactions")} />}
-                                    key="transactions"
-                                >
-                                    <Route exact path="/transactions" component={Transactions} />
-                                </TabPane>
-                                <TabPane
-                                    tab={<TabLink to="/messages" name="messages" title={t("tabs.messages")} />}
-                                    key="messages"
-                                >
-                                    <Route exact path="/messages" component={Messages} />
-                                </TabPane>
-                            </TabsBar>
-                        )}
+                        {t => <>
+                            <ViewSwitcher>
+                                <Tab name="dashboard" description={t("tabs.dashboard")} />
+                                <Tab name="send" description={t("tabs.send")} />
+                                <Tab name="receive" description={t("tabs.receive")} />
+                                <Tab name="addressBook" description={t("tabs.addressBook")} />
+                                <Tab name="sideStakes" description={t("tabs.sideStakes")} />
+                                <Tab name="transactions" description={t("tabs.transactions")} />
+                                <Tab name="messages" description={t("tabs.messages")} />
+                            </ViewSwitcher>
+                            <Switch>
+                                <Route path="/dashboard" component={Dashboard} />
+                                <Route path="/send" component={Send} />
+                                <Route path="/receive" component={Receive} />
+                                <Route path="/addressBook" component={AddressBook} />
+                                <Route path="/sideStakes" component={SideStakes} />
+                                <Route path="/transactions" component={Transactions} />
+                                <Route path="/messages" component={Messages} />
+                                <Redirect from="/" exact to="/dashboard" />
+                            </Switch>
+                        </>}
                     </I18n>
                 </MemoryRouter>
             </Content>

@@ -1,5 +1,5 @@
 
-import React, { Component, ReactNode, ReactElement } from "react";
+import React, { Component, ReactNode } from "react";
 
 import { styled, css } from "@view-utils/styles";
 
@@ -36,13 +36,6 @@ const arrow = {
         transform: translateY(-50%);
         border-color: transparent transparent transparent rgba(0, 0, 0, 0.8);
     `
-}
-
-const tootltip = {
-    top: "",
-    right: "",
-    bottom: "",
-    left: "",
 }
 
 type Position = "top" | "right" | "bottom" | "left";
@@ -83,8 +76,8 @@ class Tooltip extends Component<TooltipProps> {
 
     state = { opacity: 0, top: "", left: "" };
 
-    showTooltip = (e) => {
-        const elm = e.target;
+    showTooltip = event => {
+        const elm = event.target;
         const { x, y, width, height } = elm.getBoundingClientRect();
 
         // Defaults to "right".
@@ -108,7 +101,7 @@ class Tooltip extends Component<TooltipProps> {
         this.setState({ opacity: 1, top, left });
     }
 
-    hideTooltip = (e) => {
+    hideTooltip = () => {
         this.setState({ opacity: 0 });
     }
 
