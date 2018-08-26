@@ -1,7 +1,9 @@
 {
     "init": "Inicjalizacja...",
     "download": "Pobieraie demona...",
+    "download-end": "Daemon pobrany",
     "unpack": "Wypakowaywanie demona...",
+    "unpack-end": "Daemon rozpakowany",
     "start": "Uruchamianie demona...",
-    "done": "Gotowe"
+    "start-end": "Gotowe"
 }

@@ -23,6 +23,7 @@ interface SplashProgressProps {
     progress: number;
     error: boolean;
     stages?: number;
+    animated: boolean;
 }
 
 function SplashProgress(props: SplashProgressProps) {
@@ -33,6 +34,7 @@ function SplashProgress(props: SplashProgressProps) {
                 progress={props.progress}
                 error={props.error}
                 stages={props.stages}
+                animated={props.animated}
             />
         </Center>
     );

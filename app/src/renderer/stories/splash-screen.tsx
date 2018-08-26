@@ -51,6 +51,7 @@ stories.add("Components layout", () => {
                     progress={number("Progress", 10)}
                     error={boolean("Error", false)}
                     stages={number("Stages", 0)}
+                    animated={boolean("Animated", true)}
                 />
             }
         </SplashWindow>

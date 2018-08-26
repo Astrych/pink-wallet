@@ -30,13 +30,23 @@ export function calcProgressSteps({ step, total, subSteps }: ProgresStepArgs) {
 
 const progressQueue: Array<number> = [];
 
-class SplashScreen extends React.Component {
+interface SplashScreenState {
+    show: boolean;
+    progress: number;
+    error: boolean;
+    stages: number;
+    animated: boolean;
+    description: string;
+}
+
+class SplashScreen extends React.Component<{}, SplashScreenState> {
 
     state = {
         show: false,
         progress: 0,
         error: false,
-        stages: undefined,
+        stages: 0,
+        animated: true,
         description: "init"
     };
 
@@ -47,13 +57,13 @@ class SplashScreen extends React.Component {
             while (--steps + 1) {
                 while (progressQueue.length < 1) await sleep(10);
 
-                this.setState({ progress: progressQueue.shift() });
+                this.setState({ progress: progressQueue.shift() as number });
 
                 await sleep(30);
 
                 // On progress successful finish.
                 if (!steps) {
-                    this.setState({ description: "done" });
+                    this.setState({ description: "start-end" });
                     await sleep(500);
                     event.sender.send("splash-loading-finished");
                 }
@@ -69,8 +79,15 @@ class SplashScreen extends React.Component {
         });
 
         ipcRenderer.on("daemon-download-end", () => {
-            this.setState({ progress: 0 });
-            this.setState({ description: "unpack" });
+            this.setState({ description: "download-end", animated: false });
+        });
+
+        ipcRenderer.on("daemon-unpack", () => {
+            this.setState({ progress: 0, description: "unpack", animated: true });
+        });
+
+        ipcRenderer.on("daemon-unpack-end", () => {
+            this.setState({ description: "unpack-end" });
         });
 
         ipcRenderer.on("daemon-start-progress", (event, data) => {
@@ -83,18 +100,18 @@ class SplashScreen extends React.Component {
             }));
 
             if (data.step === 0) {
-                this.setState({ description: "start" });
-                this.setState({ stages: data.total });
+                this.setState({ stages: data.total, description: "start" });
                 updateProgressState(event, 100);
             }
         });
 
-        ipcRenderer.on("daemon-error", (_, message) => {
+        ipcRenderer.on("daemon-error", async (event, message) => {
             console.error(message);
-            this.setState({ error: true });
+            this.setState({ error: true, description: message });
             // TODO: Show popup...
             // ... or center message box + add close button...
-            // TODO: Start shutdown...
+            await sleep(2000);
+            event.sender.send("app-shutdown");
         });
     }
 
@@ -103,7 +120,7 @@ class SplashScreen extends React.Component {
     }
 
     render() {
-        const { show, progress, stages, description, error } = this.state;
+        const { show, progress, stages, animated, description, error } = this.state;
 
         return (
             <I18n ns="splash">
@@ -115,8 +132,9 @@ class SplashScreen extends React.Component {
                                 progress={progress}
                                 error={error}
                                 stages={stages}
+                                animated={animated}
                             />
-                            <Message>{t(description)}</Message>
+                            <Message>{error ? description : t(description)}</Message>
                         </>
                     }
                 </>}

@@ -1,5 +1,5 @@
 
-import { ipcMain } from "electron";
+import { app, ipcMain } from "electron";
 
 import {
 
@@ -28,4 +28,14 @@ ipcMain.on("splash-loading-finished", () => {
             mainWindow.webContents.openDevTools({ mode : "detach" });
         }
     }
+});
+
+ipcMain.on("app-shutdown", () => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.close();
+    }
+    if (splashWindow && !splashWindow.isDestroyed()) {
+        splashWindow.close();
+    }
+    app.quit();
 });

@@ -9,6 +9,7 @@ import EventEmitter from "events";
 import { downloadDaemon } from "./downloader";
 import config, { initAuth } from "./config";
 import { chunksToLines } from "./utils";
+import { startStages, logErrors } from "./log-content";
 import logger from "../logger";
 import { testnet } from "../params";
 
@@ -17,19 +18,6 @@ import { testnet } from "../params";
 // https://bitcointalk.org/index.php?topic=448565.0
 
 const emitter = new EventEmitter();
-
-const startStages = [
-    "Loading block index...",
-    "Loading wallet...",
-    "Loading addresses...",
-    "Done loading",
-    "ThreadRPCServer started"
-];
-
-const logErrors = [
-    "ERROR: CDB() : error DB_RUNRECOVERY: Fatal error",
-    `Unable to bind to 0.0.0.0:${testnet ? 19134 : 9134} on this computer.`
-];
 
 export let pink2d: ChildProcess | null = null;
 
@@ -113,6 +101,13 @@ export async function startDaemon(window: BrowserWindow | null) {
 
     pink2d.on("exit", (code, signal) => {
         logger.log(`Daemon process exited with code ${code} and signal ${signal}.`);
+        if (process.platform === "win32" && code === 3221225781) {
+            if (window && !window.isDestroyed()) {
+                const message = "Invalid daemon binary: DLL loading error";
+                window.webContents.send("daemon-error", message);
+                logger.error(message);
+            }
+        }
     });
 
     const params = {
@@ -197,10 +192,7 @@ async function handleLogStream({
 
         for (const error of logErrors) {
             if (line.includes(error)) {
-                if (window && !window.isDestroyed()) {
-                    window.webContents.send("daemon-error", error);
-                }
-                throw new Error(`Check ${logFilePath}.`);
+                throw new Error(`Check ${logFilePath}: ${error}`);
             }
         }
 
@@ -229,7 +221,7 @@ async function handleLogStream({
                 progressStep += 1;
                 if (progressStep === startStages.length) {
                     emitter.emit("daemon-started");
-                    hasStarted =true;
+                    hasStarted = true;
                 }
 
                 break;

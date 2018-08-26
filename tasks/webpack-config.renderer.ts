@@ -47,7 +47,7 @@ export const rendererConfig: webpack.Configuration = {
                         options: {
                             babelrc: false,
                             plugins: [
-                                "syntax-dynamic-import",
+                                "@babel/syntax-dynamic-import",
                                 "react-hot-loader/babel"
                             ],
                         },

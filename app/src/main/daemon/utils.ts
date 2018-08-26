@@ -1,8 +1,9 @@
 
+import { join } from "path";
 import fs from "fs";
 import { promises as pfs } from "fs";
 import { promisify } from "util";
-import { Readable, Writable } from "stream";
+import { Readable } from "stream";
 import crypto from "crypto";
 import zlib from "zlib";
 import tar from "tar-fs";
@@ -59,27 +60,37 @@ export async function calcChecksum(filePath: string) {
 /**
  * Exctracts .zip files (Windows platforms).
  */
-export async function unzip(sourcePath: string, destPath: string) {
+export async function unzip(sourcePath: string, destDir: string) {
 
     const open = promisify(yauzl.open.bind(yauzl));
-    const zipFile = await open(sourcePath);
+    const zipFile = await open(sourcePath, { lazyEntries: true });
 
     const openReadStream = promisify(zipFile.openReadStream.bind(zipFile));
 
     return new Promise((resolve, reject) => {
+        zipFile.readEntry();
         zipFile.on("entry", async entry => {
-            try {
-                const inputStream = await openReadStream(entry);
-                const outputStream = fs.createWriteStream(destPath);
+            // Directory entry...
+            if (/\/$/.test(entry.fileName)) {
+                zipFile.readEntry();
+            // File entry...
+            } else {
+                try {
+                    const inputStream = await openReadStream(entry);
+                    const outputStream = fs.createWriteStream(join(destDir, entry.fileName));
 
-                for await (const chunk of inputStream) {
-                    outputStream.write(chunk);
-                }
+                    for await (const chunk of inputStream) {
+                        outputStream.write(chunk);
+                    }
 
-                outputStream.close();
-                resolve();
+                    outputStream.close();
+                    zipFile.readEntry();
 
-            } catch (err) { reject(err); }
+                } catch (err) { reject(err); }
+            }
+        });
+        zipFile.on("close", () => {
+            resolve();
         });
     });
 }

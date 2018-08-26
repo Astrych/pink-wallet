@@ -94,14 +94,22 @@ export async function downloadDaemon(window: BrowserWindow | null) {
                 if (hash === checksum) {
                     logger.debug(`Unziping ${relasePath} to ${config.mainDir}`);
 
+                    if (window && !window.isDestroyed()) {
+                        window.webContents.send("daemon-unpack");
+                    }
+
                     if (process.platform === "win32") {
-                        await unzip(relasePath, config.command);
+                        await unzip(relasePath, config.mainDir);
 
                     } else {
                         await untar(relasePath, config.mainDir);
                     }
 
                     await isBussy(config.command);
+
+                    if (window && !window.isDestroyed()) {
+                        window.webContents.send("daemon-unpack-end");
+                    }
 
                     isReady = true;
 

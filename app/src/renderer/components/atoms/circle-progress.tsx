@@ -47,6 +47,7 @@ const Circle = styled.circle`
     transform-origin: center;
     transform: rotate(-90deg);
     stroke-linecap: round;
+    transition: stroke-dashoffset 0.15s;
 `;
 
 interface CircleProgressProps {
@@ -59,6 +60,7 @@ interface CircleProgressProps {
     startColor: string;
     middleColor: string;
     endColor: string;
+    animated: boolean;
 }
 
 export class CircleProgress extends Component<CircleProgressProps> {
@@ -69,15 +71,12 @@ export class CircleProgress extends Component<CircleProgressProps> {
         iconSize: 45,
         startColor: "pink",
         middleColor: "#1E90FF",
-        endColor: "green"
+        endColor: "green",
+        animated: true,
     }
 
     get circleSize() {
         return this.props.circleSize;
-    }
-
-    get iconSize() {
-        return this.props.iconSize;
     }
 
     get strokeSize() {
@@ -128,14 +127,16 @@ export class CircleProgress extends Component<CircleProgressProps> {
         const progressOffset = this.circumference*(1 - this.normProgress);
         const stageOffset = this.circumference*(1 - this.normStage);
 
+        const { error, iconSize, stages, animated } = this.props;
+
         return(
             <Progress>
                 <Label>
                     {
-                        this.props.error ?
-                            <ErrorIcon size={this.iconSize} /> :
+                        error ?
+                            <ErrorIcon size={iconSize} /> :
                             this.progress >= 100 ?
-                                <DoneIcon size={this.iconSize} /> :
+                                <DoneIcon size={iconSize} /> :
                                 `${this.progress}%`
                     }
                 </Label>
@@ -151,7 +152,7 @@ export class CircleProgress extends Component<CircleProgressProps> {
                     />
                     {/* Stages Circle */}
                     ${
-                        this.props.stages &&
+                        stages &&
                         <Circle
                             stroke="rgb(135,206,235, 0.35)"
                             strokeWidth={this.strokeSize}
@@ -171,6 +172,7 @@ export class CircleProgress extends Component<CircleProgressProps> {
                         r={this.circleRadius}
                         cx={this.circleCenter}
                         cy={this.circleCenter}
+                        style={{transition: animated ? "stroke-dashoffset 0.15s;" : "none" }}
                     />
                 </Svg>
             </Progress>
