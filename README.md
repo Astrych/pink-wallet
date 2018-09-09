@@ -29,7 +29,7 @@ npm install
 npm run windows-builder
 ```
 
-OSX:
+OSX (wallet is not working for now due to the lack of Mac OS daemon binary):
 
 ```
 npm install
