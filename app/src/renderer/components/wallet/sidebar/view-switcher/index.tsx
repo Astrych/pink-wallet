@@ -7,9 +7,10 @@ import {
 
 } from "react-router";
 
-import VerticalTabs from "../atoms/vertical-tabs";
-import Tab from "../atoms/tab";
-import MenuButton from "../atoms/menu-button";
+import { Sidebar } from "./layout";
+import VerticalTabs from "@components/atoms/vertical-tabs";
+import Tab from "@components/atoms/tab";
+import MenuButton from "@components/atoms/menu-button";
 
 
 interface ViewSwitcherProps extends RouteComponentProps<ViewSwitcherProps> {
@@ -26,24 +27,25 @@ class ViewSwitcher extends Component<ViewSwitcherProps, ViewSwitcherState> {
         const { location, history } = this.props;
 
         if (route !== location.pathname) {
-            console.log(route, location);
             history.push(route);
         }
     };
 
     render() {
         return(
-            <VerticalTabs
-                defaultTab="dashboad"
-                extraButton={<MenuButton name="settings" />}
-                action={
-                    selectedTab => {
-                        this.redirect(`/${selectedTab}`);
+            <Sidebar>
+                <VerticalTabs
+                    defaultTab="dashboad"
+                    extraButton={<MenuButton name="settings" />}
+                    action={
+                        selectedTab => {
+                            this.redirect(`/${selectedTab}`);
+                        }
                     }
-                }
-            >
-                {this.props.children}
-            </VerticalTabs>
+                >
+                    {this.props.children}
+                </VerticalTabs>
+            </Sidebar>
         );
     }
 }

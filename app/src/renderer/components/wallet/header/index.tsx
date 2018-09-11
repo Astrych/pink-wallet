@@ -9,7 +9,7 @@ import {
 
 } from "./layout";
 import HeaderButton from "./button";
-import SvgIcon from "../atoms/svg-icon";
+import SvgIcon from "@components/atoms/svg-icon";
 
 
 interface AppBarState {

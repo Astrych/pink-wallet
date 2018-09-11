@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 
 export const Content = styled.div`
+    grid-area: content;
     display: flex;
     flex-direction: row;
     height: 100%;

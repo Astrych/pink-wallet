@@ -6,6 +6,7 @@ export const Header = styled.div`
     max-height: var(--title-bar-height);
     background-color: ${props => props.theme.header.bar};
     padding: 0;
+    grid-area: header;
 `;
 
 export const DragBar = styled.div`

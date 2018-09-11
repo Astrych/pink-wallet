@@ -43,12 +43,12 @@ type Position = "top" | "right" | "bottom" | "left";
 const TooltipText = styled.div<{ position: Position }>`
     position: fixed;
     transition: opacity 1s;
-    width: 120px;
+    width: 130px;
     background-color: black;
     color: #fff;
     text-align: center;
     border-radius: 6px;
-    padding: 5px 0;
+    padding: 5px 5px;
     z-index: 1;
     pointer-events: none;
     box-shadow: 2px 2px 3px rgba(0 ,0, 0, 0.3);

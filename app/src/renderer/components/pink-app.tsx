@@ -3,10 +3,12 @@ import React, { Component } from "react";
 import { hot } from "react-hot-loader";
 import { connect } from "react-redux";
 import { ThemeProvider } from "styled-components";
+import { MemoryRouter } from "react-router";
 
-import { AppLayout } from "./app-layout";
-import AppHeader from "./header";
-import AppContent from "./content";
+import { AppLayout } from "./wallet/app-layout";
+import AppHeader from "./wallet/header";
+import Sidebar from "./wallet/sidebar";
+import AppContent from "./wallet/content";
 
 import themes, { ThemeName } from "@view-logic/theme";
 import { AppState } from "@view-logic/root-reducer";
@@ -22,10 +24,13 @@ class PinkApp extends Component<PinkAppProps> {
         const theme = themes[this.props.currentTheme];
         return (
             <ThemeProvider theme={theme ? theme : themes.default}>
-                <AppLayout>
-                    <AppHeader />
-                    <AppContent />
-                </AppLayout>
+                <MemoryRouter>
+                    <AppLayout>
+                        <AppHeader />
+                        <Sidebar />
+                        <AppContent />
+                    </AppLayout>
+                </MemoryRouter>
             </ThemeProvider>
         );
     }
