@@ -63,7 +63,7 @@ interface CircleProgressProps {
     animated: boolean;
 }
 
-export class CircleProgress extends Component<CircleProgressProps> {
+class CircleProgress extends Component<CircleProgressProps> {
 
     static defaultProps = {
         circleSize: 80,
@@ -179,3 +179,5 @@ export class CircleProgress extends Component<CircleProgressProps> {
         );
     }
 }
+
+export default CircleProgress;

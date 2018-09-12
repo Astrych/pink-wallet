@@ -16,9 +16,9 @@
 5. Redux-ORM for Redux relational data:
     - https://github.com/tommikaikkonen/redux-orm
 
-6. Rewrite layout components in the app: replace Antd components with custom ones.
-    - Main app layout
-    - Side vertical tabs
+6. ~~Rewrite layout components in the app: replace Antd components with custom ones.~~
+    - ~~Main app layout - done~~
+    - ~~Side vertical tabs - done~~
 
 7. ~~Create libs aliasing in app build folder (for lib-like part of the code) - done~~:
     - https://medium.com/@martin_hotell/type-safe-es2015-module-import-path-aliasing-with-webpack-typescript-and-jest-fe461347e010

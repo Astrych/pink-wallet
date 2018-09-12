@@ -2,7 +2,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
-import { CircleProgress } from "../atoms/circle-progress";
+import CircleProgress from "../atoms/circle-progress";
 
 
 const fadeIn = keyframes`
