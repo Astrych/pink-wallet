@@ -15,6 +15,26 @@ export interface Theme {
     content: {
         primary: string;
         secondary: string;
+        selects: {
+            primary: {
+                background: string;
+                content: string;
+            };
+            secondary: {
+                background: string;
+                content: string;
+            };
+        };
+        buttons: {
+            primary: {
+                background: string;
+                content: string;
+            };
+            secondary: {
+                background: string;
+                content: string;
+            };
+        };
     };
     text: {
         primary: string;
@@ -44,6 +64,26 @@ const dark: Theme = {
     content: {
         primary: "#3b3b3b",
         secondary: "#525252",
+        selects: {
+            primary: {
+                background: "#3b3b3b",
+                content: "white",
+            },
+            secondary: {
+                background: "white",
+                content: "black",
+            },
+        },
+        buttons: {
+            primary: {
+                background: "#f78fb3",
+                content: "white",
+            },
+            secondary: {
+                background: "white",
+                content: "black",
+            },
+        },
     },
     text: {
         primary: "#f790b5",
@@ -73,6 +113,26 @@ const light: Theme = {
     content: {
         primary: "#eceaea",
         secondary: "white",
+        selects: {
+            primary: {
+                background: "#3b3b3b",
+                content: "white",
+            },
+            secondary: {
+                background: "white",
+                content: "black",
+            },
+        },
+        buttons: {
+            primary: {
+                background: "#f78fb3",
+                content: "white",
+            },
+            secondary: {
+                background: "white",
+                content: "black",
+            },
+        },
     },
     text: {
         primary: "#f04e97",

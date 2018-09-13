@@ -7,5 +7,9 @@
         "sideStakes": "Wydobycie monet (minting) - cele",
         "transactions": "Historia transakcji",
         "messages": "Wiadomości"
+    },
+    "settings": {
+        "selectLang": "Wybierz język...",
+        "selectTheme": "Wybierz motyw..."
     }
 }

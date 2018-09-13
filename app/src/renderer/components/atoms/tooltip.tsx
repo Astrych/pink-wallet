@@ -51,6 +51,7 @@ const TooltipText = styled.div<{ position: Position }>`
     padding: 5px 5px;
     z-index: 1;
     pointer-events: none;
+    user-select: none;
     box-shadow: 2px 2px 3px rgba(0 ,0, 0, 0.3);
     ${props => text[props.position]}
     &::after {

@@ -7,5 +7,9 @@
         "sideStakes": "Side Staking",
         "transactions": "Transactions history",
         "messages": "Messages"
+    },
+    "settings": {
+        "selectLang": "Select language...",
+        "selectTheme": "select theme..."
     }
 }

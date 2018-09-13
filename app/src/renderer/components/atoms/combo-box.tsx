@@ -1,42 +1,73 @@
 
 import React, { Component } from "react";
-import { AngleUp } from "styled-icons/fa-solid/AngleUp";
-import { AngleDown } from "styled-icons/fa-solid/AngleDown";
+import { ChevronUp } from "styled-icons/feather/ChevronUp";
+import { ChevronDown } from "styled-icons/feather/ChevronDown";
 
 import { styled } from "@view-utils/styles";
 
 
-const Content = styled.div`
-    background-color: red;
+const Select = styled.div<{ minWidth: number }>`
+    position: relative;
+    min-width: ${props => props.minWidth}px;
 `;
 
 const Header = styled.div`
-
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: ${props => props.theme.content.selects.primary.background};
+    color: white;
+    padding: 10px;
+    font-size: 10px;
+    border: none;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
 `;
 
 const Title = styled.span`
-
+    height: 100%;
+    flex: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 18px;
 `;
 
-const List = styled.ul`
-
+const List = styled.ul<{ minWidth: number }>`
+    position: absolute;
+    padding-inline-start: 0;
+    list-style-type: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: ${props => props.theme.content.selects.primary.background};
+    min-width: ${props => props.minWidth}px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
 `;
 
 const ListItem = styled.li`
-
+    color: ${props => props.theme.content.selects.primary.content};
+    padding: 10px 10px;
+    display: block;
+    font-size: 18px;
+    cursor: pointer;
+    user-select: none;
 `;
 
 interface Item {
     id: number;
     title: string;
     selected: boolean;
-    key: string;
+    value: string;
 }
 
 interface ComboBoxProps {
     list: Item[];
-    headerTitle: string;
-    action: (id: number) => void;
+    placeholder: string;
+    action: (id: number, value: string) => void;
+    minWidth: number;
 }
 
 interface ComboBoxState {
@@ -49,6 +80,7 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
 
     static defaultProps = {
         headerTitle: "Select...",
+        minWidth: 180,
     }
 
     state = {
@@ -60,7 +92,16 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
         for (const o of this.props.list) {
             if (o.selected) return { selectedId: o.id, headerTitle: o.title };
         }
-        return { selectedId: 0, headerTitle: this.props.headerTitle };
+        return { selectedId: 0, headerTitle: this.props.placeholder };
+    }
+
+    static getDerivedStateFromProps(props: ComboBoxProps, state: ComboBoxState) {
+        if (state.selectedId === 0) {
+            return {
+                headerTitle: props.placeholder,
+            };
+        }
+        return null;
     }
 
     toggleList() {
@@ -69,32 +110,43 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
         }));
     }
 
+    openList() {
+        this.setState({ listOpen: true });
+    }
+
+    closeList() {
+        this.setState({ listOpen: false });
+    }
+
     selectItem(id: number, title: string) {
         this.setState({ selectedId: id, headerTitle: title });
-        this.toggleList();
     }
 
     render() {
-        const { list, action } = this.props;
+        const { list, action, minWidth } = this.props;
         const { listOpen, headerTitle } = this.state;
 
         return (
-            <Content>
-                <Header onClick={() => this.toggleList()}>
+            <Select minWidth={minWidth}>
+                <Header
+                    onClick={() => this.toggleList()}
+                    onBlur={() => this.closeList()}
+                    tabIndex={0}
+                >
                     <Title>{headerTitle}</Title>
                     {
-                        listOpen ? <AngleUp size={30} /> : <AngleDown size={30} />
+                        listOpen ? <ChevronUp size={30} /> : <ChevronDown size={30} />
                     }
                 </Header>
                 {
                     listOpen &&
-                    <List>
+                    <List minWidth={minWidth}>
                         {list.map(item => (
                             <ListItem
                                 key={item.id}
-                                onClick={() => {
+                                onMouseDown={() => {
                                     this.selectItem(item.id, item.title);
-                                    action(item.id);
+                                    action(item.id, item.value);
                                 }}
                             >
                                 {item.title}
@@ -102,7 +154,7 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
                         ))}
                     </List>
                 }
-            </Content>
+            </Select>
         );
     }
 }

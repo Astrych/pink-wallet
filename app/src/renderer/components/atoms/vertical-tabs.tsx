@@ -35,6 +35,7 @@ const TabsBar = styled.div<{ tabSize: number }>`
     height: 100%;
     margin-top: 62px;
     margin-bottom: 32px;
+    user-select: none;
     overflow: hidden;
     ${TabContent}, ${Underline} {
         height: ${props => props.tabSize}px;

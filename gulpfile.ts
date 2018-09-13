@@ -36,6 +36,13 @@ task("build: production", appBuilder.allTasks);
 task("serve and watch UI", serveRendererView);
 task("watch window files", monitorWindowFiles);
 
+// Post-install init.
+task("init", series(
+
+    "copy config files",
+    "install vendor libs",
+));
+
 // Development main task.
 task("start", series(
 

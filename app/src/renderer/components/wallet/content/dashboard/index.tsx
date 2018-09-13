@@ -4,12 +4,13 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { I18n } from "react-i18next";
-import { Switch } from "antd";
 
 import View from "../view";
 
+import ComboBox from "@components/atoms/combo-box";
 import { changeTheme } from "@view-logic/settings/actions";
 import { AppState } from "@view-logic/root-reducer";
+import themes from "@view-logic/theme";
 
 
 interface DashboardProps {
@@ -21,35 +22,51 @@ class Dashboard extends Component<DashboardProps> {
 
     window = remote.getCurrentWindow();
 
-    private onThemeSwitch = () => {
+    private onThemeSwitch = (_, newTheme: string) => {
+        this.props.changeTheme(newTheme);
 
-        const { currentTheme, changeTheme } = this.props;
-        const newTheme = currentTheme === "dark" ? "light" : "dark";
-
-        changeTheme(newTheme);
-
-        const newBackgroundColor = newTheme === "dark" ? "#3b3b3b" : "#eceaea";
+        const newBackgroundColor = themes[newTheme].content.primary;
         (this.window as any).setBackgroundColor(newBackgroundColor);
     };
+
+    // TODO: Set it based on lang definitions.
+    langList = [
+        { id: 1, title: "English", selected: true, value: "en" },
+        { id: 2, title: "Polski", selected: false, value: "pl" },
+    ];
+
+    // TODO: Set it based on theme object.
+    themesList = [
+        { id: 1, title: "Dark", selected: true, value: "dark" },
+        { id: 2, title: "Light", selected: false, value: "light" },
+    ];
 
     render() {
 
         const { currentTheme } = this.props;
 
+        for (const item of this.themesList) {
+            if (item.value === currentTheme) {
+                item.selected = true;
+                break;
+            }
+        }
+
         return (
             <View>
                 <I18n ns="main">
-                    {(_, { i18n }) => <>
-                        <Switch
-                            checkedChildren="Light"
-                            unCheckedChildren="Dark"
-                            defaultChecked={currentTheme === "dark" ? false : true}
-                            onChange={this.onThemeSwitch}
+                    {(t, { i18n }) => <>
+                        <ComboBox
+                            list={this.langList}
+                            action={(_, value: string) => i18n.changeLanguage(value)}
+                            placeholder={t("settings.selectLang")}
+                            minWidth={220}
                         />
-                        <Switch
-                            checkedChildren="PL"
-                            unCheckedChildren="EN"
-                            onChange={(isEN: boolean) => i18n.changeLanguage(isEN ? "pl": "en")}
+                        <ComboBox
+                            list={this.themesList}
+                            action={this.onThemeSwitch}
+                            placeholder={t("settings.selectTheme")}
+                            minWidth={220}
                         />
                     </>}
                 </I18n>
