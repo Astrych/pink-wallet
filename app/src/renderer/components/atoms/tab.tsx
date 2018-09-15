@@ -15,11 +15,11 @@ export const TabContent = styled.div<{ active: boolean }>`
 
     color: ${props => props.active ? props.theme.text.primary : "inherit"};
 
-    &:hover, &:active {
+    :hover, :active {
         color: ${props => props.theme.text.primary};
     }
 
-    &:hover {
+    :hover {
         transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     }
 `;

@@ -22,13 +22,6 @@ class Dashboard extends Component<DashboardProps> {
 
     window = remote.getCurrentWindow();
 
-    private onThemeSwitch = (_, newTheme: string) => {
-        this.props.changeTheme(newTheme);
-
-        const newBackgroundColor = themes[newTheme].content.primary;
-        (this.window as any).setBackgroundColor(newBackgroundColor);
-    };
-
     // TODO: Set it based on lang definitions.
     langList = [
         { id: 1, title: "English", selected: true, value: "en" },
@@ -40,6 +33,13 @@ class Dashboard extends Component<DashboardProps> {
         { id: 1, title: "Dark", selected: true, value: "dark" },
         { id: 2, title: "Light", selected: false, value: "light" },
     ];
+
+    private onThemeSwitch = (_, newTheme: string) => {
+        this.props.changeTheme(newTheme);
+
+        const newBackgroundColor = themes[newTheme].content.primary;
+        (this.window as any).setBackgroundColor(newBackgroundColor);
+    };
 
     render() {
 

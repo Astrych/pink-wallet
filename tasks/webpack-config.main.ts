@@ -14,9 +14,8 @@ export const mainConfig: webpack.Configuration = {
     profile,
     mode: config.releaseType,
     devtool: dev ? "inline-source-map" : "source-map",
-    context: config.dirs.app.src,
     entry: {
-        app: "./main/app.ts"
+        app: join(config.dirs.app.src, "main/app.ts")
     },
     output: {
         filename:      "[name].js",
@@ -39,18 +38,8 @@ export const mainConfig: webpack.Configuration = {
                 options: {
                     silent: true,
                     transpileOnly: true,
+                    configFile: "tsconfig-main.json",
                 },
-                include: [
-                    join(config.dirs.app.src, "main"),
-                    join(config.dirs.app.src, "common")
-                ],
-                exclude: [
-                    "node_modules",
-                    "build/node_modules",
-                    "tasks",
-                    "**/__tests__/*.ts",
-                    "**/stories"
-                ],
             }
         ]
     },
@@ -69,9 +58,12 @@ export const mainConfig: webpack.Configuration = {
         }),
         new ForkTsCheckerWebpackPlugin({
             silent: true,
-            tsconfig: "../../tsconfig.json",
-            tslint:   "../../tslint.json",
-            watch:    ["./main"],
+            tsconfig: "./tsconfig-main.json",
+            tslint:   "./tslint.json",
+            watch:    [
+                join(config.dirs.app.src, "main"),
+                join(config.dirs.app.src, "common"),
+            ],
             workers:  ForkTsCheckerWebpackPlugin.ONE_CPU,
         }),
         // Copies icons to build directory.

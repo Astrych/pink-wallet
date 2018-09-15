@@ -27,7 +27,7 @@ stories.add("ComboBox", () => {
         { id: 2, title: "Polski", selected: false, value: "pl" },
     ];
 
-    let headerTitle = "Select language...";
+    const headerTitle = "Select language...";
 
     function toggleSelected(id: number) {
         list.forEach(o => {

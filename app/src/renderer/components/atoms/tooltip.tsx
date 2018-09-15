@@ -1,8 +1,18 @@
 
 import React, { Component, ReactNode } from "react";
 
-import { styled, css } from "@view-utils/styles";
+import { styled, css, keyframes } from "@view-utils/styles";
 
+
+const fadeIn = keyframes`
+    0%   { opacity: 0; }
+    50%  { opacity: 0; }
+    100% { opacity: 1; }
+`;
+
+const anim = css`
+    animation: ${fadeIn} 1.5s ease forwards;
+`;
 
 const text = {
     top:    css`transform: translateX(-50%) translateY(-120%);`,
@@ -40,10 +50,9 @@ const arrow = {
 
 type Position = "top" | "right" | "bottom" | "left";
 
-const TooltipText = styled.div<{ position: Position }>`
-    position: fixed;
-    transition: opacity 1s;
+const TooltipText = styled.div<{ show: boolean, position: Position }>`
     width: 130px;
+    position: fixed;
     background-color: black;
     color: #fff;
     text-align: center;
@@ -53,6 +62,8 @@ const TooltipText = styled.div<{ position: Position }>`
     pointer-events: none;
     user-select: none;
     box-shadow: 2px 2px 3px rgba(0 ,0, 0, 0.3);
+    will-change: opacity;
+    ${props => props.show ? anim : "visibility: hidden;"}
     ${props => text[props.position]}
     &::after {
         content: "";
@@ -75,7 +86,7 @@ class Tooltip extends Component<TooltipProps> {
         position: "right"
     }
 
-    state = { opacity: 0, top: "", left: "" };
+    state = { show: false, top: "", left: "" };
 
     showTooltip = event => {
         const elm = event.target;
@@ -99,17 +110,17 @@ class Tooltip extends Component<TooltipProps> {
                 left = `${x}px`;
         }
 
-        this.setState({ opacity: 1, top, left });
+        this.setState({ show: true, top, left });
     }
 
     hideTooltip = () => {
-        this.setState({ opacity: 0 });
+        this.setState({ show: false });
     }
 
     render() {
         const { children, position, text } = this.props;
         const child = React.Children.only(children);
-        const { opacity, top, left } = this.state;
+        const { show, top, left } = this.state;
 
         return <>
             {
@@ -118,7 +129,7 @@ class Tooltip extends Component<TooltipProps> {
                     onMouseLeave: this.hideTooltip,
                 })
             }
-            <TooltipText position={position} style={{ opacity, top, left }}>
+            <TooltipText position={position} show={show} style={{ top, left }}>
                 {text}
             </TooltipText>
         </>;

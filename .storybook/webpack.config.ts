@@ -11,14 +11,16 @@ export default (_, __, defaultConfig) => {
         {
             test: /\.tsx?$/,
             use: [{
-                loader: "ts-loader"
+                loader: "ts-loader",
+                options: {
+                    configFile: "tsconfig-storybook.json",
+                }
             }],
             exclude: [
                 "node_modules",
                 "build/node_modules",
                 "tasks",
-                "**/__tests__/*.ts",
-                "**/stories"
+                "**/__tests__",
             ]
         },
         {

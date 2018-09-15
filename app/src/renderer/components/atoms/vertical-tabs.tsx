@@ -3,7 +3,7 @@ import React, { Component, ReactElement } from "react";
 
 import { styled } from "@view-utils/styles";
 import Tab, { TabContent, TabProps } from "./tab";
-import MenuButton from "./menu-button";
+import { MenuButtonProps } from "./menu-button";
 
 
 const Underline = styled.div`
@@ -58,8 +58,9 @@ interface VerticalTabsProps {
     tabSize: number;
     defaultTab: string;
     children: ReactElement<Tab>[];
-    extraButton: ReactElement<MenuButton>;
-    action: (selectedTab: string) => ReactElement<any> | void;
+    extraButton: ReactElement<MenuButtonProps>;
+    tabsAction: (selectedTab: string) => ReactElement<any> | void;
+    buttonAction?: () => ReactElement<any> | void;
 }
 
 class VerticalTabs extends Component<VerticalTabsProps> {
@@ -85,8 +86,12 @@ class VerticalTabs extends Component<VerticalTabsProps> {
     onTabClick = (name: string, index: number) => {
         if (index !== this.state.activeTabIndex) {
             this.setState({ activeTabIndex: index });
-            this.props.action(name);
+            this.props.tabsAction(name);
         }
+    };
+
+    onButtonClick = () => {
+        this.props.buttonAction && this.props.buttonAction();
     };
 
     render() {
@@ -107,7 +112,13 @@ class VerticalTabs extends Component<VerticalTabsProps> {
                         })
                     }
                 </TabsBar>
-                <ExtraContent>{extraButton}</ExtraContent>
+                <ExtraContent>
+                {
+                    React.cloneElement(extraButton, {
+                        onClick: this.onButtonClick
+                    })
+                }
+                </ExtraContent>
             </ContentBar>
         );
     }

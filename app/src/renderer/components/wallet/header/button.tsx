@@ -8,6 +8,7 @@ const Button = styled.button`
     user-select: none;
     border: none;
     padding: 0;
+    outline: none;
     color: ${props => props.theme.header.buttons.default};
     background-color: transparent;
     width: 24px;

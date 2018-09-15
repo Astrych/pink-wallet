@@ -1,0 +1,17 @@
+{
+    "extends": "./tsconfig",
+    "compilerOptions": {
+        "sourceMap": true
+    },
+    "include": [
+        "app/src/renderer",
+        "app/src/common"
+    ],
+    "exclude": [
+        "node_modules",
+        "build/node_modules",
+        "tasks",
+        "**/__tests__",
+        "**/stories"
+    ]
+}

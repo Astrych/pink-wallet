@@ -3,7 +3,6 @@ import { join } from "path";
 import webpack from "webpack";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import tsImportPluginFactory from "ts-import-plugin";
 import imageminPngquant from "imagemin-pngquant";
 import { BundleAnalyzerPlugin }  from "webpack-bundle-analyzer";
 import FriendlyErrorsWebpackPlugin from "friendly-errors-webpack-plugin";
@@ -16,10 +15,9 @@ export const rendererConfig: webpack.Configuration = {
 
     mode: config.releaseType,
     devtool: dev ? "inline-source-map" : "source-map",
-    context: config.dirs.app.src,
     entry: {
-        "main-bundle":   [`./renderer/main.tsx`],
-        "splash-bundle": ["./renderer/splash.tsx"],
+        "main-bundle":   [join(config.dirs.app.src, "renderer/main.tsx")],
+        "splash-bundle": [join(config.dirs.app.src, "renderer/splash.tsx")],
     },
     output: {
         filename:      "[name].js",
@@ -56,58 +54,10 @@ export const rendererConfig: webpack.Configuration = {
                         loader: "ts-loader",
                         options: {
                             transpileOnly: true,
-                            compilerOptions: {
-                                module: "esnext",
-                                resolveJsonModule: false
-                            },
-                            getCustomTransformers: () => ({
-                                before: [
-                                    tsImportPluginFactory({
-                                        libraryName: "antd",
-                                        libraryDirectory: "lib",
-                                        style: true
-                                    })
-                                ]
-                            }),
+                            configFile: "tsconfig-renderer.json",
                         }
                     }
                 ],
-                include: [
-                    join(config.dirs.app.src, "renderer"),
-                    join(config.dirs.app.src, "common")
-                ],
-                exclude: [
-                    "node_modules",
-                    "build/node_modules",
-                    "tasks",
-                    "**/__tests__/*.ts",
-                    "**/stories"
-                ],
-            },
-            {
-                test: /\.less$/i,
-                use: [
-                    {
-                        loader: "style-loader",
-                        options: {
-                            insertAt: "top"
-                        }
-                    },
-                    {
-                        loader: "css-loader",
-                        options: {
-                            sourceMap: true,
-                            import: false
-                        }
-                    },
-                    {
-                        loader: "less-loader",
-                        options: {
-                            sourceMap: true,
-                            javascriptEnabled: true
-                        }
-                    }
-                ]
             },
             {
                 test: /\.(woff|woff2)$/,
@@ -160,20 +110,23 @@ export const rendererConfig: webpack.Configuration = {
         }),
         new ForkTsCheckerWebpackPlugin({
             silent: true,
-            tsconfig: "../../tsconfig.json",
-            tslint: "../../tslint.json",
-            watch: ["./renderer"],
+            tsconfig: "./tsconfig-renderer.json",
+            tslint: "./tslint.json",
+            watch: [
+                join(config.dirs.app.src, "renderer"),
+                join(config.dirs.app.src, "common"),
+            ],
             workers: ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE
         }),
         new HtmlWebpackPlugin({
             title: config.appTitle,
-            template: "./template.html",
+            template: join(config.dirs.app.src, "template.html"),
             filename: "splash.html",
             chunks: ["splash-bundle"],
         }),
         new HtmlWebpackPlugin({
             title: config.appTitle,
-            template: "./template.html",
+            template: join(config.dirs.app.src, "template.html"),
             filename: "main.html",
             chunks: ["main-bundle"],
         }),

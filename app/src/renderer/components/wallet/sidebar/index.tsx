@@ -4,6 +4,7 @@ import { I18n } from "react-i18next";
 
 import ViewSwitcher from "./view-switcher";
 import Tab from "@components/atoms/tab";
+import MenuButton from "@components/atoms/menu-button";
 
 
 class Sidebar extends Component {
@@ -12,7 +13,11 @@ class Sidebar extends Component {
         return (
             <I18n ns="main">
                 {t => <>
-                    <ViewSwitcher>
+                    <ViewSwitcher
+                        extraButton={
+                            <MenuButton name="settings" description={t("tabs.settings")} />
+                        }
+                    >
                         <Tab name="dashboard" description={t("tabs.dashboard")} />
                         <Tab name="send" description={t("tabs.send")} />
                         <Tab name="receive" description={t("tabs.receive")} />

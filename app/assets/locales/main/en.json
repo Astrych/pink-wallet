@@ -6,7 +6,8 @@
         "addressBook": "Address Book",
         "sideStakes": "Side Staking",
         "transactions": "Transactions history",
-        "messages": "Messages"
+        "messages": "Messages",
+        "settings": "Settings"
     },
     "settings": {
         "selectLang": "Select language...",

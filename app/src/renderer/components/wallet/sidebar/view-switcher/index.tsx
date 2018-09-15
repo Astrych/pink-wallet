@@ -10,10 +10,11 @@ import {
 import { Sidebar } from "./layout";
 import VerticalTabs from "@components/atoms/vertical-tabs";
 import Tab from "@components/atoms/tab";
-import MenuButton from "@components/atoms/menu-button";
+import { MenuButtonProps } from "@components/atoms/menu-button";
 
 
 interface ViewSwitcherProps extends RouteComponentProps<ViewSwitcherProps> {
+    extraButton: ReactElement<MenuButtonProps>;
     children: ReactElement<Tab>[];
 }
 
@@ -32,18 +33,25 @@ class ViewSwitcher extends Component<ViewSwitcherProps, ViewSwitcherState> {
     };
 
     render() {
+        const { extraButton, children } = this.props;
+
         return(
             <Sidebar>
                 <VerticalTabs
                     defaultTab="dashboad"
-                    extraButton={<MenuButton name="settings" />}
-                    action={
+                    extraButton={extraButton}
+                    tabsAction={
                         selectedTab => {
                             this.redirect(`/${selectedTab}`);
                         }
                     }
+                    buttonAction={
+                        () => {
+                            console.log("OPEN SETTINGS!");
+                        }
+                    }
                 >
-                    {this.props.children}
+                    {children}
                 </VerticalTabs>
             </Sidebar>
         );

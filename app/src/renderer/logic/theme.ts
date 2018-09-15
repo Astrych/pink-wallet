@@ -115,12 +115,12 @@ const light: Theme = {
         secondary: "white",
         selects: {
             primary: {
-                background: "#3b3b3b",
-                content: "white",
-            },
-            secondary: {
                 background: "white",
                 content: "black",
+            },
+            secondary: {
+                background: "#3b3b3b",
+                content: "white",
             },
         },
         buttons: {

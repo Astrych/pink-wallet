@@ -6,7 +6,8 @@
         "addressBook": "Książka adresowa",
         "sideStakes": "Wydobycie monet (minting) - cele",
         "transactions": "Historia transakcji",
-        "messages": "Wiadomości"
+        "messages": "Wiadomości",
+        "settings": "Ustawienia"
     },
     "settings": {
         "selectLang": "Wybierz język...",

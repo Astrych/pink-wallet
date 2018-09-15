@@ -18,13 +18,22 @@ const Header = styled.div`
     align-items: center;
     justify-content: center;
     background-color: ${props => props.theme.content.selects.primary.background};
-    color: white;
+    color: ${props => props.theme.content.selects.primary.content};
     padding: 10px;
     font-size: 10px;
     border: none;
     cursor: pointer;
     user-select: none;
     box-sizing: border-box;
+    outline: none;
+    outline-color: transparent;
+    transition: box-shadow 0.30s ease-in-out, outline 0.30s ease-in-out,
+                outline-color 0.30s ease-in-out;
+    :focus {
+        box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+        outline: 1px solid rgba(81, 203, 238, 1);
+        outline-color: rgba(81, 203, 238, 1);
+    }
 `;
 
 const Title = styled.span`

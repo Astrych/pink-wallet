@@ -50,8 +50,8 @@ stories.add("Only tabs bar", () => {
                     width={number("Bar width", 125)}
                     tabSize={number("Tab size", 65)}
                     defaultTab="dashboad"
-                    extraButton={<MenuButton name="settings" />}
-                    action={
+                    extraButton={<MenuButton name="settings" description="Settings" />}
+                    tabsAction={
                         selectedTab => {
                             console.log("TAB CHANGED:", selectedTab);
                         }
@@ -96,8 +96,8 @@ class ViewSwitcherTest extends Component<ViewSwitcherProps, ViewSwitcherState> {
                 width={number("Bar width", 125)}
                 tabSize={number("Tab size", 65)}
                 defaultTab="dashboad"
-                extraButton={<MenuButton name="settings" />}
-                action={
+                extraButton={<MenuButton name="settings" description="Settings" />}
+                tabsAction={
                     selectedTab => {
                         console.log("TAB CHANGED:", selectedTab);
                         this.redirect(`/${selectedTab}`);
