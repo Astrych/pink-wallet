@@ -13,7 +13,7 @@ import Tab from "@components/atoms/tab";
 import { MenuButtonProps } from "@components/atoms/menu-button";
 
 
-interface ViewSwitcherProps extends RouteComponentProps<ViewSwitcherProps> {
+interface ViewSwitcherProps extends RouteComponentProps<any> {
     extraButton: ReactElement<MenuButtonProps>;
     children: ReactElement<Tab>[];
 }
@@ -47,7 +47,7 @@ class ViewSwitcher extends Component<ViewSwitcherProps, ViewSwitcherState> {
                     }
                     buttonAction={
                         () => {
-                            console.log("OPEN SETTINGS!");
+                            console.log("SHOW SETTINGS MODAL!");
                         }
                     }
                 >

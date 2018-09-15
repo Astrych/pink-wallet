@@ -11,6 +11,7 @@ import AddressBook from "./address-book";
 import SideStakes from "./side-stakes";
 import Transactions from "./transactions";
 import Messages from "./messages";
+import Settings from "./settings";
 
 
 class AppContent extends Component {
@@ -29,6 +30,7 @@ class AppContent extends Component {
                     <Route path="/messages" component={Messages} />
                     <Redirect from="/" exact to="/dashboard" />
                 </Switch>
+                <Settings />
             </Content>
         );
     }

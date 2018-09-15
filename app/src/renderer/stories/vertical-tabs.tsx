@@ -71,7 +71,7 @@ stories.add("Only tabs bar", () => {
 });
 
 
-interface ViewSwitcherProps extends RouteComponentProps<ViewSwitcherProps> {
+interface ViewSwitcherProps extends RouteComponentProps<any> {
 }
 
 interface ViewSwitcherState {
