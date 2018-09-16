@@ -39,5 +39,4 @@ export const Button = styled.button`
     border: none;
     outline: none;
     align-self: flex-end;
-    /* float: right; */
 `;

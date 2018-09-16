@@ -11,8 +11,8 @@
     },
     "settings": {
         "header": "Settings",
-        "langLabel": "Select language:",
-        "themeLabel": "Select theme:",
+        "langLabel": "Interface language:",
+        "themeLabel": "Interface theme:",
         "langPlaceholder": "Select language...",
         "themePlaceholder": "Select theme...",
         "close": "Close"

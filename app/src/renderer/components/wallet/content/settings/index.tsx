@@ -61,28 +61,27 @@ class Settings extends Component<SettingsProps> {
         return (
             <Modal show={settingsOpened}>
                 <I18n ns="main">
-                    {(t, { i18n }) => <>
-                        <Content>
-                            <Header>{t("settings.header")}</Header>
-                            <Form>
-                                <Label>{t("settings.langLabel")}</Label>
-                                <ComboBox
-                                    list={this.langList}
-                                    action={(_, value: string) => i18n.changeLanguage(value)}
-                                    placeholder={t("settings.langPlaceholder")}
-                                    minWidth={220}
-                                />
-                                <Label>{t("settings.themeLabel")}</Label>
-                                <ComboBox
-                                    list={this.themesList}
-                                    action={this.onThemeSwitch}
-                                    placeholder={t("settings.themePlaceholder")}
-                                    minWidth={220}
-                                />
-                                <Button onClick={this.closeSettings}>{t("settings.close")}</Button>
-                            </Form>
-                        </Content>
-                    </>}
+                    {(t, { i18n }) => <Content>
+
+                        <Header>{t("settings.header")}</Header>
+                        <Form>
+                            <Label>{t("settings.langLabel")}</Label>
+                            <ComboBox
+                                list={this.langList}
+                                action={(_, value: string) => i18n.changeLanguage(value)}
+                                placeholder={t("settings.langPlaceholder")}
+                                minWidth={220}
+                            />
+                            <Label>{t("settings.themeLabel")}</Label>
+                            <ComboBox
+                                list={this.themesList}
+                                action={this.onThemeSwitch}
+                                placeholder={t("settings.themePlaceholder")}
+                                minWidth={220}
+                            />
+                            <Button onClick={this.closeSettings}>{t("settings.close")}</Button>
+                        </Form>
+                    </Content>}
                 </I18n>
             </Modal>
         );

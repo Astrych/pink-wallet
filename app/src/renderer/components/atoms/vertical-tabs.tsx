@@ -32,7 +32,7 @@ const ContentBar = styled.div<{ width: number }>`
 
 const TabsBar = styled.div<{ tabSize: number }>`
     position: relative;
-    height: 100%;
+    flex: 1;
     margin-top: 62px;
     margin-bottom: 32px;
     user-select: none;
