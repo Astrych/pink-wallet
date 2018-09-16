@@ -9,6 +9,7 @@ import { styled } from "@view-utils/styles";
 const Select = styled.div<{ minWidth: number }>`
     position: relative;
     min-width: ${props => props.minWidth}px;
+    margin: 5px;
 `;
 
 const Header = styled.div`
