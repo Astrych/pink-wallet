@@ -18,26 +18,27 @@ export interface Theme {
         selects: {
             primary: {
                 background: string;
-                content: string;
+                text: string;
             };
             secondary: {
                 background: string;
-                content: string;
+                text: string;
             };
         };
         buttons: {
             primary: {
                 background: string;
-                content: string;
+                text: string;
             };
             secondary: {
                 background: string;
-                content: string;
+                text: string;
             };
         };
     };
     text: {
         primary: string;
+        secondary: string;
     };
     tabs: {
         icons: string;
@@ -67,26 +68,27 @@ const dark: Theme = {
         selects: {
             primary: {
                 background: "#3b3b3b",
-                content: "white",
+                text: "white",
             },
             secondary: {
                 background: "white",
-                content: "black",
+                text: "black",
             },
         },
         buttons: {
             primary: {
                 background: "#f78fb3",
-                content: "white",
+                text: "white",
             },
             secondary: {
                 background: "white",
-                content: "black",
+                text: "black",
             },
         },
     },
     text: {
         primary: "#f790b5",
+        secondary: "white",
     },
     tabs: {
         icons: "white",
@@ -115,27 +117,28 @@ const light: Theme = {
         secondary: "white",
         selects: {
             primary: {
-                background: "white",
-                content: "black",
+                background: "#D8D8D8",
+                text: "black",
             },
             secondary: {
-                background: "#3b3b3b",
-                content: "white",
+                background: "#E8E8E8",
+                text: "white",
             },
         },
         buttons: {
             primary: {
                 background: "#f78fb3",
-                content: "white",
+                text: "white",
             },
             secondary: {
                 background: "white",
-                content: "black",
+                text: "black",
             },
         },
     },
     text: {
         primary: "#f04e97",
+        secondary: "black",
     },
     tabs: {
         icons: "black",

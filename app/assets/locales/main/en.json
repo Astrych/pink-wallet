@@ -10,7 +10,11 @@
         "settings": "Settings"
     },
     "settings": {
-        "selectLang": "Select language...",
-        "selectTheme": "select theme..."
+        "header": "Settings",
+        "langLabel": "Select language:",
+        "themeLabel": "Select theme:",
+        "langPlaceholder": "Select language...",
+        "themePlaceholder": "Select theme...",
+        "close": "Close"
     }
 }

@@ -10,7 +10,11 @@
         "settings": "Ustawienia"
     },
     "settings": {
-        "selectLang": "Wybierz język...",
-        "selectTheme": "Wybierz motyw..."
+        "header": "Ustawienia",
+        "langLabel": "Język interfejsu:",
+        "themeLabel": "Motyw graficzny:",
+        "langPlaceholder": "Wybierz język...",
+        "themePlaceholder": "Wybierz motyw...",
+        "close": "Zamknij"
     }
 }

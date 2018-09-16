@@ -19,7 +19,7 @@ const Header = styled.div`
     align-items: center;
     justify-content: center;
     background-color: ${props => props.theme.content.selects.primary.background};
-    color: ${props => props.theme.content.selects.primary.content};
+    color: ${props => props.theme.content.selects.primary.text};
     padding: 10px;
     font-size: 10px;
     border: none;
@@ -47,7 +47,8 @@ const Title = styled.span`
 
 const List = styled.ul<{ minWidth: number }>`
     position: absolute;
-    padding-inline-start: 0;
+    width: 100%;
+    -webkit-padding-start: 0;
     list-style-type: none;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -58,7 +59,7 @@ const List = styled.ul<{ minWidth: number }>`
 `;
 
 const ListItem = styled.li`
-    color: ${props => props.theme.content.selects.primary.content};
+    color: ${props => props.theme.content.selects.primary.text};
     padding: 10px 10px;
     display: block;
     font-size: 18px;
