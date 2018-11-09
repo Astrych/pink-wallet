@@ -2,7 +2,7 @@
 import { remote } from "electron";
 import React from "react";
 import ReactDOM from "react-dom";
-import { injectGlobal } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import { Provider } from "react-redux";
 
 import configureStore from "@view-logic/store";
@@ -15,7 +15,7 @@ import "@view-utils/locales";
 // (fix bad Linux behaviour in that regard).
 process.env = remote.process.env;
 
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
     html, body {
         height: 100%;
         box-sizing: border-box;
@@ -40,8 +40,11 @@ const store = configureStore();
 
 ReactDOM.render(
 
-    <Provider store={store}>
-        <PinkApp />
-    </Provider>,
+    <>
+        <GlobalStyle />
+        <Provider store={store}>
+            <PinkApp />
+        </Provider>
+    </>,
     document.getElementById("app")
 );

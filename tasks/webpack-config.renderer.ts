@@ -4,9 +4,8 @@ import webpack from "webpack";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import imageminPngquant from "imagemin-pngquant";
-import { BundleAnalyzerPlugin }  from "webpack-bundle-analyzer";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import FriendlyErrorsWebpackPlugin from "friendly-errors-webpack-plugin";
-import HardSourceWebpackPlugin from "hard-source-webpack-plugin";
 
 import { config, isDev as dev, analyze } from "./config";
 
@@ -20,6 +19,7 @@ export const rendererConfig: webpack.Configuration = {
         "splash-bundle": [join(config.dirs.app.src, "renderer/splash.tsx")],
     },
     output: {
+        pathinfo:      dev ? true : false,
         filename:      "[name].js",
         libraryTarget: "commonjs2",
         path:          config.dirs.build,
@@ -33,10 +33,12 @@ export const rendererConfig: webpack.Configuration = {
             "@view-logic": join(config.dirs.app.src, "renderer/logic"),
             "@components": join(config.dirs.app.src, "renderer/components"),
             "@common":     join(config.dirs.app.src, "common"),
-        }
+        },
     },
     module: {
+        strictExportPresence: true,
         rules: [
+            { parser: { requireEnsure: false } },
             {
                 test: /\.tsx?$/,
                 use: [
@@ -48,6 +50,9 @@ export const rendererConfig: webpack.Configuration = {
                                 "@babel/syntax-dynamic-import",
                                 "react-hot-loader/babel"
                             ],
+                            cacheDirectory: true,
+                            cacheCompression: dev ? false : true,
+                            compact: dev ? false : true,
                         },
                     },
                     {
@@ -102,16 +107,15 @@ export const rendererConfig: webpack.Configuration = {
             exclude: ["node_modules", "build/node_modules"],
             test: /\.tsx?($|\?)/i
         }),
-        dev && new HardSourceWebpackPlugin({
-            info: {
-                mode: "none",
-                level: "warn"
-            }
-        }),
         new ForkTsCheckerWebpackPlugin({
             silent: true,
             tsconfig: "./tsconfig-renderer.json",
             tslint: "./tslint.json",
+            reportFiles: [
+                "!**/*.json",
+                "!**/__tests__/**",
+                "!**/?(*.)(spec|test).*",
+            ],
             watch: [
                 join(config.dirs.app.src, "renderer"),
                 join(config.dirs.app.src, "common"),
@@ -134,5 +138,5 @@ export const rendererConfig: webpack.Configuration = {
 
     // Removes non-plugin boolean
     // values from conditional checks.
-    ].filter(plugin => (plugin && plugin != null))
+    ].filter(Boolean)
 }

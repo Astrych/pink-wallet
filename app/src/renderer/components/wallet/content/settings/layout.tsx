@@ -35,7 +35,7 @@ export const Button = styled.button`
     padding: 10px 30px;
     margin-right: 5px;
     margin-bottom: 5px;
-    margin-top: 15px;
+    margin-top: 35px;
     border: none;
     outline: none;
     align-self: flex-end;

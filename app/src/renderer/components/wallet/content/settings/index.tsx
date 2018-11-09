@@ -3,7 +3,7 @@ import { remote } from "electron";
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { I18n } from "react-i18next";
+import { NamespacesConsumer as Translate } from "react-i18next";
 
 import Modal from "@components/atoms/modal";
 import ComboBox from "@components/atoms/combo-box";
@@ -60,7 +60,7 @@ class Settings extends Component<SettingsProps> {
 
         return (
             <Modal show={settingsOpened}>
-                <I18n ns="main">
+                <Translate ns="main">
                     {(t, { i18n }) => <Content>
 
                         <Header>{t("settings.header")}</Header>
@@ -82,7 +82,7 @@ class Settings extends Component<SettingsProps> {
                             <Button onClick={this.closeSettings}>{t("settings.close")}</Button>
                         </Form>
                     </Content>}
-                </I18n>
+                </Translate>
             </Modal>
         );
     }

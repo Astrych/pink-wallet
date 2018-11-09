@@ -34,3 +34,5 @@
 11. Implement Warpwallet generation schema (if it's possible):
     - https://github.com/keybase/warpwallet
     - https://youtu.be/foil0hzl4Pg?t=29m29s
+
+12. Fully functional navigation with keyboard

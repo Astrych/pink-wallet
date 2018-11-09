@@ -16,5 +16,5 @@ const reducer = produce((draft, action) => {
 export default {
 
     initialState,
-    reducer 
+    reducer,
 };

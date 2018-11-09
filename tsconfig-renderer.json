@@ -5,7 +5,9 @@
     },
     "include": [
         "app/src/renderer",
-        "app/src/common"
+        "app/src/common",
+        "typings/global.d.ts",
+        "typings/modules.d.ts"
     ],
     "exclude": [
         "node_modules",

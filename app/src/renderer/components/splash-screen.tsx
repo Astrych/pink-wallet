@@ -2,7 +2,7 @@
 import { ipcRenderer } from "electron";
 import React from "react";
 import { hot } from "react-hot-loader";
-import { I18n } from "react-i18next";
+import { NamespacesConsumer as Translate } from "react-i18next";
 
 import SplashImg from "./splash/image";
 import SplashProgress from "./splash/progress";
@@ -123,7 +123,7 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
         const { show, progress, stages, animated, description, error } = this.state;
 
         return (
-            <I18n ns="splash">
+            <Translate ns="splash">
                 {t => <>
                     <SplashImg onLoad={this.onImgLoad} animate={show} />
                     {
@@ -138,7 +138,7 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
                         </>
                     }
                 </>}
-            </I18n>
+            </Translate>
         );
     }
 }

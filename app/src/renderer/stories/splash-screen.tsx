@@ -2,7 +2,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text } from "@storybook/addon-knobs";
-import styled, { injectGlobal } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 import SplashImg from "@components/splash/image";
 import SplashProgress from "@components/splash/progress";
@@ -11,7 +11,7 @@ import Message from "@components/splash/message";
 
 const stories = storiesOf("Splash Screen", module);
 
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
     html, body {
         user-select: none;
         height: 100%;
@@ -43,6 +43,7 @@ stories.add("Components layout", () => {
     const show = boolean("Show", true);
     return(
         <SplashWindow>
+            <GlobalStyle />
             <SplashImg animate={show} />
             {show && <Message>{text("Message", "Initialising...")}</Message>}
             {

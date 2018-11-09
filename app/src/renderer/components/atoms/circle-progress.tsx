@@ -172,7 +172,7 @@ class CircleProgress extends Component<CircleProgressProps> {
                         r={this.circleRadius}
                         cx={this.circleCenter}
                         cy={this.circleCenter}
-                        style={{transition: animated ? "stroke-dashoffset 0.15s;" : "none" }}
+                        style={{transition: animated ? "stroke-dashoffset 0.15s" : "none" }}
                     />
                 </Svg>
             </Progress>

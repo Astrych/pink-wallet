@@ -1,18 +1,19 @@
 {
     "compilerOptions": {
         "target": "ES2017",
+        "esModuleInterop": true,
+        "strict": true,
         "module": "commonjs",
         "moduleResolution": "node",
         "resolveJsonModule": true,
-        "esModuleInterop": true,
+        "sourceMap": true,
+        "noEmit": true,
         "jsx": "react",
         "lib": [
             "dom",
             "es2017",
             "esnext.asynciterable"
         ],
-        "sourceMap": true,
-        "strict": true,
         "alwaysStrict": true,
         "noImplicitAny": false,
         "strictNullChecks": true,
