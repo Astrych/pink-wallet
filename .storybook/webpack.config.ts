@@ -1,5 +1,5 @@
 
-import { join } from "path";
+import { join, resolve } from "path";
 import FriendlyErrorsWebpackPlugin from "friendly-errors-webpack-plugin";
 
 import { config } from "../tasks/config";
@@ -17,10 +17,9 @@ export default (_, __, defaultConfig) => {
                 }
             }],
             exclude: [
-                "node_modules",
-                "build/node_modules",
-                "tasks",
-                "**/__tests__",
+                resolve(__dirname, "../node_modules"),
+                resolve(__dirname, "../build/node_modules"),
+                resolve(__dirname, "../tasks"),
             ]
         },
         {

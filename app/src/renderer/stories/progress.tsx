@@ -11,6 +11,8 @@ const stories = storiesOf("Progress components", module);
 
 const Container = styled.div`
     font-family: "Open Sans";
+    height: 100%;
+    width: 100%;
     margin: auto;
 `;
 
