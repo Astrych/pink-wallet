@@ -1,12 +1,13 @@
 
 import React, { Component, ReactElement } from "react";
+import SmoothScrollbar from "smooth-scrollbar";
 
 import { styled } from "@view-utils/styles";
 import Tab, { TabContent, TabProps } from "./tab";
 import { MenuButtonProps } from "./menu-button";
 
 
-const Underline = styled.div`
+const Marker = styled.div`
     position: absolute;
     right: 0;
     border-width: 0px 1px 0px 1px;
@@ -36,9 +37,16 @@ const TabsBar = styled.div<{ tabSize: number }>`
     margin-top: 62px;
     margin-bottom: 32px;
     user-select: none;
-    overflow: hidden;
-    ${TabContent}, ${Underline} {
+    ${TabContent}, ${Marker} {
         height: ${props => props.tabSize}px;
+    }
+    /* Positions scroolbar on the left side of vertical tabs menu */
+    .scrollbar-track-y {
+        left: 0;
+        width: 12px;
+        .scrollbar-thumb {
+            width: 12px;
+        }
     }
 `;
 
@@ -74,6 +82,13 @@ class VerticalTabs extends Component<VerticalTabsProps> {
         activeTabIndex: this.setInitialActiveIndex(),
     };
 
+    tabsBar: HTMLElement | null = null;
+    scrollbar: SmoothScrollbar | null = null;
+
+    componentDidMount() {
+        this.scrollbar = SmoothScrollbar.init(this.tabsBar as HTMLElement);
+    }
+
     setInitialActiveIndex() {
         let initialIndex = 0;
         React.Children.forEach(this.props.children, (child, index) => {
@@ -96,12 +111,12 @@ class VerticalTabs extends Component<VerticalTabsProps> {
 
     render() {
         const { width, tabSize, children, extraButton } = this.props;
-        const underlinePosition = this.state.activeTabIndex*tabSize;
+        const markerPosition = this.state.activeTabIndex*tabSize;
 
         return (
             <ContentBar width={width}>
-                <TabsBar tabSize={tabSize}>
-                    <Underline style={{ top: underlinePosition }} />
+                <TabsBar tabSize={tabSize} ref={element => this.tabsBar = element}>
+                    <Marker style={{ top: markerPosition }} />
                     {
                         React.Children.map(children, (child, index) => {
                             return React.cloneElement(child as ReactElement<TabProps>, {

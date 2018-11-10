@@ -72,7 +72,6 @@ interface DispatchProps {
 }
 
 function mapDispatchToProps(dispatch): DispatchProps {
-
     return bindActionCreators({ showSettings }, dispatch);
 }
 

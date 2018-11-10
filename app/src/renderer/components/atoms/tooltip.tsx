@@ -1,5 +1,6 @@
 
 import React, { Component, ReactNode } from "react";
+import ReactDOM from "react-dom";
 
 import { styled, css, keyframes } from "@view-utils/styles";
 
@@ -88,6 +89,13 @@ class Tooltip extends Component<TooltipProps> {
 
     state = { show: false, top: "", left: "" };
 
+    portalElement = document.createElement("div");
+
+    componentDidMount() {
+        const tooltipRoot = document.getElementById("tooltips");
+        tooltipRoot!.appendChild(this.portalElement);
+    }
+
     showTooltip = event => {
         const elm = event.target;
         const { x, y, width, height } = elm.getBoundingClientRect();
@@ -119,20 +127,23 @@ class Tooltip extends Component<TooltipProps> {
 
     render() {
         const { children, position, text } = this.props;
-        const child = React.Children.only(children);
         const { show, top, left } = this.state;
+        const child = React.Children.only(children);
 
-        return <>
-            {
-                React.cloneElement(child, {
-                    onMouseEnter: this.showTooltip,
-                    onMouseLeave: this.hideTooltip,
-                })
-            }
-            <TooltipText position={position} show={show} style={{ top, left }}>
-                {text}
-            </TooltipText>
-        </>;
+        return [
+            React.cloneElement(child, {
+                onMouseEnter: this.showTooltip,
+                onMouseLeave: this.hideTooltip,
+                onWheel: this.hideTooltip,
+                key: "tab",
+            }),
+            ReactDOM.createPortal(
+                <TooltipText position={position} show={show} style={{ top, left }}>
+                    {text}
+                </TooltipText>,
+                this.portalElement,
+            )
+        ];
     }
 }
 
