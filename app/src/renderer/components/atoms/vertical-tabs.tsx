@@ -1,8 +1,9 @@
 
 import React, { Component, ReactElement } from "react";
 import SmoothScrollbar from "smooth-scrollbar";
+import debounce from "lodash/debounce";
 
-import { styled } from "@view-utils/styles";
+import { styled, css } from "@view-utils/styles";
 import Tab, { TabContent, TabProps } from "./tab";
 import { MenuButtonProps } from "./menu-button";
 
@@ -31,7 +32,12 @@ const ContentBar = styled.div<{ width: number }>`
     background-color: ${props => props.theme.content.secondary};
 `;
 
-const TabsBar = styled.div<{ tabSize: number }>`
+const prevNext = css`
+    box-shadow: 0 2px 0 darkgrey inset,
+                0 -2px 0 darkgrey inset;
+`;
+
+const TabsBar = styled.div<{ tabSize: number, markOverflow: boolean }>`
     position: relative;
     flex: 1;
     margin-top: 62px;
@@ -40,6 +46,7 @@ const TabsBar = styled.div<{ tabSize: number }>`
     ${TabContent}, ${Marker} {
         height: ${props => props.tabSize}px;
     }
+    ${props => props.markOverflow ? prevNext : null}
     /* Positions scroolbar on the left side of vertical tabs menu */
     .scrollbar-track-y {
         left: 0;
@@ -71,7 +78,12 @@ interface VerticalTabsProps {
     buttonAction?: () => ReactElement<any> | void;
 }
 
-class VerticalTabs extends Component<VerticalTabsProps> {
+interface VerticalTabsState {
+    activeTabIndex: number;
+    overflow: boolean;
+}
+
+class VerticalTabs extends Component<VerticalTabsProps, VerticalTabsState> {
 
     static defaultProps = {
         width: 125,
@@ -80,13 +92,30 @@ class VerticalTabs extends Component<VerticalTabsProps> {
 
     state = {
         activeTabIndex: this.setInitialActiveIndex(),
+        overflow: false,
     };
 
     tabsBar: HTMLElement | null = null;
     scrollbar: SmoothScrollbar | null = null;
+    debouncedResize = debounce(() => {
+        this.checkOverflow();
+    }, 200);
 
     componentDidMount() {
         this.scrollbar = SmoothScrollbar.init(this.tabsBar as HTMLElement);
+        addEventListener("resize", this.debouncedResize);
+        this.checkOverflow();
+    }
+
+    componentWillUnmount() {
+        removeEventListener("resize", this.debouncedResize);
+    }
+
+    checkOverflow() {
+        const element = this.tabsBar as HTMLElement;
+        const overflow = element.offsetHeight < element.scrollHeight ||
+                         element.offsetWidth < element.scrollWidth;
+        this.setState({ overflow });
     }
 
     setInitialActiveIndex() {
@@ -115,7 +144,11 @@ class VerticalTabs extends Component<VerticalTabsProps> {
 
         return (
             <ContentBar width={width}>
-                <TabsBar tabSize={tabSize} ref={element => this.tabsBar = element}>
+                <TabsBar
+                    tabSize={tabSize}
+                    markOverflow={this.state.overflow}
+                    ref={element => this.tabsBar = element}
+                >
                     <Marker style={{ top: markerPosition }} />
                     {
                         React.Children.map(children, (child, index) => {

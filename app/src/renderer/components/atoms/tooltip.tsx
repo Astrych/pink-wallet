@@ -142,7 +142,7 @@ class Tooltip extends Component<TooltipProps> {
                     {text}
                 </TooltipText>,
                 this.portalElement,
-            )
+            ),
         ];
     }
 }
