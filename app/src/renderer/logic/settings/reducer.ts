@@ -1,7 +1,7 @@
 
 import produce from "immer";
 
-import { CHANGE_THEME, SHOW_SETTINGS, HIDE_SETTINGS } from "./types";
+import { CHANGE_THEME, CHANGE_LANGUAGE, SHOW_SETTINGS, HIDE_SETTINGS } from "./types";
 import { ThemeName } from "../theme";
 
 
@@ -11,6 +11,7 @@ import { ThemeName } from "../theme";
 interface SettingsState {
     currentTheme: ThemeName;
     themes: ThemeName[];
+    currentLanguage: string;
     settingsOpened: boolean;
 }
 
@@ -18,6 +19,7 @@ const initialState: SettingsState = {
 
     currentTheme: "dark",
     themes: ["dark", "light", "default"],
+    currentLanguage: "en",
     settingsOpened: false,
 };
 
@@ -26,6 +28,10 @@ const reducer = produce((draft: SettingsState, action) => {
     switch (action.type) {
         case CHANGE_THEME: {
             draft.currentTheme = action.payload;
+            break;
+        }
+        case CHANGE_LANGUAGE: {
+            draft.currentLanguage = action.payload;
             break;
         }
         case SHOW_SETTINGS: {

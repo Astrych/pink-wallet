@@ -42,4 +42,58 @@ storiesOf("SVG Icons", module)
 })
 .add("Search", () => {
     return <SvgIcon name="search" size={number("Icon size", 24)} />
+})
+.add("Dashboard deposit", () => {
+    return <SvgIcon name="dashboard-deposit" size={number("Icon size", 24)} />
+})
+.add("Dashboard proof of stake", () => {
+    return <SvgIcon name="dashboard-proof-of-stake" size={number("Icon size", 24)} />
+})
+.add("Dashboard rain cloud", () => {
+    return <SvgIcon name="dashboard-rain-cloud" size={number("Icon size", 24)} />
+})
+.add("Dashboard received", () => {
+    return <SvgIcon name="dashboard-received" size={number("Icon size", 24)} />
+})
+.add("Dashboard sent", () => {
+    return <SvgIcon name="dashboard-sent" size={number("Icon size", 24)} />
+})
+.add("Dashboard withdraw", () => {
+    return <SvgIcon name="dashboard-withdraw" size={number("Icon size", 24)} />
+})
+.add("Send address book", () => {
+    return <SvgIcon name="send-address-book" size={number("Icon size", 24)} />
+})
+.add("Send copy", () => {
+    return <SvgIcon name="send-copy" size={number("Icon size", 24)} />
+})
+.add("Receive copy address", () => {
+    return <SvgIcon name="receive-copy-address" size={number("Icon size", 24)} />
+})
+.add("Receive new address", () => {
+    return <SvgIcon name="receive-new-address" size={number("Icon size", 24)} />
+})
+.add("Receive qr code", () => {
+    return <SvgIcon name="receive-qr-code" size={number("Icon size", 24)} />
+})
+.add("Receive sign message", () => {
+    return <SvgIcon name="receive-sign-message" size={number("Icon size", 24)} />
+})
+.add("Receive verify message", () => {
+    return <SvgIcon name="receive-verify-message" size={number("Icon size", 24)} />
+})
+.add("Address book copy address", () => {
+    return <SvgIcon name="address-book-copy-address" size={number("Icon size", 24)} />
+})
+.add("Address book delete entry", () => {
+    return <SvgIcon name="address-book-delete-entry" size={number("Icon size", 24)} />
+})
+.add("Address book new entry", () => {
+    return <SvgIcon name="address-book-new-entry" size={number("Icon size", 24)} />
+})
+.add("Address book qr code", () => {
+    return <SvgIcon name="address-book-qr-code" size={number("Icon size", 24)} />
+})
+.add("Address book verify message", () => {
+    return <SvgIcon name="address-book-verify-message" size={number("Icon size", 24)} />
 });

@@ -9,11 +9,11 @@ import { getCenterPosition } from "./utils";
 import logger from "../logger";
 
 
-const store = new Store();
+export const store = new Store();
 
 export let window: BrowserWindow | null;
 
-interface WindowState {
+interface AppState {
     position: {
         x: number,
         y: number
@@ -24,9 +24,11 @@ interface WindowState {
     };
     isMaximized: boolean;
     color: string;
+    theme: string;
+    language: string;
 };
 
-export const state: WindowState = {
+export const state: AppState = {
     position: {
         x: 0,
         y: 0
@@ -37,6 +39,8 @@ export const state: WindowState = {
     },
     isMaximized: false,
     color: "#3b3b3b",
+    theme: "dark",
+    language: "en",
 };
 
 export function createMainWindow() {
@@ -47,12 +51,15 @@ export function createMainWindow() {
     state.position = store.get("window.position", state.position);
     state.size = store.get("window.size", state.size);
 
+    // Get app state.
+    state.theme = store.get("app.theme", state.theme);
+    state.language = store.get("app.language", state.language);
 
     // TODO: Sandbox mode with white-listed IPC calls:
     // https://github.com/lightninglabs/lightning-app/blob/master/public/preload.js
 
     /**
-     * Workaround for gug with Frameless window and minWidth / minHeight on Linux.
+     * Workaround for bug with Frameless window and minWidth / minHeight on Linux.
      * minHeight > 526: window is not responding on drag to upper edge and win + up/down.
      * minWidth > 960: window is not responding on drag to left or right edge and win + left/right.
      * https://github.com/electron/electron/issues/13118
@@ -68,6 +75,8 @@ export function createMainWindow() {
         titleBarStyle: "hiddenInset",
         icon: join(__dirname, `icons/icon.${process.platform === "win32" ? "ico" : "png"}`),
     });
+
+    window.setBackgroundColor(state.color);
 
     window.setMenu(null);
 
@@ -132,7 +141,9 @@ export function createMainWindow() {
             "window.isMaximized": state.isMaximized,
             "window.position": state.position,
             "window.size": state.size,
-            "window.color": state.color
+            "window.color": state.color,
+            "app.theme": state.theme,
+            "app.language": state.language,
         };
 
         // Saves state to file.
@@ -140,9 +151,6 @@ export function createMainWindow() {
             store.set(key, value);
         }
     });
-
-    // Undocumented function allowing for dynamic color change.
-    (window as any).setBackgroundColor(state.color);
 
     if (process.env.NODE_ENV !== "production") {
         window.loadURL(process.env.MAIN_VIEW as string);

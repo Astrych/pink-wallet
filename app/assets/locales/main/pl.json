@@ -15,6 +15,10 @@
         "themeLabel": "Motyw graficzny:",
         "langPlaceholder": "Wybierz język...",
         "themePlaceholder": "Wybierz motyw...",
+        "themes": {
+            "dark": "Ciemny",
+            "light": "Jasny"
+        },
         "close": "Zamknij"
     }
 }

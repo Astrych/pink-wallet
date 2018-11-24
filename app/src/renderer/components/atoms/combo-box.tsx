@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { ChevronUp } from "styled-icons/feather/ChevronUp";
 import { ChevronDown } from "styled-icons/feather/ChevronDown";
+import R from "ramda";
 
 import { styled } from "@view-utils/styles";
 
@@ -112,6 +113,12 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
                 headerTitle: props.placeholder,
             };
         }
+        const el = R.find(R.propEq("id", state.selectedId))(props.list);
+        if (el && state.headerTitle !== el.title) {
+            return {
+                headerTitle: el.title,
+            };
+        }
         return null;
     }
 
@@ -149,22 +156,19 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
                         listOpen ? <ChevronUp size={30} /> : <ChevronDown size={30} />
                     }
                 </Header>
-                {
-                    listOpen &&
-                    <List minWidth={minWidth}>
-                        {list.map(item => (
-                            <ListItem
-                                key={item.id}
-                                onMouseDown={() => {
-                                    this.selectItem(item.id, item.title);
-                                    action(item.id, item.value);
-                                }}
-                            >
-                                {item.title}
-                            </ListItem>
-                        ))}
-                    </List>
-                }
+                {listOpen && <List minWidth={minWidth}>
+                    {list.map(item => (
+                        <ListItem
+                            key={item.id}
+                            onMouseDown={() => {
+                                this.selectItem(item.id, item.title);
+                                action(item.id, item.value);
+                            }}
+                        >
+                            {item.title}
+                        </ListItem>
+                    ))}
+                </List>}
             </Select>
         );
     }

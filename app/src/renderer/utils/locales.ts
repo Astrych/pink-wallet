@@ -19,11 +19,13 @@ async function loadLocales(url, _, cb) {
     }
 }
 
+export const languages = ["en", "pl"];
+
 i18n
 .use(xhr)
 .use(reactI18nextModule)
 .init({
-    fallbackLng: "en",
+    fallbackLng: languages,
     ns: ["main", "splash"],
     defaultNS: "main",
     debug: true,

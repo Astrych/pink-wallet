@@ -53,7 +53,7 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
     componentDidMount() {
 
         // Creates illusion of more fluid progression.
-        const updateProgressState = async (event, steps: number) => {
+        const updateProgressState = async (event: Electron.Event, steps: number) => {
             while (--steps + 1) {
                 while (progressQueue.length < 1) await sleep(10);
 
@@ -74,7 +74,11 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
             this.setState({ description: "download" });
         });
 
-        ipcRenderer.on("daemon-download-progress", (_, data) => {
+        interface DownloadData {
+            progress: number;
+        }
+
+        ipcRenderer.on("daemon-download-progress", (event: Electron.Event, data: DownloadData) => {
             this.setState({ progress: data.progress });
         });
 
@@ -90,7 +94,12 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
             this.setState({ description: "unpack-end" });
         });
 
-        ipcRenderer.on("daemon-start-progress", (event, data) => {
+        interface StartData {
+            step: number;
+            total: number;
+        }
+
+        ipcRenderer.on("daemon-start-progress", (event: Electron.Event, data: StartData) => {
             // if (data.step > 1) return;
             const subSteps = 100/data.total;
             progressQueue.push(...calcProgressSteps({
@@ -105,7 +114,7 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
             }
         });
 
-        ipcRenderer.on("daemon-error", async (event, message) => {
+        ipcRenderer.on("daemon-error", async (event: Electron.Event, message: string) => {
             console.error(message);
             this.setState({ error: true, description: message });
             // TODO: Show popup...

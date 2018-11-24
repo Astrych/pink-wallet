@@ -93,6 +93,7 @@ class Tooltip extends Component<TooltipProps> {
 
     componentDidMount() {
         const tooltipRoot = document.getElementById("tooltips");
+        // TODO: Throw error if 'tooltip' id is not defined.
         tooltipRoot!.appendChild(this.portalElement);
     }
 

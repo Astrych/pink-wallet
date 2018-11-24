@@ -46,6 +46,7 @@ stories.add("Only tabs bar", () => {
     return(
         <ThemeProvider theme={theme ? theme : themes.default}>
             <Container>
+                <div id="tooltips"></div>
                 <VerticalTabs
                     width={number("Bar width", 125)}
                     tabSize={number("Tab size", 65)}
@@ -80,7 +81,7 @@ interface ViewSwitcherState {
 
 class ViewSwitcherTest extends Component<ViewSwitcherProps, ViewSwitcherState> {
 
-    private redirect = route => {
+    private redirect = (route: string) => {
         const { location, history } = this.props;
 
         if (route !== location.pathname) {
@@ -126,6 +127,7 @@ stories.add("Tabs bar with chaning view", () => {
     return(
         <ThemeProvider theme={theme ? theme : themes.default}>
             <Container>
+                <div id="tooltips"></div>
                 <MemoryRouter>
                     <>
                         <ViewSwitcher />

@@ -11,14 +11,14 @@ import {
 
 import { Sidebar } from "./layout";
 import VerticalTabs from "@components/atoms/vertical-tabs";
-import Tab from "@components/atoms/tab";
+import { TabProps } from "@components/atoms/tab";
 import { MenuButtonProps } from "@components/atoms/menu-button";
 import { showSettings } from "@view-logic/settings/actions";
 
 
 interface ViewSwitcherProps extends RouteComponentProps<any> {
     extraButton: ReactElement<MenuButtonProps>;
-    children: ReactElement<Tab>[];
+    children: ReactElement<TabProps>[];
     showSettings: Function;
 }
 

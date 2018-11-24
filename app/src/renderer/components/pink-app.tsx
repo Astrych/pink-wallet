@@ -39,13 +39,13 @@ class PinkApp extends Component<PinkAppProps> {
 function mapStateToProps(state: AppState) {
 
     return {
-        currentTheme: state.settings.currentTheme
+        currentTheme: state.settings.currentTheme,
     };
 }
 
 export default hot(module)(
     connect(
-        mapStateToProps
+        mapStateToProps,
     )(
         PinkApp
     )

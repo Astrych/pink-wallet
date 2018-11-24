@@ -4,7 +4,7 @@ import SmoothScrollbar from "smooth-scrollbar";
 import debounce from "lodash/debounce";
 
 import { styled, css } from "@view-utils/styles";
-import Tab, { TabContent, TabProps } from "./tab";
+import { TabContent, TabProps } from "./tab";
 import { MenuButtonProps } from "./menu-button";
 
 
@@ -72,7 +72,7 @@ interface VerticalTabsProps {
     width: number;
     tabSize: number;
     defaultTab: string;
-    children: ReactElement<Tab>[];
+    children: ReactElement<TabProps>[];
     extraButton: ReactElement<MenuButtonProps>;
     tabsAction: (selectedTab: string) => ReactElement<any> | void;
     buttonAction?: () => ReactElement<any> | void;
@@ -152,7 +152,7 @@ class VerticalTabs extends Component<VerticalTabsProps, VerticalTabsState> {
                     <Marker style={{ top: markerPosition }} />
                     {
                         React.Children.map(children, (child, index) => {
-                            return React.cloneElement(child as ReactElement<TabProps>, {
+                            return React.cloneElement(child, {
                                 onClick: this.onTabClick,
                                 active: index === this.state.activeTabIndex,
                                 index,
@@ -163,7 +163,7 @@ class VerticalTabs extends Component<VerticalTabsProps, VerticalTabsState> {
                 <ExtraContent>
                 {
                     React.cloneElement(extraButton, {
-                        onClick: this.onButtonClick
+                        onClick: this.onButtonClick,
                     })
                 }
                 </ExtraContent>

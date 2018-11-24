@@ -1,49 +1,80 @@
 
-import { remote } from "electron";
+import { ipcRenderer } from "electron";
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { NamespacesConsumer as Translate } from "react-i18next";
+import R from "ramda";
 
+import { Content, Header, Form, Label, Button } from "./layout";
 import Modal from "@components/atoms/modal";
 import ComboBox from "@components/atoms/combo-box";
-import { changeTheme, hideSettings } from "@view-logic/settings/actions";
+import { changeTheme, changeLanguage, hideSettings } from "@view-logic/settings/actions";
 import { AppState } from "@view-logic/root-reducer";
 import themes from "@view-logic/theme";
-import { Content, Header, Form, Label, Button } from "./layout";
+import i18n from "@view-utils/locales";
 
 
 interface SettingsProps {
     currentTheme: string;
     changeTheme: Function;
+    currentLanguage: string;
+    changeLanguage: Function;
     settingsOpened: boolean;
     hideSettings: Function;
 }
 
 class Settings extends Component<SettingsProps> {
 
-    window = remote.getCurrentWindow();
-
     // TODO: Set it based on lang definitions.
     langList = [
-        { id: 1, title: "English", selected: true, value: "en" },
+        { id: 1, title: "English", selected: false, value: "en" },
         { id: 2, title: "Polski", selected: false, value: "pl" },
     ];
 
     // TODO: Set it based on theme object.
     themesList = [
-        { id: 1, title: "Dark", selected: true, value: "dark" },
-        { id: 2, title: "Light", selected: false, value: "light" },
+        { id: 1, title: "settings.themes.dark", selected: true, value: "dark" },
+        { id: 2, title: "settings.themes.light", selected: false, value: "light" },
     ];
+
+    componentDidMount() {
+        interface InitState {
+            theme: string;
+            language: string;
+        }
+
+        ipcRenderer.on("app-set-init-state", (event: Electron.Event, data: InitState) => {
+            this.props.changeTheme(data.theme);
+            this.props.changeLanguage(data.language);
+            i18n.changeLanguage(data.language);
+
+            const el = R.find(R.propEq("value", data.language))(this.langList);
+            if (el) el.selected = true;
+        });
+        ipcRenderer.send("app-get-init-state");
+    }
+
+    private getThemesList(t: i18n.TranslationFunction<any, object, string>) {
+        const newList = R.clone(this.themesList);
+        for (const el of newList) el.title = t(el.title);
+        return newList;
+    }
 
     private onThemeSwitch = (_, newTheme: string) => {
         this.props.changeTheme(newTheme);
-
-        const newBackgroundColor = themes[newTheme].content.primary;
-        (this.window as any).setBackgroundColor(newBackgroundColor);
+        ipcRenderer.send("app-set-theme", {
+            theme: newTheme,
+            color: themes[newTheme].content.primary,
+        });
     };
 
-    private closeSettings = () => {
+    private onLanguageSwitch = (newLanguage: string) => {
+        this.props.changeLanguage(newLanguage);
+        ipcRenderer.send("app-set-language", newLanguage);
+    };
+
+    private closeSettingsModal = () => {
         this.props.hideSettings();
     };
 
@@ -68,18 +99,23 @@ class Settings extends Component<SettingsProps> {
                             <Label>{t("settings.langLabel")}</Label>
                             <ComboBox
                                 list={this.langList}
-                                action={(_, value: string) => i18n.changeLanguage(value)}
+                                action={(_, value: string) => {
+                                    this.onLanguageSwitch(value);
+                                    i18n.changeLanguage(value);
+                                }}
                                 placeholder={t("settings.langPlaceholder")}
                                 minWidth={220}
                             />
                             <Label>{t("settings.themeLabel")}</Label>
                             <ComboBox
-                                list={this.themesList}
+                                list={this.getThemesList(t)}
                                 action={this.onThemeSwitch}
                                 placeholder={t("settings.themePlaceholder")}
                                 minWidth={220}
                             />
-                            <Button onClick={this.closeSettings}>{t("settings.close")}</Button>
+                            <Button onClick={this.closeSettingsModal}>
+                                {t("settings.close")}
+                            </Button>
                         </Form>
                     </Content>}
                 </Translate>
@@ -91,6 +127,7 @@ class Settings extends Component<SettingsProps> {
 
 interface StateProps {
     currentTheme: string;
+    currentLanguage: string;
     settingsOpened: boolean;
 }
 
@@ -98,18 +135,20 @@ function mapStateToProps(state: AppState): StateProps {
 
     return {
         currentTheme: state.settings.currentTheme,
+        currentLanguage: state.settings.currentLanguage,
         settingsOpened: state.settings.settingsOpened,
     };
 }
 
 interface DispatchProps {
     changeTheme: Function;
+    changeLanguage: Function;
     hideSettings: Function;
 }
 
 function mapDispatchToProps(dispatch): DispatchProps {
 
-    return bindActionCreators({ changeTheme, hideSettings }, dispatch);
+    return bindActionCreators({ changeTheme, changeLanguage, hideSettings }, dispatch);
 }
 
 export default connect(

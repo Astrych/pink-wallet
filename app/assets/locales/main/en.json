@@ -15,6 +15,10 @@
         "themeLabel": "Interface theme:",
         "langPlaceholder": "Select language...",
         "themePlaceholder": "Select theme...",
+        "themes": {
+            "dark": "Dark",
+            "light": "Light"
+        },
         "close": "Close"
     }
 }
