@@ -30,6 +30,48 @@ ipcMain.on("splash-loading-finished", () => {
     }
 });
 
+ipcMain.on("window-get-state", (event: Electron.Event) => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        if (mainWindow.isFullScreen()) {
+            event.returnValue = "full-screen";
+        } else if (mainWindow.isMaximized()) {
+            event.returnValue = "maximized";
+        } else if (mainWindow.isMinimized()) {
+            event.returnValue = "minimized";
+        } else if (mainWindow.isVisible()) {
+            event.returnValue = "hidden";
+        } else {
+            event.returnValue = "normal";
+        }
+    } else {
+        event.returnValue = "";
+    }
+});
+
+ipcMain.on("window-minimize", () => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.minimize();
+    }
+});
+
+ipcMain.on("window-maximize", () => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.maximize();
+    }
+});
+
+ipcMain.on("window-unmaximize", () => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.unmaximize();
+    }
+});
+
+ipcMain.on("window-close", () => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.close();
+    }
+});
+
 ipcMain.on("app-shutdown", () => {
     if (mainWindow && !mainWindow.isDestroyed()) {
         mainWindow.close();

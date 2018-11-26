@@ -35,7 +35,6 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 ReactDOM.render(
-
     <>
         <GlobalStyle />
         <SplashScreen />

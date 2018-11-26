@@ -51,7 +51,7 @@ export function createMainWindow() {
     state.position = store.get("window.position", state.position);
     state.size = store.get("window.size", state.size);
 
-    // Get app state.
+    // Gets app state.
     state.theme = store.get("app.theme", state.theme);
     state.language = store.get("app.language", state.language);
 

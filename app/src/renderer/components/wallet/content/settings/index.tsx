@@ -1,7 +1,7 @@
 
 import { ipcRenderer } from "electron";
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
+import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import { NamespacesConsumer as Translate } from "react-i18next";
 import R from "ramda";
@@ -26,13 +26,11 @@ interface SettingsProps {
 
 class Settings extends Component<SettingsProps> {
 
-    // TODO: Set it based on lang definitions.
     langList = [
         { id: 1, title: "English", selected: false, value: "en" },
         { id: 2, title: "Polski", selected: false, value: "pl" },
     ];
 
-    // TODO: Set it based on theme object.
     themesList = [
         { id: 1, title: "settings.themes.dark", selected: true, value: "dark" },
         { id: 2, title: "settings.themes.light", selected: false, value: "light" },
@@ -44,7 +42,7 @@ class Settings extends Component<SettingsProps> {
             language: string;
         }
 
-        ipcRenderer.on("app-set-init-state", (event: Electron.Event, data: InitState) => {
+        ipcRenderer.on("app-set-init-state", (_: Electron.Event, data: InitState) => {
             this.props.changeTheme(data.theme);
             this.props.changeLanguage(data.language);
             i18n.changeLanguage(data.language);
@@ -55,13 +53,13 @@ class Settings extends Component<SettingsProps> {
         ipcRenderer.send("app-get-init-state");
     }
 
-    private getThemesList(t: i18n.TranslationFunction<any, object, string>) {
+    private getThemesList(t: i18n.TranslationFunction) {
         const newList = R.clone(this.themesList);
         for (const el of newList) el.title = t(el.title);
         return newList;
     }
 
-    private onThemeSwitch = (_, newTheme: string) => {
+    private onThemeSwitch = (_: number, newTheme: string) => {
         this.props.changeTheme(newTheme);
         ipcRenderer.send("app-set-theme", {
             theme: newTheme,
@@ -146,7 +144,7 @@ interface DispatchProps {
     hideSettings: Function;
 }
 
-function mapDispatchToProps(dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 
     return bindActionCreators({ changeTheme, changeLanguage, hideSettings }, dispatch);
 }

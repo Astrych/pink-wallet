@@ -39,7 +39,6 @@ const GlobalStyle = createGlobalStyle`
 const store = configureStore();
 
 ReactDOM.render(
-
     <>
         <GlobalStyle />
         <Provider store={store}>

@@ -1,6 +1,6 @@
 
 import React, { Component, ReactElement } from "react";
-import { bindActionCreators } from "redux";
+import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
 
@@ -71,7 +71,7 @@ interface DispatchProps {
     showSettings: Function;
 }
 
-function mapDispatchToProps(dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
     return bindActionCreators({ showSettings }, dispatch);
 }
 
