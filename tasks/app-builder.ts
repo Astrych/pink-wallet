@@ -10,7 +10,7 @@ import { rendererConfig } from "./webpack-config.renderer";
 import { profile } from "./config";
 
 
-function runWebpack(config) {
+function runWebpack(config: webpack.Configuration) {
 
     return () => new Promise((resolve, reject) => webpack(config, (err, stats) => {
 

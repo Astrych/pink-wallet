@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "ES2017",
+        "target": "es2018",
         "esModuleInterop": true,
         "strict": true,
         "module": "commonjs",
@@ -11,7 +11,7 @@
         "noEmit": true,
         "lib": [
             "dom",
-            "es2017",
+            "es2018",
             "esnext.asynciterable"
         ],
         "alwaysStrict": true,

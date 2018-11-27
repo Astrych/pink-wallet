@@ -90,12 +90,12 @@ interface ComboBoxState {
 
 class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
 
-    static defaultProps = {
-        headerTitle: "Select...",
+    static defaultProps: Partial<ComboBoxProps> = {
+        placeholder: "Select...",
         minWidth: 180,
     }
 
-    state = {
+    state: ComboBoxState = {
         ...this.setInitialState(),
         listOpen: false,
     };

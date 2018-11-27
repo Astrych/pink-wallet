@@ -1,5 +1,5 @@
 
-import React, { Component } from "react";
+import React, { Component, SyntheticEvent } from "react";
 
 import { styled } from "@view-utils/styles";
 import Tootlip from "./tooltip";
@@ -39,13 +39,13 @@ export interface TabProps {
 
 class Tab extends Component<TabProps> {
 
-    static defaultProps = {
+    static defaultProps: Partial<TabProps> = {
         iconSize: 31,
         index: 0,
         active: false,
     }
 
-    onTabClick = e => {
+    onTabClick = (e: SyntheticEvent) => {
         e.preventDefault();
         const { onClick, index, name } = this.props;
         onClick && onClick(name, index);

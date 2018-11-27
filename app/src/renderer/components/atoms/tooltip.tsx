@@ -1,5 +1,5 @@
 
-import React, { Component, ReactNode } from "react";
+import React, { Component, ReactNode, SyntheticEvent } from "react";
 import ReactDOM from "react-dom";
 
 import { styled, css, keyframes } from "@view-utils/styles";
@@ -81,13 +81,19 @@ interface TooltipProps {
     children: ReactNode;
 }
 
-class Tooltip extends Component<TooltipProps> {
+interface TooltipState {
+    show: boolean;
+    top: string;
+    left: string;
+}
 
-    static defaultProps = {
-        position: "right"
+class Tooltip extends Component<TooltipProps, TooltipState> {
+
+    static defaultProps: Partial<TooltipProps> = {
+        position: "right",
     }
 
-    state = { show: false, top: "", left: "" };
+    state: TooltipState = { show: false, top: "", left: "" };
 
     portalElement = document.createElement("div");
 
@@ -97,9 +103,9 @@ class Tooltip extends Component<TooltipProps> {
         tooltipRoot!.appendChild(this.portalElement);
     }
 
-    showTooltip = event => {
-        const elm = event.target;
-        const { x, y, width, height } = elm.getBoundingClientRect();
+    showTooltip = (event: SyntheticEvent) => {
+        const elm = event.target as HTMLElement;
+        const { x, y, width, height } = elm.getBoundingClientRect() as DOMRect;
 
         // Defaults to "right".
         let top = `${y + height/2}px`;

@@ -39,7 +39,9 @@ export function cleanAll() {
         `${config.dirs.build}`,
         `${config.dirs.release}`,
         "coverage"
-    ], { force: true });
+    ], {
+        force: true
+    });
 }
 
 
@@ -53,7 +55,7 @@ export function copyConfigFiles() {
               .pipe(dest(config.dirs.build));
 }
 
-export function installVendorLibs(cb) {
+export function installVendorLibs(cb: Function) {
     const command = "npm install --no-package-lock";
     const options = { cwd: config.dirs.build };
 
@@ -103,7 +105,7 @@ export async function serveRendererView() {
         hotClient: {
             logLevel: "warn",
             validTargets: [
-                rendererConfig.target as string
+                rendererConfig.target as string,
             ],
         }
     });

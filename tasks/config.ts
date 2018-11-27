@@ -26,19 +26,17 @@ interface Dirs {
     devDaemon: string;
 }
 
-// TODO: Add types after this fix being impelmented:
-// https://github.com/Microsoft/TypeScript/pull/25455
-function absolutizeDirs(conf: Dirs) {
+function absolutizeDirs(conf: Dirs): Dirs {
     return Object.keys(conf).reduce((acc, key) => {
 
         if (typeof conf[key] === "object") {
-            return { ...acc as {}, [key]: absolutizeDirs(conf[key]) };
+            return { ...acc, [key]: absolutizeDirs(conf[key]) };
         }
         if (typeof conf[key] === "string") {
-            return { ...acc as {}, [key]: absolutizePath(conf[key] as string) };
+            return { ...acc, [key]: absolutizePath(conf[key]) };
         }
-        return { ...acc as {}, [key]: conf[key] as any };
-    }, {});
+        return { ...acc, [key]: conf[key] };
+    }, {} as Dirs);
 }
 
 type Release = "development" | "production";

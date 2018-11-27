@@ -65,7 +65,7 @@ interface CircleProgressProps {
 
 class CircleProgress extends Component<CircleProgressProps> {
 
-    static defaultProps = {
+    static defaultProps: Partial<CircleProgressProps> = {
         circleSize: 80,
         strokeSize: 8,
         iconSize: 45,

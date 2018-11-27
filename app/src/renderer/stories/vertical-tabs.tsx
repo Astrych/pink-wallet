@@ -27,6 +27,7 @@ const Container = styled.div`
     height: 100%;
     display: flex;
     flex-direction: row;
+    --tabs-bar-width: 125px;
 `;
 
 const View = styled.div`
@@ -48,7 +49,6 @@ stories.add("Only tabs bar", () => {
             <Container>
                 <div id="tooltips"></div>
                 <VerticalTabs
-                    width={number("Bar width", 125)}
                     tabSize={number("Tab size", 65)}
                     defaultTab="dashboad"
                     extraButton={<MenuButton name="settings" description="Settings" />}
@@ -94,7 +94,6 @@ class ViewSwitcherTest extends Component<ViewSwitcherProps, ViewSwitcherState> {
 
         return(
             <VerticalTabs
-                width={number("Bar width", 125)}
                 tabSize={number("Tab size", 65)}
                 defaultTab="dashboad"
                 extraButton={<MenuButton name="settings" description="Settings" />}
@@ -133,14 +132,42 @@ stories.add("Tabs bar with chaning view", () => {
                         <ViewSwitcher />
                         <View>
                             <Switch>
-                                <Route exact path="/dashboard" render={() => <h1>Dashboard</h1>} />
-                                <Route exact path="/send" render={() => <h1>Send</h1>} />
-                                <Route exact path="/receive" render={() => <h1>Receive</h1>} />
-                                <Route exact path="/addressBook" render={() => <h1>AddressBook</h1>} />
-                                <Route exact path="/sideStakes" render={() => <h1>SideStakes</h1>} />
-                                <Route exact path="/transactions" render={() => <h1>Transactions</h1>} />
-                                <Route exact path="/messages" render={() => <h1>Messages</h1>} />
-                                <Redirect from="/" exact to="/dashboard" />
+                                <Route
+                                    exact
+                                    path="/dashboard"
+                                    render={() => <h1>Dashboard</h1>}
+                                />
+                                <Route
+                                    exact
+                                    path="/send"
+                                    render={() => <h1>Send</h1>}
+                                />
+                                <Route
+                                    exact
+                                    path="/receive"
+                                    render={() => <h1>Receive</h1>}
+                                />
+                                <Route
+                                    exact
+                                    path="/addressBook"
+                                    render={() => <h1>Address Book</h1>}
+                                />
+                                <Route
+                                    exact
+                                    path="/sideStakes"
+                                    render={() => <h1>Side Stakes</h1>}
+                                />
+                                <Route
+                                    exact
+                                    path="/transactions"
+                                    render={() => <h1>Transactions</h1>}
+                                />
+                                <Route
+                                    exact
+                                    path="/messages"
+                                    render={() => <h1>Messages</h1>}
+                                />
+                                <Redirect exact from="/" to="/dashboard" />
                             </Switch>
                         </View>
                     </>

@@ -80,4 +80,4 @@ export const mainConfig: webpack.Configuration = {
             MAIN_VIEW:   `${dev ? "http://localhost:3000/" : ""}main.html`,
         }),
     ]
-}
+};

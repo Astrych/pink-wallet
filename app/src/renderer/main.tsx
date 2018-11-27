@@ -32,7 +32,7 @@ const GlobalStyle = createGlobalStyle`
     div#app {
         height: 100%;
         --title-bar-height: 35px;
-        --tabs-bar-width: 131px;
+        --tabs-bar-width: 125px;
     }
 `;
 

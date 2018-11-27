@@ -28,7 +28,7 @@ interface ViewSwitcherState {
 
 class ViewSwitcher extends Component<ViewSwitcherProps, ViewSwitcherState> {
 
-    private redirect = route => {
+    private redirect = (route: string) => {
         const { location, history } = this.props;
 
         if (route !== location.pathname) {

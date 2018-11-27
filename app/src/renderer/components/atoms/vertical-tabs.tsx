@@ -22,12 +22,12 @@ const Marker = styled.div`
     will-change: top, left, width, color;
 `;
 
-const ContentBar = styled.div<{ width: number }>`
+const ContentBar = styled.div`
     display: flex;
     flex-direction: column;
     margin-left: 0;
     height: 100%;
-    width: ${props => props.width}px;
+    width: var(--tabs-bar-width, 125px);
     color: ${props => props.theme.tabs.icons};
     background-color: ${props => props.theme.content.secondary};
 `;
@@ -68,8 +68,8 @@ const ExtraContent = styled.div`
     }
 `;
 
+
 interface VerticalTabsProps {
-    width: number;
     tabSize: number;
     defaultTab: string;
     children: ReactElement<TabProps>[];
@@ -85,12 +85,11 @@ interface VerticalTabsState {
 
 class VerticalTabs extends Component<VerticalTabsProps, VerticalTabsState> {
 
-    static defaultProps = {
-        width: 125,
+    static defaultProps: Partial<VerticalTabsProps> = {
         tabSize: 65,
     }
 
-    state = {
+    state: VerticalTabsState = {
         activeTabIndex: this.setInitialActiveIndex(),
         overflow: false,
     };
@@ -139,11 +138,11 @@ class VerticalTabs extends Component<VerticalTabsProps, VerticalTabsState> {
     };
 
     render() {
-        const { width, tabSize, children, extraButton } = this.props;
+        const { tabSize, children, extraButton } = this.props;
         const markerPosition = this.state.activeTabIndex*tabSize;
 
         return (
-            <ContentBar width={width}>
+            <ContentBar>
                 <TabsBar
                     tabSize={tabSize}
                     markOverflow={this.state.overflow}

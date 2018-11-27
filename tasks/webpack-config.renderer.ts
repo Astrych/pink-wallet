@@ -120,7 +120,7 @@ export const rendererConfig: webpack.Configuration = {
                 join(config.dirs.app.src, "renderer"),
                 join(config.dirs.app.src, "common"),
             ],
-            workers: ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE
+            workers: ForkTsCheckerWebpackPlugin.ONE_CPU,
         }),
         new HtmlWebpackPlugin({
             title: config.appTitle,
@@ -139,4 +139,4 @@ export const rendererConfig: webpack.Configuration = {
     // Removes non-plugin boolean
     // values from conditional checks.
     ].filter(Boolean)
-}
+};

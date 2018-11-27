@@ -1,5 +1,5 @@
 
-import React, { Component } from "react";
+import React, { Component, SyntheticEvent } from "react";
 import styled from "styled-components";
 
 import Tootlip from "./tooltip";
@@ -36,11 +36,11 @@ export interface MenuButtonProps {
 
 class MenuButton extends Component<MenuButtonProps> {
 
-    static defaultProps = {
+    static defaultProps: Partial<MenuButtonProps> = {
         size: 31,
     }
 
-    onButtonClick = e => {
+    onButtonClick = (e: SyntheticEvent) => {
         e.preventDefault();
         const { onClick } = this.props;
         onClick && onClick();

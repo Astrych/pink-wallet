@@ -1,6 +1,6 @@
 import path from "path";
 import { task, series } from "gulp";
-import packager from "electron-packager";
+import packager, { platform as Platform } from "electron-packager";
 
 import { config } from "./config";
 
@@ -15,24 +15,11 @@ import { config } from "./config";
 /**
  * Creates release versions.
  */
-function release(platform: string) {
+function release(platform: Platform) {
 
-    interface Options {
-        dir: string;
-        platform: string;
-        arch: string;
-        out: string;
-        overwrite: boolean;
-        asar: boolean;
-        prune: boolean;
-        icon: string;
-        win32metadata?: object;
-        appCategoryType?: string;
-    }
+    return (done: Function) => {
 
-    return done => {
-
-        const options: Options = {
+        const options: packager.Options = {
 
             dir: config.dirs.build,
             platform,
@@ -56,10 +43,14 @@ function release(platform: string) {
         }
 
         packager(options)
-        .then(appPaths => {
-            console.info("Destination paths:", ...appPaths);
+        .then((appPaths: string | string[]) => {
+            if (Array.isArray(appPaths)) {
+                console.info("Destination paths:", ...appPaths);
+            } else {
+                console.info("Destination path:", appPaths);
+            }
         })
-        .catch(err => {
+        .catch((err: Error) => {
             console.error(err);
         })
         .finally(() => {

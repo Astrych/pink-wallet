@@ -5,6 +5,5 @@ declare module "*.woff";
 declare module "*.woff2";
 
 // Dummy definitions.
-declare module "electron-packager";
 declare module "imagemin-pngquant";
 declare module "webpack-bundle-analyzer";
