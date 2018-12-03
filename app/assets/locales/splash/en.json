@@ -4,6 +4,6 @@
     "download-end": "Daemon downloaded",
     "unpack": "Unpacking daemon...",
     "unpack-end": "Daemon unpacked",
-    "start": "Starting daemon...",
-    "start-end": "Done"
+    "launch": "Launching daemon...",
+    "launch-end": "Done"
 }

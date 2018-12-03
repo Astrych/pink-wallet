@@ -18,7 +18,7 @@ interface AppBarState {
 
 class AppHeader extends Component<{}, AppBarState> {
 
-    state = {
+    state: AppBarState = {
         windowState: ipcRenderer.sendSync("window-get-state"),
     };
 

@@ -108,36 +108,35 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
     }
 
     static getDerivedStateFromProps(props: ComboBoxProps, state: ComboBoxState) {
-        if (state.selectedId === 0) {
-            return {
-                headerTitle: props.placeholder,
-            };
-        }
-        const el = R.find(R.propEq("id", state.selectedId))(props.list);
-        if (el && state.headerTitle !== el.title) {
-            return {
-                headerTitle: el.title,
-            };
+        // Handles state change (element switch).
+        const el = R.find(R.propEq("selected", true))(props.list);
+        if (el) {
+            if (state.headerTitle !== el.title) {
+                return {
+                    headerTitle: el.title,
+                    selectedId: el.id,
+                };
+            }
+
+        } else {
+            if (state.headerTitle !== props.placeholder) {
+                return {
+                    headerTitle: props.placeholder,
+                    selectedId: 0,
+                };
+            }
         }
         return null;
     }
 
-    toggleList() {
+    toggleList = () => {
         this.setState(prevState => ({
             listOpen: !prevState.listOpen
         }));
     }
 
-    openList() {
-        this.setState({ listOpen: true });
-    }
-
-    closeList() {
+    closeList = () => {
         this.setState({ listOpen: false });
-    }
-
-    selectItem(id: number, title: string) {
-        this.setState({ selectedId: id, headerTitle: title });
     }
 
     render() {
@@ -147,21 +146,18 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
         return (
             <Select minWidth={minWidth}>
                 <Header
-                    onClick={() => this.toggleList()}
-                    onBlur={() => this.closeList()}
+                    onClick={this.toggleList}
+                    onBlur={this.closeList}
                     tabIndex={0}
                 >
                     <Title>{headerTitle}</Title>
-                    {
-                        listOpen ? <ChevronUp size={30} /> : <ChevronDown size={30} />
-                    }
+                    {listOpen ? <ChevronUp size={30} /> : <ChevronDown size={30} />}
                 </Header>
                 {listOpen && <List minWidth={minWidth}>
                     {list.map(item => (
                         <ListItem
                             key={item.id}
                             onMouseDown={() => {
-                                this.selectItem(item.id, item.title);
                                 action(item.id, item.value);
                             }}
                         >

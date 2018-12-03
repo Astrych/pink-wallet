@@ -62,14 +62,17 @@ export async function calcChecksum(filePath: string) {
  */
 export async function unzip(sourcePath: string, destDir: string) {
 
-    const open = promisify(yauzl.open.bind(yauzl));
+    const bindOpen = yauzl.open.bind<typeof yauzl, [string, yauzl.Options], void>(yauzl);
+    const open = promisify<string, yauzl.Options, yauzl.ZipFile>(bindOpen);
     const zipFile = await open(sourcePath, { lazyEntries: true });
 
-    const openReadStream = promisify(zipFile.openReadStream.bind(zipFile));
+    // HACK to fix type error. Is there any better option? ;/
+    const bindZipFile = zipFile.openReadStream.bind<yauzl.ZipFile, [yauzl.Entry, any], void>(zipFile);
+    const openReadStream = promisify<yauzl.Entry, Readable>(bindZipFile);
 
     return new Promise((resolve, reject) => {
         zipFile.readEntry();
-        zipFile.on("entry", async entry => {
+        zipFile.on("entry", async (entry: yauzl.Entry) => {
             // Directory entry...
             if (/\/$/.test(entry.fileName)) {
                 zipFile.readEntry();

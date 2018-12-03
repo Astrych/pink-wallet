@@ -149,22 +149,18 @@ class VerticalTabs extends Component<VerticalTabsProps, VerticalTabsState> {
                     ref={element => this.tabsBar = element}
                 >
                     <Marker style={{ top: markerPosition }} />
-                    {
-                        React.Children.map(children, (child, index) => {
-                            return React.cloneElement(child, {
-                                onClick: this.onTabClick,
-                                active: index === this.state.activeTabIndex,
-                                index,
-                            });
-                        })
-                    }
+                    {React.Children.map(children, (child, index) => {
+                        return React.cloneElement(child, {
+                            onClick: this.onTabClick,
+                            active: index === this.state.activeTabIndex,
+                            index,
+                        });
+                    })}
                 </TabsBar>
                 <ExtraContent>
-                {
-                    React.cloneElement(extraButton, {
+                    {React.cloneElement(extraButton, {
                         onClick: this.onButtonClick,
-                    })
-                }
+                    })}
                 </ExtraContent>
             </ContentBar>
         );

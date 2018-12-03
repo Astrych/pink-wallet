@@ -27,7 +27,7 @@ interface SettingsProps {
 class Settings extends Component<SettingsProps> {
 
     langList = [
-        { id: 1, title: "English", selected: false, value: "en" },
+        { id: 1, title: "English", selected: true, value: "en" },
         { id: 2, title: "Polski", selected: false, value: "pl" },
     ];
 
@@ -36,28 +36,29 @@ class Settings extends Component<SettingsProps> {
         { id: 2, title: "settings.themes.light", selected: false, value: "light" },
     ];
 
-    componentDidMount() {
+    constructor(props: SettingsProps) {
+        super(props);
+
         interface InitState {
             theme: string;
             language: string;
         }
 
-        ipcRenderer.on("app-set-init-state", (_: Electron.Event, data: InitState) => {
-            this.props.changeTheme(data.theme);
-            this.props.changeLanguage(data.language);
-            i18n.changeLanguage(data.language);
+        const initState = ipcRenderer.sendSync("app-get-init-state");
+        console.log(initState);
 
-            const el = R.find(R.propEq("value", data.language))(this.langList);
-            if (el) el.selected = true;
-        });
-        ipcRenderer.send("app-get-init-state");
+        // Sets initial language.
+        this.props.changeLanguage(initState.language);
+        i18n.changeLanguage(initState.language);
+
+        // Sets initial theme.
+        this.props.changeTheme(initState.theme);
     }
 
-    private getThemesList(t: i18n.TranslationFunction) {
-        const newList = R.clone(this.themesList);
-        for (const el of newList) el.title = t(el.title);
-        return newList;
-    }
+    private onLanguageSwitch = (newLanguage: string) => {
+        this.props.changeLanguage(newLanguage);
+        ipcRenderer.send("app-set-language", newLanguage);
+    };
 
     private onThemeSwitch = (_: number, newTheme: string) => {
         this.props.changeTheme(newTheme);
@@ -67,10 +68,11 @@ class Settings extends Component<SettingsProps> {
         });
     };
 
-    private onLanguageSwitch = (newLanguage: string) => {
-        this.props.changeLanguage(newLanguage);
-        ipcRenderer.send("app-set-language", newLanguage);
-    };
+    private getThemesList(t: i18n.TranslationFunction) {
+        const newList = R.clone(this.themesList);
+        for (const el of newList) el.title = t(el.title);
+        return newList;
+    }
 
     private closeSettingsModal = () => {
         this.props.hideSettings();
@@ -78,12 +80,21 @@ class Settings extends Component<SettingsProps> {
 
     render() {
 
-        const { currentTheme, settingsOpened } = this.props;
+        const { currentLanguage, currentTheme, settingsOpened } = this.props;
 
-        for (const item of this.themesList) {
-            if (item.value === currentTheme) {
-                item.selected = true;
-                break;
+        for (const el of this.langList) {
+            if (el.value === currentLanguage) {
+                el.selected = true;
+            } else {
+                el.selected = false;
+            }
+        }
+
+        for (const el of this.themesList) {
+            if (el.value === currentTheme) {
+                el.selected = true;
+            } else {
+                el.selected = false;
             }
         }
 

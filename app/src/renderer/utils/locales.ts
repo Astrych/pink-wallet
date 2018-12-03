@@ -4,7 +4,7 @@ import xhr from "i18next-xhr-backend";
 import { reactI18nextModule } from "react-i18next";
 
 
-async function loadLocales(url, _, cb) {
+async function loadLocales(url: string, _, cb: Function) {
 
     try {
         const locale = await import(
@@ -37,7 +37,7 @@ i18n
     },
     backend: {
       loadPath: "{{ns}}/{{lng}}",
-      parse: data => data,
+      parse: (data: { [key: string]: any }) => data,
       ajax: loadLocales
     }
 });

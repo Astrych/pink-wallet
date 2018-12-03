@@ -99,9 +99,9 @@ ipcMain.on("app-set-language", (_: Electron.Event, language: string) => {
 
 ipcMain.on("app-get-init-state", (event: Electron.Event) => {
     if (mainWindow) {
-        event.sender.send("app-set-init-state", {
-            theme: appState.theme,
+        event.returnValue = {
             language: appState.language,
-        });
+            theme: appState.theme,
+        };
     }
 });

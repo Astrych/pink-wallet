@@ -63,9 +63,10 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
 
                 // On progress successful finish.
                 if (!steps) {
-                    this.setState({ description: "start-end" });
-                    await sleep(500);
-                    event.sender.send("splash-loading-finished");
+                    this.setState({ description: "launch-end" }, async () => {
+                        await sleep(500);
+                        event.sender.send("splash-loading-finished");
+                    });
                 }
             }
         };
@@ -78,7 +79,7 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
             progress: number;
         }
 
-        ipcRenderer.on("daemon-download-progress", (event: Electron.Event, data: DownloadData) => {
+        ipcRenderer.on("daemon-download-progress", (_: Electron.Event, data: DownloadData) => {
             this.setState({ progress: data.progress });
         });
 
@@ -100,7 +101,6 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
         }
 
         ipcRenderer.on("daemon-start-progress", (event: Electron.Event, data: StartData) => {
-            // if (data.step > 1) return;
             const subSteps = 100/data.total;
             progressQueue.push(...calcProgressSteps({
                 step: data.step,
@@ -109,18 +109,19 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
             }));
 
             if (data.step === 0) {
-                this.setState({ stages: data.total, description: "start" });
+                this.setState({ stages: data.total, description: "launch" });
                 updateProgressState(event, 100);
             }
         });
 
         ipcRenderer.on("daemon-error", async (event: Electron.Event, message: string) => {
             console.error(message);
-            this.setState({ error: true, description: message });
-            // TODO: Show popup...
-            // ... or center message box + add close button...
-            await sleep(2000);
-            event.sender.send("app-shutdown");
+            this.setState({ error: true, description: message }, async () => {
+                // TODO: Show popup...
+                // ... or center message box + add close button...
+                await sleep(2000);
+                event.sender.send("app-shutdown");
+            });
         });
     }
 
@@ -135,17 +136,15 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
             <Translate ns="splash">
                 {t => <>
                     <SplashImg onLoad={this.onImgLoad} animate={show} />
-                    {
-                        show && <>
-                            <SplashProgress
-                                progress={progress}
-                                error={error}
-                                stages={stages}
-                                animated={animated}
-                            />
-                            <Message>{error ? description : t(description)}</Message>
-                        </>
-                    }
+                    {show && <>
+                        <SplashProgress
+                            progress={progress}
+                            error={error}
+                            stages={stages}
+                            animated={animated}
+                        />
+                        <Message>{error ? description : t(description)}</Message>
+                    </>}
                 </>}
             </Translate>
         );
