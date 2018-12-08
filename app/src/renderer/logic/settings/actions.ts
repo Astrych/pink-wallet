@@ -1,21 +1,20 @@
 
 import { CHANGE_THEME, CHANGE_LANGUAGE, SHOW_SETTINGS, HIDE_SETTINGS } from "./types";
+import { createAction, ActionsUnion } from "../helpers";
+import { ThemeName } from "../theme";
 
 
-export const changeTheme = (theme: string) => ({
-    type: CHANGE_THEME,
-    payload: theme
-});
+export const changeTheme = (theme: ThemeName) => createAction(CHANGE_THEME, theme);
+export const changeLanguage = (language: string) => createAction(CHANGE_LANGUAGE, language);
 
-export const changeLanguage = (language: string) => ({
-    type: CHANGE_LANGUAGE,
-    payload: language
-});
+export const showSettings = () => createAction(SHOW_SETTINGS);
+export const hideSettings = () => createAction(HIDE_SETTINGS);
 
-export const showSettings = () => ({
-    type: SHOW_SETTINGS
-});
+export const SettingsActions = {
+    changeTheme,
+    changeLanguage,
+    showSettings,
+    hideSettings,
+}
 
-export const hideSettings = () => ({
-    type: HIDE_SETTINGS
-});
+export type SettingsActions = ActionsUnion<typeof SettingsActions>;

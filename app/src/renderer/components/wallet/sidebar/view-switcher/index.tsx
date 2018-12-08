@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import {
 
     withRouter,
-    RouteComponentProps
+    RouteComponentProps,
 
 } from "react-router";
 

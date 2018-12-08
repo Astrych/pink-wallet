@@ -6,7 +6,7 @@ import {
 
     MemoryRouter,
     withRouter,
-    RouteComponentProps
+    RouteComponentProps,
 
 } from "react-router";
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -71,15 +71,12 @@ stories.add("Only tabs bar", () => {
     );
 });
 
-
-interface ViewSwitcherProps extends RouteComponentProps<any> {
-}
-
+interface ViewSwitcherProps extends RouteComponentProps<any> {}
 interface ViewSwitcherState {
     route: string;
 }
 
-class ViewSwitcherTest extends Component<ViewSwitcherProps, ViewSwitcherState> {
+class ViewSwitcherTest extends Component<ViewSwitcherProps & RouteComponentProps, ViewSwitcherState> {
 
     private redirect = (route: string) => {
         const { location, history } = this.props;

@@ -1,13 +1,18 @@
 
-import { Dispatch } from "redux";
+import { Dispatch, Middleware, MiddlewareAPI } from "redux";
 
-import { go } from "./async-runner";
 import { AppState } from "./root-reducer";
+import { Actions } from "./root-actions";
+import { go } from "./async-runner";
 
+
+export interface EffectMiddleware<S, D extends Dispatch> extends Middleware<{}, S, D> {
+  (api: MiddlewareAPI<D, S>): (next: Dispatch<Actions>) => (action: Actions) => void
+}
 
 export interface ListenerParams {
-    action: string;
-    dispatch: Dispatch;
+    action: Actions;
+    dispatch: Dispatch<Actions>;
     state: AppState;
 }
 
@@ -27,13 +32,15 @@ export class SideEffects {
         this.listeners = listeners;
     }
 
-    middleware() {
+    middleware(): EffectMiddleware<AppState, Dispatch<Actions>> {
 
-        function* callListeners(listeners, { action, dispatch, state }) {
+        function* callListeners(
+            listeners: Listeners[],
+            { action, dispatch, state }: ListenerParams,
+        ) {
             for (const listener of listeners) {
 
                 if (listener[action.type]) {
-
                     yield listener[action.type]({
 
                         action,
@@ -47,18 +54,21 @@ export class SideEffects {
             }
         }
 
-        return store => next => action => {
-            const preActionState = store.getState();
+        return (api: MiddlewareAPI<Dispatch<Actions>, AppState>) =>
+               (next: Dispatch<Actions>) => (action: Actions) => {
+
+            const preActionState = api.getState();
             next(action);
 
-            const onYield = ret => console.debug("ACTION LISTENER: SIDE EFFECTS", ret);
+            const onYield = (ret: any) => console.debug("ACTION LISTENER: SIDE EFFECTS", ret);
 
             go(callListeners(this.listeners, {
                 action,
-                dispatch: store.dispatch,
+                dispatch: api.dispatch,
                 state: preActionState,
-
-            }), { onYield })
+            }),
+                { onYield }
+            )
             .catch(error => console.error(error));
         };
     }

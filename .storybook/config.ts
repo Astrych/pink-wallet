@@ -15,7 +15,7 @@ addDecorator(withBackgrounds([
     { name: "Dark pink", value: "#7f345a" },
     { name: "Pink", value: "pink" },
     { name: "White", value: "white" },
-]))
+]));
 
 const viewports = {
     splash: {

@@ -7,8 +7,8 @@ import settings from "./settings/reducer";
 
 export interface AppState {
 
-    auth: typeof auth.initialState;
-    settings: typeof settings.initialState;
+    readonly auth: typeof auth.initialState;
+    readonly settings: typeof settings.initialState;
 }
 
 const rootReducer = combineReducers({
