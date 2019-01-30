@@ -2,27 +2,27 @@
 {
     "typescript.tsdk": "./node_modules/typescript/lib",
     "search.exclude": {
-        "**/.git": true,
-        "**/node_modules": true,
-        "**/build": true,
-        "**/dist": true,
-        "**/daemon": true
+        "**/.git/**": true,
+        "**/node_modules/**": true,
+        "**/build/**": true,
+        "**/dist/**": true,
+        "**/daemon/**": true
     },
     "files.exclude": {
-        "**/node_modules": true,
-        "**/build": true,
-        "**/dist": true,
-        "**/.DS_Store": true
+        "**/node_modules/**": true,
+        "**/build/**": true,
+        "**/dist/**": true,
+        "**/.DS_Store/**": true
     },
     "files.watcherExclude": {
-        "**/.git/objects": true,
-        "**/.git/subtree-cache": true,
-        "**/node_modules": true,
-        "**/build": true,
-        "**/dist": true,
-        "**/daemon": true
+        "**/.git/object/**s": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/build/**": true,
+        "**/dist/**": true,
+        "**/daemon/**": true
     },
-    "files.useExperimentalFileWatcher": true,
+    "files.useExperimentalFileWatcher": false,
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
     "indentRainbow.ignoreErrorLanguages" : [
