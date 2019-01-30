@@ -74,6 +74,7 @@ export async function createMainWindow() {
         webPreferences: {
             sandbox: false,
             nodeIntegration: true,
+            affinity: "ui",
         },
     });
 

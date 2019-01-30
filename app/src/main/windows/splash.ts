@@ -29,6 +29,7 @@ export async function createSplashWindow(runOnStart: RunOnStart) {
         webPreferences: {
             sandbox: false,
             nodeIntegration: true,
+            affinity: "ui",
         },
     });
 
