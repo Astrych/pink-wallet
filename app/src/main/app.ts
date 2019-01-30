@@ -36,14 +36,7 @@ if (process.env.NODE_ENV !== "production") {
 
 // TODO: Remove it from production??
 if (process.platform === "win32") {
-    // any as a workaround for lack of typings for that function.
-    (app as any).setAppUserModelId("com.electron.pinkcoin");
-}
-
-// Required on Linux platorm (bug workaround).
-// Without it transparent window is black or white.
-if (process.platform === "linux") {
-    app.disableHardwareAcceleration();
+    app.setAppUserModelId("com.electron.pinkcoin");
 }
 
 // Ensures only one instance of the application.
@@ -75,6 +68,7 @@ app.on("ready", async () => {
 
     // Sleep as a workaround for transparency issue
     // https://github.com/electron/electron/issues/2170
+    // https://github.com/electron/electron/issues/15947
     // https://bugs.chromium.org/p/chromium/issues/detail?id=854601
     await sleep(300);
 
@@ -96,7 +90,7 @@ app.on("ready", async () => {
             if (!allowed) {
                 details.responseHeaders["Content-Security-Policy"] = "default-src 'none'; script-src 'self'";
             }
-            cb({ responseHeaders: details.responseHeaders });
+            cb({ responseHeaders: details.responseHeaders, cancel: false });
         });
     }
 

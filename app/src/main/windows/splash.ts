@@ -2,7 +2,6 @@
 import path from "path";
 import { BrowserWindow } from "electron";
 
-import { getCenterPosition } from "./utils";
 import logger from "../logger";
 
 import { wholeObject } from "@common/utils";
@@ -42,13 +41,6 @@ export function createSplashWindow(runOnStart: RunOnStart) {
     });
 
     window.once("ready-to-show", () => {
-        // Workaround for issue:
-        // https://github.com/electron/electron/issues/3490
-        if (process.platform === "linux") {
-            const pos = getCenterPosition(window!);
-            window!.setPosition(pos.x, pos.y);
-        }
-
         window!.show();
 
         runOnStart(window)

@@ -2,10 +2,8 @@
 import { join } from "path";
 import { BrowserWindow } from "electron";
 import Store from "electron-store";
-import R from "ramda";
 import debounce from "lodash.debounce";
 
-import { getCenterPosition } from "./utils";
 import logger from "../logger";
 
 
@@ -17,7 +15,7 @@ interface AppState {
     position: {
         x: number,
         y: number
-    };
+    } | null;
     size: {
         width: number,
         height: number
@@ -29,10 +27,7 @@ interface AppState {
 };
 
 export const state: AppState = {
-    position: {
-        x: 0,
-        y: 0
-    },
+    position: null,
     size: {
         width: 1257,
         height: 805,
@@ -69,6 +64,7 @@ export function createMainWindow() {
         height: state.size.height,
         minWidth: 960,
         minHeight: 526,
+        center: true,
         show: false,
         frame: false,
         useContentSize: true,
@@ -88,16 +84,7 @@ export function createMainWindow() {
     });
 
     window.once("ready-to-show", () => {
-        if (R.isEmpty(state.position) && !state.isMaximized) {
-            // Workaround for issue:
-            // https://github.com/electron/electron/issues/3490
-            if (process.platform === "linux") {
-                state.position = getCenterPosition(window!);
-                window!.setPosition(state.position.x, state.position.y);
-            }
-
-        } else {
-
+        if (state.position && !state.isMaximized) {
             window!.setPosition(state.position.x, state.position.y);
         }
     });
