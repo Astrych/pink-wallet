@@ -25,6 +25,7 @@ export async function createSplashWindow(runOnStart: RunOnStart) {
         show: false,
         skipTaskbar: true,
         icon: path.join(__dirname, "icons/icon.png"),
+        // TODO: remove it when full separation is ready
         webPreferences: {
             sandbox: false,
             nodeIntegration: true,

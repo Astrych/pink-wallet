@@ -70,6 +70,7 @@ export async function createMainWindow() {
         useContentSize: true,
         titleBarStyle: "hiddenInset",
         icon: join(__dirname, `icons/icon.${process.platform === "win32" ? "ico" : "png"}`),
+        // TODO: remove it when full separation is ready
         webPreferences: {
             sandbox: false,
             nodeIntegration: true,
