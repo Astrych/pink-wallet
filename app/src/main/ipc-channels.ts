@@ -25,7 +25,8 @@ ipcMain.on("splash-loading-finished", () => {
         }
 
         if (process.env.NODE_ENV !== "production") {
-            mainWindow.webContents.openDevTools({ mode : "detach" });
+            // TODO: 'activate' is not working - check it later
+            mainWindow.webContents.openDevTools({ mode : "detach", activate: false, });
         }
     }
 });

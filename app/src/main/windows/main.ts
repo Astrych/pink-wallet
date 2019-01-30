@@ -38,7 +38,7 @@ export const state: AppState = {
     language: "en",
 };
 
-export function createMainWindow() {
+export async function createMainWindow() {
 
     // Gets window state.
     state.color = store.get("window.color", state.color);
@@ -70,6 +70,10 @@ export function createMainWindow() {
         useContentSize: true,
         titleBarStyle: "hiddenInset",
         icon: join(__dirname, `icons/icon.${process.platform === "win32" ? "ico" : "png"}`),
+        webPreferences: {
+            sandbox: false,
+            nodeIntegration: true,
+        },
     });
 
     window.setBackgroundColor(state.color);
@@ -140,10 +144,10 @@ export function createMainWindow() {
     });
 
     if (process.env.NODE_ENV !== "production") {
-        window.loadURL(process.env.MAIN_VIEW as string);
+        await window.loadURL(process.env.MAIN_VIEW as string);
 
     } else {
-        window.loadFile(process.env.MAIN_VIEW as string);
+        await window.loadFile(process.env.MAIN_VIEW as string);
     }
 
     return window;

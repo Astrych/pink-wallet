@@ -72,8 +72,10 @@ app.on("ready", async () => {
     // https://bugs.chromium.org/p/chromium/issues/detail?id=854601
     await sleep(300);
 
-    mainWindow = createMainWindow();
-    splashWindow = createSplashWindow(startDaemon);
+    [ mainWindow, splashWindow ] = await Promise.all([
+        createMainWindow(),
+        createSplashWindow(startDaemon),
+    ]);
 
     createTray(mainWindow, splashWindow);
 
@@ -116,9 +118,9 @@ app.on("ready", async () => {
     }
 });
 
-app.on("activate", () => {
+app.on("activate", async () => {
     if (mainWindow === null) {
-        mainWindow = createMainWindow();
+        mainWindow = await createMainWindow();
         mainWindow.once("ready-to-show", () => {
             mainWindow && mainWindow.show();
         });

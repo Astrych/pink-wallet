@@ -13,7 +13,7 @@ interface RunOnStart {
 
 export let window: BrowserWindow | null;
 
-export function createSplashWindow(runOnStart: RunOnStart) {
+export async function createSplashWindow(runOnStart: RunOnStart) {
 
     window = new BrowserWindow({
         width: 615,
@@ -24,13 +24,17 @@ export function createSplashWindow(runOnStart: RunOnStart) {
         frame: false,
         show: false,
         skipTaskbar: true,
-        icon: path.join(__dirname, "icons/icon.png")
+        icon: path.join(__dirname, "icons/icon.png"),
+        webPreferences: {
+            sandbox: false,
+            nodeIntegration: true,
+        },
     });
 
     if (process.env.NODE_ENV !== "production") {
-        window.loadURL(process.env.SPLASH_VIEW as string);
+        await window.loadURL(process.env.SPLASH_VIEW as string);
     } else {
-        window.loadFile(process.env.SPLASH_VIEW as string);
+        await window.loadFile(process.env.SPLASH_VIEW as string);
     }
 
     window.on("closed", () => window = null);
