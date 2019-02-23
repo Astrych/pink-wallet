@@ -1,8 +1,8 @@
 
 import { ipcRenderer } from "electron";
 import React from "react";
-import { hot } from "react-hot-loader";
-import { NamespacesConsumer as Translate } from "react-i18next";
+import { hot } from "react-hot-loader/root";
+import { Translation } from "react-i18next";
 
 import SplashImg from "./splash/image";
 import SplashProgress from "./splash/progress";
@@ -133,7 +133,7 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
         const { show, progress, stages, animated, description, error } = this.state;
 
         return (
-            <Translate ns="splash">
+            <Translation ns="splash">
                 {t => <>
                     <SplashImg onLoad={this.onImgLoad} animate={show} />
                     {show && <>
@@ -146,11 +146,9 @@ class SplashScreen extends React.Component<{}, SplashScreenState> {
                         <Message>{error ? description : t(description)}</Message>
                     </>}
                 </>}
-            </Translate>
+            </Translation>
         );
     }
 }
 
-export default hot(module)(
-    SplashScreen
-);
+export default hot(SplashScreen);

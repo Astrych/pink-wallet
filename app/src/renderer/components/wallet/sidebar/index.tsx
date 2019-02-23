@@ -1,6 +1,6 @@
 
 import React, { Component } from "react";
-import { NamespacesConsumer as Translate } from "react-i18next";
+import { Translation } from "react-i18next";
 
 import ViewSwitcher from "./view-switcher";
 import Tab from "@components/atoms/tab";
@@ -11,7 +11,7 @@ class Sidebar extends Component {
 
     render() {
         return (
-            <Translate ns="main">
+            <Translation ns="main">
                 {t => <>
                     <ViewSwitcher
                         extraButton={
@@ -27,7 +27,7 @@ class Sidebar extends Component {
                         <Tab name="messages" description={t("tabs.messages")} />
                     </ViewSwitcher>
                 </>}
-            </Translate>
+            </Translation>
         );
     }
 }

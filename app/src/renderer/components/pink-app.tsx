@@ -1,6 +1,6 @@
 
-import React, { Component } from "react";
-import { hot } from "react-hot-loader";
+import React, { Component, Suspense } from "react";
+import { hot } from "react-hot-loader/root";
 import { connect } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import { MemoryRouter } from "react-router";
@@ -27,7 +27,9 @@ class PinkApp extends Component<PinkAppProps> {
                 <MemoryRouter>
                     <AppLayout>
                         <AppHeader />
-                        <Sidebar />
+                        <Suspense fallback={false}>
+                            <Sidebar />
+                        </Suspense>
                         <AppContent />
                     </AppLayout>
                 </MemoryRouter>
@@ -43,7 +45,7 @@ function mapStateToProps(state: AppState) {
     };
 }
 
-export default hot(module)(
+export default hot(
     connect(
         mapStateToProps,
     )(

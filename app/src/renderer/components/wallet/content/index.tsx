@@ -1,5 +1,5 @@
 
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 
 import { Content } from "./layout";
@@ -30,7 +30,9 @@ class AppContent extends Component {
                     <Route path="/messages" component={Messages} />
                     <Redirect from="/" exact to="/dashboard" />
                 </Switch>
-                <Settings />
+                <Suspense fallback={false}>
+                    <Settings />
+                </Suspense>
             </Content>
         );
     }

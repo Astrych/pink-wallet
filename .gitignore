@@ -5,3 +5,4 @@ node_modules
 /daemon
 .directory
 *stats.json
+.vscode

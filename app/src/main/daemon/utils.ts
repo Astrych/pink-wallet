@@ -57,17 +57,31 @@ export async function calcChecksum(filePath: string) {
     return hash.digest("hex");
 }
 
+
+// HACK: Workaround to fix types issues with Node.js promisify function.
+function openZipFile(path: string, options: yauzl.Options): Promise<yauzl.ZipFile> {
+    return new Promise((resolve, reject) => {
+        yauzl.open(path, options, (err?: Error, zipFile?: yauzl.ZipFile) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(zipFile);
+            }
+        });
+    });
+}
+
 /**
  * Exctracts .zip files (Windows platforms).
  */
 export async function unzip(sourcePath: string, destDir: string) {
 
-    const bindOpen = yauzl.open.bind<typeof yauzl, [string, yauzl.Options], void>(yauzl);
-    const open = promisify<string, yauzl.Options, yauzl.ZipFile>(bindOpen);
-    const zipFile = await open(sourcePath, { lazyEntries: true });
+    // const bindOpen = yauzlOpen.bind<typeof yauzl, [string, YauzlOptions], void>(yauzl);
+    // const open = promisify<Open>(yauz.open);
+    const zipFile = await openZipFile(sourcePath, { lazyEntries: true });
 
-    // HACK to fix type error. Is there any better option? ;/
-    const bindZipFile = zipFile.openReadStream.bind<yauzl.ZipFile, [yauzl.Entry, any], void>(zipFile);
+    // HACK: Fix type error. Is there any better option? ;/
+    const bindZipFile = zipFile.openReadStream.bind<yauzl.ZipFile, any, void>(zipFile);
     const openReadStream = promisify<yauzl.Entry, Readable>(bindZipFile);
 
     return new Promise((resolve, reject) => {

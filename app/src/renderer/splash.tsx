@@ -1,6 +1,6 @@
 
 import { remote } from "electron";
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { createGlobalStyle } from "styled-components";
 
@@ -37,7 +37,9 @@ const GlobalStyle = createGlobalStyle`
 ReactDOM.render(
     <>
         <GlobalStyle />
-        <SplashScreen />
+        <Suspense fallback={false}>
+            <SplashScreen />
+        </Suspense>
     </>,
     document.getElementById("app")
 );

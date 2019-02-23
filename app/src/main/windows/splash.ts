@@ -47,6 +47,7 @@ export async function createSplashWindow(runOnStart: RunOnStart) {
     });
 
     window.once("ready-to-show", () => {
+        console.log("SHOW IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         window!.show();
 
         runOnStart(window)

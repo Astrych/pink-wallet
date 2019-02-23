@@ -1,7 +1,7 @@
 
 import i18n from "i18next";
 import xhr from "i18next-xhr-backend";
-import { reactI18nextModule } from "react-i18next";
+import { initReactI18next } from "react-i18next";
 
 
 async function loadLocales(url: string, _, cb: Function) {
@@ -23,7 +23,7 @@ export const languages = ["en", "pl"];
 
 i18n
 .use(xhr)
-.use(reactI18nextModule)
+.use(initReactI18next)
 .init({
     fallbackLng: languages,
     ns: ["main", "splash"],

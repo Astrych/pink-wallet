@@ -13,7 +13,7 @@ import { config, isDev as dev, analyze } from "./config";
 export const rendererConfig: webpack.Configuration = {
 
     mode: config.releaseType,
-    devtool: dev ? "inline-source-map" : "source-map",
+    devtool: dev ? "cheap-module-eval-source-map" : "source-map",
     entry: {
         "main-bundle":   [join(config.dirs.app.src, "renderer/main.tsx")],
         "splash-bundle": [join(config.dirs.app.src, "renderer/splash.tsx")],
@@ -140,3 +140,8 @@ export const rendererConfig: webpack.Configuration = {
     // values from conditional checks.
     ].filter(Boolean)
 };
+
+// Replaces react-dom with hot-loader version.
+if (dev && rendererConfig.resolve && rendererConfig.resolve.alias) {
+    rendererConfig.resolve.alias["react-dom"] = "@hot-loader/react-dom";
+}

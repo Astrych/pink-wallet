@@ -1,9 +1,0 @@
-{
-    "recommendations": [
-        "CoenraadS.bracket-pair-colorizer",
-        "oderwat.indent-rainbow",
-        "IBM.output-colorizer",
-        "wayou.vscode-todo-highlight",
-        "jpoissonnier.vscode-styled-components"
-    ]
-}

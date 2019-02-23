@@ -23,7 +23,7 @@ export let pink2d: ChildProcess | null = null;
 
 export async function startDaemon(window: BrowserWindow | null) {
 
-    logger.log("Starting wallet daemon...");
+    logger.info("Starting wallet daemon...");
 
     logger.debug(`Daemon directory: ${config.mainDir}`);
     logger.debug(`Blockchain data directory: ${config.dataDir}`);
@@ -100,7 +100,7 @@ export async function startDaemon(window: BrowserWindow | null) {
     });
 
     pink2d.on("exit", (code, signal) => {
-        logger.log(`Daemon process exited with code ${code} and signal ${signal}.`);
+        logger.info(`Daemon process exited with code ${code} and signal ${signal}.`);
         if (process.platform === "win32" && code === 3221225781) {
             if (window && !window.isDestroyed()) {
                 const message = "Invalid daemon binary: DLL loading error";
@@ -205,7 +205,7 @@ async function handleLogStream({
                 // Is stage the last entry on the startStages list?
                 if (startStages.indexOf(stage) === startStages.length - 1) {
                     const totalTime = process.hrtime(startTime);
-                    logger.log(
+                    logger.info(
                         `Daemon started in ${totalTime[0]}s and ${totalTime[1]/1e6}ms.`
                     );
                 }

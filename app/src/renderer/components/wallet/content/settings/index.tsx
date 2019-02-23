@@ -3,7 +3,7 @@ import { ipcRenderer } from "electron";
 import React, { Component } from "react";
 import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
-import { NamespacesConsumer as Translate } from "react-i18next";
+import { Translation } from "react-i18next";
 import R from "ramda";
 
 import { Content, Header, Form, Label, Button } from "./layout";
@@ -68,7 +68,7 @@ class Settings extends Component<SettingsProps> {
         });
     };
 
-    private getThemesList(t: i18n.TranslationFunction) {
+    private getThemesList(t: i18n.TFunction) {
         const newList = R.clone(this.themesList);
         for (const el of newList) el.title = t(el.title);
         return newList;
@@ -100,7 +100,7 @@ class Settings extends Component<SettingsProps> {
 
         return (
             <Modal show={settingsOpened}>
-                <Translate ns="main">
+                <Translation ns="main">
                     {(t, { i18n }) => <Content>
 
                         <Header>{t("settings.header")}</Header>
@@ -127,7 +127,7 @@ class Settings extends Component<SettingsProps> {
                             </Button>
                         </Form>
                     </Content>}
-                </Translate>
+                </Translation>
             </Modal>
         );
     }
