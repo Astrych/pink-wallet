@@ -1,6 +1,6 @@
-# Pinkcoin Wallet GUI
+# Bufallo Wallet
 
-Bare bone project (app shell). Work in progress.
+New, alternative wallet GUI. Work in progress.
 
 ## Requirements
 
@@ -29,7 +29,7 @@ npm install
 npm run windows-builder
 ```
 
-OSX (wallet is not working for now due to the lack of Mac OS daemon binary):
+OSX (wallet is not working for now due to the lack of support for Mac OS daemon binary):
 
 ```
 npm install
